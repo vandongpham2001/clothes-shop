@@ -18,5 +18,7 @@ public interface ICategoryService {
 
     CategoryDTO update(CategoryDTO dto);
 
+    CategoryDTO save(CategoryDTO dto);
+
     void delete(CategoryDTO dto);
 }

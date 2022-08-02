@@ -54,7 +54,20 @@ public class CategoryService implements ICategoryService {
 
     @Override
     public CategoryDTO update(CategoryDTO dto) {
-        return null;
+        dto.setSlug(SlugUtil.toSlug(dto.getName()));
+        CategoryEntity entity = new CategoryEntity();
+        entity = categoryConverter.toEntity(dto);
+        entity = categoryRepository.save(entity);
+        return categoryConverter.toDTO(entity);
+    }
+
+    @Override
+    public CategoryDTO save(CategoryDTO dto) {
+        dto.setSlug(SlugUtil.toSlug(dto.getName()));
+        CategoryEntity entity = new CategoryEntity();
+        entity = categoryConverter.toEntity(dto);
+        entity = categoryRepository.save(entity);
+        return categoryConverter.toDTO(entity);
     }
 
     @Override

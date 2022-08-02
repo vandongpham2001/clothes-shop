@@ -40,4 +40,9 @@ public class CategoryController {
     public CategoryDTO create(@RequestBody CategoryDTO dto) {
         return categoryService.create(dto);
     }
+
+    @PutMapping
+    public CategoryDTO update(@RequestBody CategoryDTO dto){
+        return categoryService.update(dto);
+    }
 }
