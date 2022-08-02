@@ -1,11 +1,14 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class SizeDTO extends AbstractDTO<SizeDTO> {
     String size;
+    @JsonIgnore
     private List<ProductColorSizeDTO> products = new ArrayList<>();
 
     public String getSize() {

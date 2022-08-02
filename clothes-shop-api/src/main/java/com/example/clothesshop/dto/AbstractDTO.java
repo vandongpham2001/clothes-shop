@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class AbstractDTO<T> {
-    private UUID id;
+    private Long id;
 
     private String createdBy;
 
@@ -22,11 +22,11 @@ public class AbstractDTO<T> {
 
     private Integer totalPage;
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

@@ -1,16 +1,20 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class CategoryDTO extends AbstractDTO<CategoryDTO>{
     private String name;
+    private String text;
     private String description;
     private String image;
     private String slug;
     private Integer status;
-    private UUID parent_id;
+    private Long parent_id;
+    @JsonIgnore
     private List<ProductDTO> products = new ArrayList<>();
 
     public String getName() {
@@ -19,6 +23,14 @@ public class CategoryDTO extends AbstractDTO<CategoryDTO>{
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
     }
 
     public String getDescription() {
@@ -53,11 +65,11 @@ public class CategoryDTO extends AbstractDTO<CategoryDTO>{
         this.status = status;
     }
 
-    public UUID getParent_id() {
+    public Long getParent_id() {
         return parent_id;
     }
 
-    public void setParent_id(UUID parent_id) {
+    public void setParent_id(Long parent_id) {
         this.parent_id = parent_id;
     }
 

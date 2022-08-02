@@ -1,5 +1,7 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +16,9 @@ public class ProductDTO extends AbstractDTO<ProductDTO>{
     private String image;
 
     private CategoryDTO category;
-
+    @JsonIgnore
     private List<CommentDTO> comments = new ArrayList<>();
-
+    @JsonIgnore
     private List<ProductColorDTO> product_color = new ArrayList<>();
 
     private List<CollectionDTO> collections = new ArrayList<>();

@@ -1,5 +1,8 @@
 package com.example.clothesshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -9,6 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Colors")
+@Data
 public class ColorEntity extends BaseEntity {
     private String color;
     @OneToMany(
@@ -16,21 +20,6 @@ public class ColorEntity extends BaseEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private List<ProductColorEntity> product_color = new ArrayList<>();
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
-    public List<ProductColorEntity> getProduct_color() {
-        return product_color;
-    }
-
-    public void setProduct_color(List<ProductColorEntity> product_color) {
-        this.product_color = product_color;
-    }
 }

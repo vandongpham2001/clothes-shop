@@ -15,7 +15,7 @@ public class SlugUtil {
     }
 
     public static String toSlug(String input) {
-        input = deAccent(input);
+        input = VNCharacterUtil.removeAccent(input);
         String nowhitespace = WHITESPACE.matcher(input).replaceAll("-");
         String normalized = Normalizer.normalize(nowhitespace, Normalizer.Form.NFD);
         String slug = NONLATIN.matcher(normalized).replaceAll("");

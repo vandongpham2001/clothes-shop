@@ -1,5 +1,7 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ public class ProductColorDTO extends AbstractDTO<ProductColorDTO> {
     private String thumbnail;
     private ProductDTO product;
     private ColorDTO color;
+    @JsonIgnore
     private List<ProductColorImageDTO> product_color_image = new ArrayList<>();
 
     public Integer getStatus() {

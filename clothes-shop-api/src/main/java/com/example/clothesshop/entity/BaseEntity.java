@@ -1,5 +1,6 @@
 package com.example.clothesshop.entity;
 
+import lombok.Data;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -8,14 +9,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.UUID;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class) // annotation @CreatedDate, @CreatedBy, ...
+@Data
 public abstract class BaseEntity {
     @Id
-    @GeneratedValue()
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue()
+    private Long id;
 
     @CreatedDate
     private Date createdDate;
@@ -29,39 +31,4 @@ public abstract class BaseEntity {
     @LastModifiedBy
     private String modifiedBy;
 
-    public UUID getId() {
-        return id;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(String modifiedBy) {
-        this.modifiedBy = modifiedBy;
-    }
 }
