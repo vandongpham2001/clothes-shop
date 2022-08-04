@@ -42,10 +42,6 @@ public class UserEntity extends BaseEntity{
     private List<NewEntity> news = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "users")
     private List<RoleEntity> roles = new ArrayList<>();
 }

@@ -8,7 +8,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -37,12 +39,17 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO create(@RequestBody CategoryDTO dto) {
-        return categoryService.create(dto);
+    public CategoryDTO create(@ModelAttribute CategoryDTO dto) throws IOException {
+        return categoryService.save(dto);
     }
 
     @PutMapping
-    public CategoryDTO update(@RequestBody CategoryDTO dto){
-        return categoryService.update(dto);
+    public CategoryDTO update(@ModelAttribute CategoryDTO dto) throws IOException {
+        return categoryService.save(dto);
+    }
+
+    @DeleteMapping
+    public void delete(@RequestBody long[] ids){
+        categoryService.delete(ids);
     }
 }

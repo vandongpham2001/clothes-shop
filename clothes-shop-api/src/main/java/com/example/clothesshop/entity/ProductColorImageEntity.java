@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Table(name = "ProductColorImage")
 @Data
 public class ProductColorImageEntity extends BaseEntity {
-    private String name;
     private String path;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_color_id")

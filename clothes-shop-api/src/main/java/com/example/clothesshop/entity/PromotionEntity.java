@@ -20,10 +20,6 @@ public class PromotionEntity extends BaseEntity {
     private String mobile_banner;
     private String pc_banner;
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "promotions")
     private List<ProductEntity> products = new ArrayList<>();
 }

@@ -4,21 +4,16 @@ import com.example.clothesshop.dto.CategoryDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface ICategoryService {
-    //    @Query("SELECT c FROM CategoryEntity c")
-//    Page<CategoryDTO> findAll(Pageable pageable);
 
     List<CategoryDTO> findAll(Pageable pageable);
 
     List<CategoryDTO> findAll(Sort sort);
 
-    CategoryDTO create(CategoryDTO dto);
+    CategoryDTO save(CategoryDTO dto) throws IOException;
 
-    CategoryDTO update(CategoryDTO dto);
-
-    CategoryDTO save(CategoryDTO dto);
-
-    void delete(CategoryDTO dto);
+    void delete(long[] ids);
 }

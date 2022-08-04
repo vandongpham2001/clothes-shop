@@ -1,19 +1,25 @@
 package com.example.clothesshop.service.impl;
 
+import com.cloudinary.Cloudinary;
 import com.example.clothesshop.converter.CategoryConverter;
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
 import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.service.ICategoryService;
 import com.example.clothesshop.util.SlugUtil;
+import com.example.clothesshop.util.UploadUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService implements ICategoryService {
@@ -21,6 +27,10 @@ public class CategoryService implements ICategoryService {
     private CategoryRepository categoryRepository;
     @Autowired
     private CategoryConverter categoryConverter;
+    @Autowired
+    Cloudinary cloudinary;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<CategoryDTO> findAll(Pageable pageable) {
@@ -44,34 +54,41 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public CategoryDTO create(CategoryDTO dto) {
-        dto.setSlug(SlugUtil.toSlug(dto.getName()));
+    @Transactional
+    public CategoryDTO save(CategoryDTO dto) throws IOException {
         CategoryEntity entity = new CategoryEntity();
-        entity = categoryConverter.toEntity(dto);
-        entity = categoryRepository.save(entity);
-        return categoryConverter.toDTO(entity);
+        if (dto.getName() != null) {
+            dto.setSlug(SlugUtil.toSlug(dto.getName()));
+        }
+        if (dto.getFile() != null) {
+            String img = null;
+            img = UploadUtil.uploadCloudinary(cloudinary, dto.getFile());
+            dto.setImage(img);
+        }
+        if (dto.getId() != null) {
+            Optional<CategoryEntity> entity1 = categoryRepository.findById(dto.getId());
+//            CategoryDTO old_dto = categoryConverter.toDTO(old_entity.get());
+//            dto.setCreatedDate(old_dto.getCreatedDate());
+//            dto.setCreatedBy(old_dto.getCreatedBy());
+//            entity = categoryConverter.toEntity(dto, old_entity.get());
+            entity = entity1.get();
+            this.modelMapper.map(dto, entity);
+        } else {
+            entity = categoryConverter.toEntity(dto);
+        }
+//        entity = categoryConverter.toEntity(dto);
+        return categoryConverter.toDTO(categoryRepository.save(entity));
+//        return categoryConverter.toDTO(entity);
     }
 
     @Override
-    public CategoryDTO update(CategoryDTO dto) {
-        dto.setSlug(SlugUtil.toSlug(dto.getName()));
-        CategoryEntity entity = new CategoryEntity();
-        entity = categoryConverter.toEntity(dto);
-        entity = categoryRepository.save(entity);
-        return categoryConverter.toDTO(entity);
-    }
-
-    @Override
-    public CategoryDTO save(CategoryDTO dto) {
-        dto.setSlug(SlugUtil.toSlug(dto.getName()));
-        CategoryEntity entity = new CategoryEntity();
-        entity = categoryConverter.toEntity(dto);
-        entity = categoryRepository.save(entity);
-        return categoryConverter.toDTO(entity);
-    }
-
-    @Override
-    public void delete(CategoryDTO dto) {
-
+    @Transactional
+    public void delete(long[] ids) {
+        for (long id : ids) {
+            boolean exists = categoryRepository.existsById(id);
+            if (exists) {
+                categoryRepository.deleteById(id);
+            }
+        }
     }
 }

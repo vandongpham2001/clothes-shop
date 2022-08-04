@@ -15,10 +15,6 @@ public class CollectionEntity extends BaseEntity{
     private String mobile_banner;
     private String pc_banner;
     @ManyToMany(fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            },
             mappedBy = "collections")
     private List<ProductEntity> products = new ArrayList<>();
 }

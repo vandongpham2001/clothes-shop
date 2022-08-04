@@ -1,5 +1,7 @@
 package com.example.clothesshop.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,8 @@ public class AbstractDTO<T> {
     private Date modifiedDate;
 
     private List<T> listResult = new ArrayList<>();
+
+    private MultipartFile file;
 
     private Integer page;
 
@@ -69,6 +73,15 @@ public class AbstractDTO<T> {
     public void setListResult(List<T> listResult) {
         this.listResult = listResult;
     }
+
+    public MultipartFile getFile() {
+        return file;
+    }
+
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
+
     public Integer getPage() {
         return page;
     }
