@@ -2,15 +2,10 @@ package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.ColorDTO;
 import com.example.clothesshop.entity.ColorEntity;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ColorConverter {
-
-    @Autowired
-    private ModelMapper modelMapper;
+public class ColorConverter extends AbstractConverter {
 
     public ColorDTO toDTO(ColorEntity entity){
         ColorDTO dto = modelMapper.map(entity, ColorDTO.class);

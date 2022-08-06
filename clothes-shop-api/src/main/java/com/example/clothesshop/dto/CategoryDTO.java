@@ -13,8 +13,8 @@ public class CategoryDTO extends AbstractDTO<CategoryDTO>{
     private String slug;
     private Integer status;
     private Long parent_id;
-    @JsonIgnore
-    private List<ProductDTO> products = new ArrayList<>();
+//    @JsonIgnore
+//    private List<ProductDTO> products = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -72,11 +72,11 @@ public class CategoryDTO extends AbstractDTO<CategoryDTO>{
         this.parent_id = parent_id;
     }
 
-    public List<ProductDTO> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<ProductDTO> products) {
-        this.products = products;
-    }
+//    public List<ProductDTO> getProducts() {
+//        return products;
+//    }
+//
+//    public void setProducts(List<ProductDTO> products) {
+//        this.products = products;
+//    }
 }

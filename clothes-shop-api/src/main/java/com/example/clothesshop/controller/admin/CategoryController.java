@@ -34,17 +34,17 @@ public class CategoryController {
         Sort sortable = null;
         Page<CategoryDTO> pageCategories;
         List<CategoryDTO> categories = new ArrayList<>();
-        if (sort.equals("asc")){
+        if (sort.equals("asc")) {
             sortable = Sort.by(Sort.Direction.ASC, "createdDate");
         }
         if (sort.equals("desc")) {
             sortable = Sort.by(Sort.Direction.DESC, "createdDate");
         }
         if (page != null && limit != null) {
-            pageable = PageRequest.of(page-1, limit, sortable);
+            pageable = PageRequest.of(page - 1, limit, sortable);
             pageCategories = categoryService.findAllPageable(status, pageable);
             categories = pageCategories.getContent();
-            response.put("currentPage", pageCategories.getNumber()+1);
+            response.put("currentPage", pageCategories.getNumber() + 1);
             response.put("totalItems", pageCategories.getTotalElements());
             response.put("totalPages", pageCategories.getTotalPages());
         } else {
@@ -65,7 +65,7 @@ public class CategoryController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids){
+    public void delete(@RequestBody long[] ids) {
         categoryService.delete(ids);
     }
 }

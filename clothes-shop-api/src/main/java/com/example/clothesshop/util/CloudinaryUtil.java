@@ -2,15 +2,16 @@ package com.example.clothesshop.util;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.example.clothesshop.constant.CloudinaryConstant;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;
 
-public class UploadUtil {
-    public static String uploadCloudinary(Cloudinary cloudinary, MultipartFile file) throws IOException {
+public class CloudinaryUtil {
+    public static String upload(Cloudinary cloudinary, MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
-        Map r = cloudinary.uploader().upload(bytes, ObjectUtils.asMap("resource_type", "auto"));
+        Map r = cloudinary.uploader().unsignedUpload(bytes, CloudinaryConstant.upload_preset,ObjectUtils.asMap("resource_type", "auto"));
         String img = (String) r.get("secure_url");
         return img;
 //        ApiResponse api = new Cloudinary().api().uploadPreset(String.valueOf(bytes), ObjectUtils.asMap(
@@ -28,9 +29,24 @@ public class UploadUtil {
 //        return img;
     }
 
-    public static String getNameImgFromUrlCloudinary(String url, String preset) {
+    public static String destroy(Cloudinary cloudinary, String file_name) throws IOException {
+        Map r = cloudinary.uploader().destroy(file_name,
+                ObjectUtils.emptyMap());
+        String result = (String) r.get("result");
+        return result;
+    }
+
+    public static String getNameImgFromUrlCloudinary(String url) {
+        String[] format_img = {".jpg", ".png"};
+        String preset = CloudinaryConstant.upload_preset;
         int start_pos = url.indexOf(preset);
         String img_name = url.substring(start_pos);
-        return img_name;
+        for (String item : format_img){
+            if (img_name.contains(item)){
+                String new_img_name = img_name.replace(item, "");
+                return new_img_name;
+            }
+        }
+        return null;
     }
 }

@@ -15,7 +15,7 @@ public class AbstractDTO<T> {
 
     private Date modifiedDate;
 
-    private MultipartFile file;
+    private MultipartFile[] file;
 
 //    private List<T> listResult = new ArrayList<>();
 //
@@ -63,13 +63,21 @@ public class AbstractDTO<T> {
         this.modifiedDate = modifiedDate;
     }
 
-    public MultipartFile getFile() {
+    public MultipartFile[] getFile() {
         return file;
     }
 
-    public void setFile(MultipartFile file) {
+    public void setFile(MultipartFile[] file) {
         this.file = file;
     }
+
+    //    public MultipartFile getFile() {
+//        return file;
+//    }
+//
+//    public void setFile(MultipartFile file) {
+//        this.file = file;
+//    }
 
 //    public List<T> getListResult() {
 //        return listResult;

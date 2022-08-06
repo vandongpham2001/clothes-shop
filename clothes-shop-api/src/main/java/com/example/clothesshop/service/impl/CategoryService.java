@@ -6,9 +6,9 @@ import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
 import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.service.ICategoryService;
+import com.example.clothesshop.util.CloudinaryUtil;
 import com.example.clothesshop.util.ObjectMapperUtil;
 import com.example.clothesshop.util.SlugUtil;
-import com.example.clothesshop.util.UploadUtil;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,10 +39,6 @@ public class CategoryService implements ICategoryService {
         } else {
             entities = categoryRepository.findAll(pageable);
         }
-//        for (CategoryEntity item : entities) {
-//            CategoryDTO dto = categoryConverter.toDTO(item);
-//            results.add(dto);
-//        }
         results = categoryConverter.mapEntityPageIntoDtoPage(entities, CategoryDTO.class);
         return results;
     }
@@ -55,10 +51,6 @@ public class CategoryService implements ICategoryService {
         } else {
             entities = categoryRepository.findAll(sort);
         }
-//        for (CategoryEntity item : entities) {
-//            CategoryDTO dto = categoryConverter.toDTO(item);
-//            results.add(dto);
-//        }
 //        Iterator<CategoryEntity> iterator = entities.iterator();
         results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CategoryDTO.class);
         return results;
@@ -72,13 +64,21 @@ public class CategoryService implements ICategoryService {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
-            String img = UploadUtil.uploadCloudinary(cloudinary, dto.getFile());
+            String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
             dto.setImage(img);
+//            for (MultipartFile file : dto.getFile()){
+//                String img = CloudinaryUtil.upload(cloudinary, file);
+//            }
         }
         if (dto.getId() != null) {
             CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
+            String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+            System.out.println(file_name);
+            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+            System.out.println(destroy);
             entity = categoryConverter.toEntity(dto, old_entity);
-        } else {
+        }
+        else {
             entity = categoryConverter.toEntity(dto);
         }
         return categoryConverter.toDTO(categoryRepository.save(entity));
