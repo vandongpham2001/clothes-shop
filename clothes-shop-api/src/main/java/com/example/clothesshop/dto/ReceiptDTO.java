@@ -1,10 +1,13 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ReceiptDTO extends AbstractDTO<ReceiptDTO> {
     private SupplierDTO supplier;
+    @JsonIgnore
     private List<ReceiptDetailDTO> receipt_detail = new ArrayList<>();
 
     public SupplierDTO getSupplier() {

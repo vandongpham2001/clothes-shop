@@ -1,5 +1,6 @@
 package com.example.clothesshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,27 +19,31 @@ public class UserEntity extends BaseEntity{
     private String address;
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
+    @JsonIgnore
     private List<CommentEntity> comments = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
+    @JsonIgnore
     private List<CartEntity> carts = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
+    @JsonIgnore
     private List<OrderEntity> orders = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
+    @JsonIgnore
     private List<NewEntity> news = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY,

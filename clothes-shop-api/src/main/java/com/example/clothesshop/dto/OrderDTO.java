@@ -1,5 +1,7 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +12,7 @@ public class OrderDTO extends AbstractDTO<OrderDTO> {
     private Date payment_time;
     private Integer payment_method;
     private UserDTO user;
+    @JsonIgnore
     private List<OrderDetailDTO> order_detail = new ArrayList<>();
 
     public Integer getStatus() {

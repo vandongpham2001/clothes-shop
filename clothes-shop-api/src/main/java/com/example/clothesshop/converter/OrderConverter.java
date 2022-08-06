@@ -23,7 +23,7 @@ public class OrderConverter {
     }
 
     public OrderEntity toEntity(OrderDTO dto, OrderEntity entity){
-        entity = modelMapper.map(dto, OrderEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

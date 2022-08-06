@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.CategoryDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
@@ -9,9 +10,9 @@ import java.util.List;
 
 public interface ICategoryService {
 
-    List<CategoryDTO> findAll(Pageable pageable);
+    Page<CategoryDTO> findAllPageable(Integer status, Pageable pageable);
 
-    List<CategoryDTO> findAll(Sort sort);
+    List<CategoryDTO> findAll(Integer status, Sort sort);
 
     CategoryDTO save(CategoryDTO dto) throws IOException;
 

@@ -23,7 +23,7 @@ public class ProductConverter {
     }
 
     public ProductEntity toEntity(ProductDTO dto, ProductEntity entity){
-        entity = modelMapper.map(dto, ProductEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

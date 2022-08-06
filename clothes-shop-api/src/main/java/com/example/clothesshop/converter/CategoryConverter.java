@@ -2,9 +2,9 @@ package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
-import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,13 +24,11 @@ public class CategoryConverter {
     }
 
     public CategoryEntity toEntity(CategoryDTO dto, CategoryEntity entity){
-        entity = modelMapper.map(dto, CategoryEntity.class);
-//        entity.setName(dto.getName());
-//        entity.setDescription(dto.getDescription());
-//        entity.setImage(dto.getImage());
-//        entity.setSlug(dto.getSlug());
-//        entity.setStatus(dto.getStatus());
-//        entity.setParent_id(dto.getParent_id());
+        modelMapper.map(dto, entity);
         return entity;
+    }
+
+    public <D, T> Page<D> mapEntityPageIntoDtoPage(Page<T> entities, Class<D> dtoClass) {
+        return entities.map(objectEntity -> modelMapper.map(objectEntity, dtoClass));
     }
 }

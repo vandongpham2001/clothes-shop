@@ -2,10 +2,7 @@ package com.example.clothesshop.dto;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
 
 public class AbstractDTO<T> {
     private Long id;
@@ -18,13 +15,13 @@ public class AbstractDTO<T> {
 
     private Date modifiedDate;
 
-    private List<T> listResult = new ArrayList<>();
-
     private MultipartFile file;
 
-    private Integer page;
-
-    private Integer totalPage;
+//    private List<T> listResult = new ArrayList<>();
+//
+//    private Integer page;
+//
+//    private Integer totalPage;
 
     public Long getId() {
         return id;
@@ -66,14 +63,6 @@ public class AbstractDTO<T> {
         this.modifiedDate = modifiedDate;
     }
 
-    public List<T> getListResult() {
-        return listResult;
-    }
-
-    public void setListResult(List<T> listResult) {
-        this.listResult = listResult;
-    }
-
     public MultipartFile getFile() {
         return file;
     }
@@ -82,19 +71,27 @@ public class AbstractDTO<T> {
         this.file = file;
     }
 
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public Integer getTotalPage() {
-        return totalPage;
-    }
-
-    public void setTotalPage(Integer totalPage) {
-        this.totalPage = totalPage;
-    }
+//    public List<T> getListResult() {
+//        return listResult;
+//    }
+//
+//    public void setListResult(List<T> listResult) {
+//        this.listResult = listResult;
+//    }
+//
+//    public Integer getPage() {
+//        return page;
+//    }
+//
+//    public void setPage(Integer page) {
+//        this.page = page;
+//    }
+//
+//    public Integer getTotalPage() {
+//        return totalPage;
+//    }
+//
+//    public void setTotalPage(Integer totalPage) {
+//        this.totalPage = totalPage;
+//    }
 }

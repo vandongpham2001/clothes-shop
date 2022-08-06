@@ -23,7 +23,7 @@ public class PromotionConverter {
     }
 
     public PromotionEntity toEntity(PromotionDTO dto, PromotionEntity entity){
-        entity = modelMapper.map(dto, PromotionEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

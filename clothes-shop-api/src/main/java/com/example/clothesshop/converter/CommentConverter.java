@@ -23,7 +23,7 @@ public class CommentConverter {
     }
 
     public CommentEntity toEntity(CommentDTO dto, CommentEntity entity){
-        entity = modelMapper.map(dto, CommentEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

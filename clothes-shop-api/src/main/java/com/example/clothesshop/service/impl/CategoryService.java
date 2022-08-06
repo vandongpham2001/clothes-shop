@@ -6,9 +6,10 @@ import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
 import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.service.ICategoryService;
+import com.example.clothesshop.util.ObjectMapperUtil;
 import com.example.clothesshop.util.SlugUtil;
 import com.example.clothesshop.util.UploadUtil;
-import org.modelmapper.ModelMapper;
+import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService implements ICategoryService {
@@ -29,27 +29,38 @@ public class CategoryService implements ICategoryService {
     private CategoryConverter categoryConverter;
     @Autowired
     Cloudinary cloudinary;
-    @Autowired
-    private ModelMapper modelMapper;
 
     @Override
-    public List<CategoryDTO> findAll(Pageable pageable) {
-        List<CategoryDTO> results = new ArrayList<>();
-        Page<CategoryEntity> entities = categoryRepository.findAll(pageable);
-        for (CategoryEntity item : entities) {
-            CategoryDTO dto = categoryConverter.toDTO(item);
-            results.add(dto);
+    public Page<CategoryDTO> findAllPageable(Integer status, Pageable pageable) {
+        Page<CategoryDTO> results;
+        Page<CategoryEntity> entities;
+        if (status!=null) {
+            entities = categoryRepository.findByStatus(status, pageable);
+        } else {
+            entities = categoryRepository.findAll(pageable);
         }
+//        for (CategoryEntity item : entities) {
+//            CategoryDTO dto = categoryConverter.toDTO(item);
+//            results.add(dto);
+//        }
+        results = categoryConverter.mapEntityPageIntoDtoPage(entities, CategoryDTO.class);
         return results;
     }
 
-    public List<CategoryDTO> findAll(Sort sort) {
+    public List<CategoryDTO> findAll(Integer status, Sort sort) {
         List<CategoryDTO> results = new ArrayList<>();
-        Iterable<CategoryEntity> entities = categoryRepository.findAll(sort);
-        for (CategoryEntity item : entities) {
-            CategoryDTO dto = categoryConverter.toDTO(item);
-            results.add(dto);
+        Iterable<CategoryEntity> entities = new ArrayList<>();
+        if (status!=null) {
+            entities = categoryRepository.findByStatus(status, sort);
+        } else {
+            entities = categoryRepository.findAll(sort);
         }
+//        for (CategoryEntity item : entities) {
+//            CategoryDTO dto = categoryConverter.toDTO(item);
+//            results.add(dto);
+//        }
+//        Iterator<CategoryEntity> iterator = entities.iterator();
+        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CategoryDTO.class);
         return results;
     }
 
@@ -61,24 +72,16 @@ public class CategoryService implements ICategoryService {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
-            String img = null;
-            img = UploadUtil.uploadCloudinary(cloudinary, dto.getFile());
+            String img = UploadUtil.uploadCloudinary(cloudinary, dto.getFile());
             dto.setImage(img);
         }
         if (dto.getId() != null) {
-            Optional<CategoryEntity> entity1 = categoryRepository.findById(dto.getId());
-//            CategoryDTO old_dto = categoryConverter.toDTO(old_entity.get());
-//            dto.setCreatedDate(old_dto.getCreatedDate());
-//            dto.setCreatedBy(old_dto.getCreatedBy());
-//            entity = categoryConverter.toEntity(dto, old_entity.get());
-            entity = entity1.get();
-            this.modelMapper.map(dto, entity);
+            CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
+            entity = categoryConverter.toEntity(dto, old_entity);
         } else {
             entity = categoryConverter.toEntity(dto);
         }
-//        entity = categoryConverter.toEntity(dto);
         return categoryConverter.toDTO(categoryRepository.save(entity));
-//        return categoryConverter.toDTO(entity);
     }
 
     @Override

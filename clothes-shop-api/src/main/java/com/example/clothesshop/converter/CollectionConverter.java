@@ -23,7 +23,7 @@ public class CollectionConverter {
     }
 
     public CollectionEntity toEntity(CollectionDTO dto, CollectionEntity entity){
-        entity = modelMapper.map(dto, CollectionEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

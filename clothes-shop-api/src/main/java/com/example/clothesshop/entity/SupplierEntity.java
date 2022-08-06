@@ -1,5 +1,6 @@
 package com.example.clothesshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -18,8 +19,9 @@ public class SupplierEntity extends BaseEntity {
     private String phone_number;
     @OneToMany(
             mappedBy = "supplier",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
+    @JsonIgnore
     private List<ReceiptEntity> receipts = new ArrayList<>();
 }

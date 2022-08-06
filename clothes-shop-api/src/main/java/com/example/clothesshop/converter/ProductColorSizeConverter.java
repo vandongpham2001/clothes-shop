@@ -23,7 +23,7 @@ public class ProductColorSizeConverter {
     }
 
     public ProductColorSizeEntity toEntity(ProductColorSizeDTO dto, ProductColorSizeEntity entity){
-        entity = modelMapper.map(dto, ProductColorSizeEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

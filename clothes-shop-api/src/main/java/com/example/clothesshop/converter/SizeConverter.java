@@ -23,7 +23,7 @@ public class SizeConverter {
     }
 
     public SizeEntity toEntity(SizeDTO dto, SizeEntity entity){
-        entity = modelMapper.map(dto, SizeEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

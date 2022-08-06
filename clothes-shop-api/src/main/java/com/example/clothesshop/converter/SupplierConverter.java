@@ -23,7 +23,7 @@ public class SupplierConverter {
     }
 
     public SupplierEntity toEntity(SupplierDTO dto, SupplierEntity entity){
-        entity = modelMapper.map(dto, SupplierEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

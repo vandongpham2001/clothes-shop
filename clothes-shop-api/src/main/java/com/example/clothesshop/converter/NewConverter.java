@@ -23,7 +23,7 @@ public class NewConverter {
     }
 
     public NewEntity toEntity(NewDTO dto, NewEntity entity){
-        entity = modelMapper.map(dto, NewEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

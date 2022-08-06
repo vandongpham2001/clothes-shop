@@ -21,8 +21,8 @@ public class CategoryEntity extends BaseEntity {
     private Long parent_id;
     @OneToMany(
             mappedBy = "category",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
     @JsonIgnore
     private List<ProductEntity> products = new ArrayList<>();

@@ -1,5 +1,7 @@
 package com.example.clothesshop.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class SupplierDTO extends AbstractDTO<SupplierDTO> {
     private String name;
     private String address;
     private String phone_number;
+    @JsonIgnore
     private List<ReceiptDTO> receipts = new ArrayList<>();
 
     public String getName() {

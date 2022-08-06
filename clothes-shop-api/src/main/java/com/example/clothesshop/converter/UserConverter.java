@@ -23,7 +23,7 @@ public class UserConverter {
     }
 
     public UserEntity toEntity(UserDTO dto, UserEntity entity){
-        entity = modelMapper.map(dto, UserEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

@@ -23,7 +23,7 @@ public class ReceiptDetailConverter {
     }
 
     public ReceiptDetailEntity toEntity(ReceiptDetailDTO dto, ReceiptDetailEntity entity){
-        entity = modelMapper.map(dto, ReceiptDetailEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

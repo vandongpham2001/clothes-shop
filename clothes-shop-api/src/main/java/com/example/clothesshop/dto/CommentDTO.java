@@ -1,11 +1,9 @@
 package com.example.clothesshop.dto;
 
-import java.util.UUID;
-
 public class CommentDTO extends AbstractDTO<CommentDTO>{
     private String content;
     private Float rating;
-    private UUID parent_id;
+    private Long parent_id;
     private UserDTO user;
     private ProductDTO product;
 
@@ -25,11 +23,11 @@ public class CommentDTO extends AbstractDTO<CommentDTO>{
         this.rating = rating;
     }
 
-    public UUID getParent_id() {
+    public Long getParent_id() {
         return parent_id;
     }
 
-    public void setParent_id(UUID parent_id) {
+    public void setParent_id(Long parent_id) {
         this.parent_id = parent_id;
     }
 

@@ -3,15 +3,19 @@ package com.example.clothesshop.controller.admin;
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.data.domain.Pageable;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/v1/admin/category")
@@ -21,21 +25,33 @@ public class CategoryController {
     ICategoryService categoryService;
 
     @GetMapping
-    public List<CategoryDTO> getAll(@RequestParam(value = "page", required = false) Integer page,
-                                    @RequestParam(value = "limit", required = false) Integer limit,
-                                    @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+    public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
+                                                      @RequestParam(value = "limit", required = false) Integer limit,
+                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+                                                      @RequestParam(value = "status", required = false) Integer status) {
+        Map<String, Object> response = new HashMap<>();
         Pageable pageable = null;
         Sort sortable = null;
-        if (sort.equals("asc")) {
-            sortable = Sort.by("createdBy").ascending();
-        } else {
-            sortable = Sort.by("createdBy").descending();
+        Page<CategoryDTO> pageCategories;
+        List<CategoryDTO> categories = new ArrayList<>();
+        if (sort.equals("asc")){
+            sortable = Sort.by(Sort.Direction.ASC, "createdDate");
+        }
+        if (sort.equals("desc")) {
+            sortable = Sort.by(Sort.Direction.DESC, "createdDate");
         }
         if (page != null && limit != null) {
             pageable = PageRequest.of(page-1, limit, sortable);
-            return categoryService.findAll(pageable);
+            pageCategories = categoryService.findAllPageable(status, pageable);
+            categories = pageCategories.getContent();
+            response.put("currentPage", pageCategories.getNumber()+1);
+            response.put("totalItems", pageCategories.getTotalElements());
+            response.put("totalPages", pageCategories.getTotalPages());
+        } else {
+            categories = categoryService.findAll(status, sortable);
         }
-        return categoryService.findAll(sortable);
+        response.put("categories", categories);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping

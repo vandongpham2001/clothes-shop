@@ -21,8 +21,8 @@ public class ProductColorEntity extends BaseEntity{
     private ColorEntity color;
     @OneToMany(
             mappedBy = "product_color",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
     @JsonIgnore
     private List<ProductColorImageEntity> product_color_image = new ArrayList<>();

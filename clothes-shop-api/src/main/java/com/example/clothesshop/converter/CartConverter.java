@@ -23,7 +23,7 @@ public class CartConverter {
     }
 
     public CartEntity toEntity(CartDTO dto, CartEntity entity){
-        entity = modelMapper.map(dto, CartEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

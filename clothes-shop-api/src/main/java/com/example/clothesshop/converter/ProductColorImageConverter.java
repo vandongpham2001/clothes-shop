@@ -23,7 +23,7 @@ public class ProductColorImageConverter {
     }
 
     public ProductColorImageEntity toEntity(ProductColorImageDTO dto, ProductColorImageEntity entity){
-        entity = modelMapper.map(dto, ProductColorImageEntity.class);
+        modelMapper.map(dto, entity);
         return entity;
     }
 }

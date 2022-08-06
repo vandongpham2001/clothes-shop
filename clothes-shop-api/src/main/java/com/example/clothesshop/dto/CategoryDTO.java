@@ -1,11 +1,9 @@
 package com.example.clothesshop.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class CategoryDTO extends AbstractDTO<CategoryDTO>{
     private String name;

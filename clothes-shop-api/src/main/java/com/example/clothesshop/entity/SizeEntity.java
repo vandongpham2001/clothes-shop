@@ -17,8 +17,8 @@ public class SizeEntity extends BaseEntity {
     String size;
     @OneToMany(
             mappedBy = "size",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
     )
     @JsonIgnore
     private List<ProductColorSizeEntity> products = new ArrayList<>();

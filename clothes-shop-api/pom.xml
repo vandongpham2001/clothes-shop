@@ -16,6 +16,14 @@
 	<properties>
 		<java.version>15</java.version>
 		<modelmapper.version>2.4.5</modelmapper.version>
+		<springdoc-openapi-ui.version>1.5.9</springdoc-openapi-ui.version>
+		<java-jwt.version>3.18.1</java-jwt.version>
+		<commons-fileupload.version>1.4</commons-fileupload.version>
+		<commons-io.version>2.6</commons-io.version>
+		<cloudinary-http44.version>1.29.0</cloudinary-http44.version>
+		<commons-collections4.version>4.1</commons-collections4.version>
+		<commons-lang3.version>3.12.0</commons-lang3.version>
+		<spring-data-commons.version>2.7.2</spring-data-commons.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -59,7 +67,7 @@
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.9</version>
+			<version>${springdoc-openapi-ui.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
@@ -70,26 +78,36 @@
 		<dependency>
 			<groupId>com.auth0</groupId>
 			<artifactId>java-jwt</artifactId>
-			<version>3.18.1</version>
+			<version>${java-jwt.version}</version>
 		</dependency>
 
 		<!-- Apache Commons Upload -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
-			<version>1.4</version>
+			<version>${commons-fileupload.version}</version>
 		</dependency>
 
 		<!-- Apache Commons Upload -->
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.6</version>
+			<version>${commons-io.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
-			<version>1.29.0</version>
+			<version>${cloudinary-http44.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>${commons-collections4.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commons-lang3.version}</version>
 		</dependency>
 	</dependencies>
 
