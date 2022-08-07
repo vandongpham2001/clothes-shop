@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping(path = "api/v1/admin/category")
+@RestController(value = "categoryApiOfAdmin")
+@RequestMapping(path = "api/admin/category")
 public class CategoryController {
 
     @Autowired

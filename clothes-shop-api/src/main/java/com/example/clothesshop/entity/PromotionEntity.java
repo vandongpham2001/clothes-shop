@@ -1,15 +1,21 @@
 package com.example.clothesshop.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "Promotions")
-@Data
+//@Data
+@Getter
+@Setter
 public class PromotionEntity extends BaseEntity {
     private String name;
     private Date start_date;

@@ -1,20 +1,31 @@
 package com.example.clothesshop.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Roles")
-@Data
+//@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class RoleEntity extends BaseEntity {
     private String name;
     private String role;
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "role_user",
-            joinColumns = {@JoinColumn(name = "role_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id")})
-    private List<UserEntity> users = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.LAZY,
+            mappedBy = "roles")
+    private Set<UserEntity> users = new HashSet<>();
+//    @ManyToMany(fetch = FetchType.LAZY)
+//    @JoinTable(name = "role_user",
+//            joinColumns = {@JoinColumn(name = "role_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "user_id")})
+//    private Set<UserEntity> users = new HashSet<>();
+//
+//    public void addUser(UserEntity user) {
+//        this.users.add(user);
+//    }
 }

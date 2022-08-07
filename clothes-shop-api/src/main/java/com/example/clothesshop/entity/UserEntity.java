@@ -1,15 +1,18 @@
 package com.example.clothesshop.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Users")
-@Data
+//@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity extends BaseEntity{
     private String name;
     private String username;
@@ -46,7 +49,20 @@ public class UserEntity extends BaseEntity{
     @JsonIgnore
     private List<NewEntity> news = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY,
-            mappedBy = "users")
-    private List<RoleEntity> roles = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<RoleEntity> roles = new HashSet<>();
+
+//    @ManyToMany(fetch = FetchType.EAGER,
+//            mappedBy = "users")
+//    private Set<RoleEntity> roles = new HashSet<>();
+
+    public void addRole(RoleEntity role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.clothesshop.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -8,7 +10,9 @@ import java.util.List;
 
 @Entity
 @Table(name = "Collections")
-@Data
+//@Data
+@Getter
+@Setter
 public class CollectionEntity extends BaseEntity{
     private String name;
     private Integer status;
