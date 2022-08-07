@@ -67,11 +67,7 @@ public class UserService implements IUserService, UserDetailsService {
         System.out.println(user);
         RoleEntity role = roleRepository.findByName(roleName);
         System.out.println(role);
-//        user.getRoles().add(role);
-//        System.out.println(user.getRoles().add(role));
         user.addRole(role);
-//        role.addUser(user);
-//        RoleEntity savedRole = roleRepository.save(role);
         UserEntity savedUser = userRepository.save(user);
         log.info("Adding role {} to user {}", role.getName(), user.getUsername());
         return userConverter.toDTO(savedUser);

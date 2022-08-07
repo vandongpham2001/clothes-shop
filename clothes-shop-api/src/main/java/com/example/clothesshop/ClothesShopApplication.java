@@ -36,21 +36,21 @@ public class ClothesShopApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	CommandLineRunner run(UserService userService, RoleService roleService){
-		return args -> {
-			roleService.save(new RoleDTO("ROLE_USER", "", new ArrayList<>()));
-			roleService.save(new RoleDTO("ROLE_ADMIN", "", new ArrayList<>()));
-
-			userService.save(new UserDTO("Dong", "dong","dong@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-			userService.save(new UserDTO("Anh", "anh","anh@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-			userService.save(new UserDTO("Tuan", "tuan","tuan@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-			userService.save(new UserDTO("Pham", "pham","pham@gmail.com","1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
-
-			userService.addRoleToUser("dong", SystemConstant.ADMIN_ROLE);
-			userService.addRoleToUser("anh", SystemConstant.ADMIN_ROLE);
-			userService.addRoleToUser("tuan", SystemConstant.ADMIN_ROLE);
-			userService.addRoleToUser("pham", SystemConstant.USER_ROLE);
-		};
-	}
+//	@Bean
+//	CommandLineRunner run(UserService userService, RoleService roleService){
+//		return args -> {
+//			roleService.save(new RoleDTO("ROLE_USER", "", new ArrayList<>()));
+//			roleService.save(new RoleDTO("ROLE_ADMIN", "", new ArrayList<>()));
+//
+//			userService.save(new UserDTO("Dong", "dong","dong@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Anh", "anh","anh@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Tuan", "tuan","tuan@gmail.com", "1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Pham", "pham","pham@gmail.com","1234", "0123456789", "Quang Nam", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//
+//			userService.addRoleToUser("dong", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("anh", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("tuan", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("pham", SystemConstant.USER_ROLE);
+//		};
+//	}
 }

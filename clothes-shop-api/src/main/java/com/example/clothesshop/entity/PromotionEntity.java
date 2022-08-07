@@ -28,4 +28,8 @@ public class PromotionEntity extends BaseEntity {
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "promotions")
     private List<ProductEntity> products = new ArrayList<>();
+    public void addProduct(ProductEntity product) {
+        this.products.add(product);
+        product.getPromotions().add(this);
+    }
 }

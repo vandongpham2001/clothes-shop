@@ -1,5 +1,6 @@
 package com.example.clothesshop.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ public class RoleEntity extends BaseEntity {
     private String role;
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "roles")
+    @JsonIgnore
     private Set<UserEntity> users = new HashSet<>();
 //    @ManyToMany(fetch = FetchType.LAZY)
 //    @JoinTable(name = "role_user",

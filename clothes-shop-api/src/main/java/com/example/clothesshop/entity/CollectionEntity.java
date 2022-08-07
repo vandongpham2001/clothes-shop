@@ -21,4 +21,8 @@ public class CollectionEntity extends BaseEntity{
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "collections")
     private List<ProductEntity> products = new ArrayList<>();
+    public void addProduct(ProductEntity product) {
+        this.products.add(product);
+        product.getCollections().add(this);
+    }
 }
