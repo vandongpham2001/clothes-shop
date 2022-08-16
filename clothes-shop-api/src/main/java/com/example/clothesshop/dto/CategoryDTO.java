@@ -11,6 +11,4 @@ public class CategoryDTO extends AbstractDTO<CategoryDTO> {
     private String slug;
     private Integer status;
     private Long parent_id;
-//    @JsonIgnore
-//    private List<ProductDTO> products = new ArrayList<>();
 }

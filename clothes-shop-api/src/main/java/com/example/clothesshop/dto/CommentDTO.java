@@ -7,7 +7,7 @@ public class CommentDTO extends AbstractDTO<CommentDTO>{
     private String content;
     private Float rating;
     private Long parent_id;
-    private UserDTO user;
-    private ProductDTO product;
+    private Long user_id;
+    private Long product_id;
 
 }

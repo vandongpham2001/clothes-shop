@@ -1,6 +1,5 @@
 package com.example.clothesshop.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ public class OrderDTO extends AbstractDTO<OrderDTO> {
     private Date time_order;
     private Date payment_time;
     private Integer payment_method;
-    private UserDTO user;
-    @JsonIgnore
+    private Long user_id;
     private List<OrderDetailDTO> order_detail = new ArrayList<>();
 }

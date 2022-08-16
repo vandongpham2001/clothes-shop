@@ -1,7 +1,5 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,19 +30,20 @@ public class ProductEntity extends BaseEntity{
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<CommentEntity> comments = new ArrayList<>();
     @OneToMany(
             mappedBy = "product",
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<ProductColorEntity> product_color = new ArrayList<>();
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "product_collection",
             joinColumns = { @JoinColumn(name = "product_id") },
             inverseJoinColumns = { @JoinColumn(name = "collection_id") })
+//    @JsonIgnore
     private List<CollectionEntity> collections = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)

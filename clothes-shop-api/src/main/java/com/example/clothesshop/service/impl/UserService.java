@@ -86,6 +86,11 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
+    public UserDTO getCurrentUserLogin() {
+        return null;
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByUsername(username);
         if (user == null){

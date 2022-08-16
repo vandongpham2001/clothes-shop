@@ -1,6 +1,7 @@
 package com.example.clothesshop.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.CategoryConverter;
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
@@ -18,10 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@Transactional
 public class CategoryService implements ICategoryService {
     @Autowired
     private CategoryRepository categoryRepository;
@@ -44,8 +46,8 @@ public class CategoryService implements ICategoryService {
     }
 
     public List<CategoryDTO> findAll(Integer status, Sort sort) {
-        List<CategoryDTO> results = new ArrayList<>();
-        Iterable<CategoryEntity> entities = new ArrayList<>();
+        List<CategoryDTO> results;
+        Iterable<CategoryEntity> entities;
         if (status!=null) {
             entities = categoryRepository.findByStatus(status, sort);
         } else {
@@ -57,9 +59,9 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public CategoryDTO save(CategoryDTO dto) throws IOException {
-        CategoryEntity entity = new CategoryEntity();
+        CategoryEntity entity;
         if (dto.getName() != null) {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
@@ -85,13 +87,33 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void delete(long[] ids) {
         for (long id : ids) {
-            boolean exists = categoryRepository.existsById(id);
-            if (exists) {
-                categoryRepository.deleteById(id);
+            CategoryEntity exists = categoryRepository.findById(id).get();
+            if (exists != null) {
+//                categoryRepository.deleteById(id);
+                exists.setStatus(SystemConstant.INACTIVE_STATUS);
+                categoryRepository.save(exists);
             }
         }
+    }
+
+    @Override
+    public List<CategoryDTO> findAllParentCategory() {
+        List<CategoryEntity> entities = categoryRepository.findParentCategory();
+        return ObjectMapperUtil.mapAll(entities, CategoryDTO.class);
+    }
+
+    @Override
+    public List<CategoryDTO> findByParentId(Long parent_id) {
+        List<CategoryEntity> entities = categoryRepository.findByParentId(parent_id);
+        return ObjectMapperUtil.mapAll(entities, CategoryDTO.class);
+    }
+
+    @Override
+    public CategoryDTO findById(Long id) {
+        Optional<CategoryEntity> entity = categoryRepository.findById(id);
+        return categoryConverter.toDTO(entity.get());
     }
 }

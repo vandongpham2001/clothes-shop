@@ -1,6 +1,5 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,6 +23,13 @@ public class ProductColorEntity extends BaseEntity{
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<ProductColorImageEntity> product_color_image = new ArrayList<>();
+    @OneToMany(
+            mappedBy = "product_color",
+            cascade = CascadeType.ALL
+//            orphanRemoval = true
+    )
+//    @JsonIgnore
+    private List<ProductColorSizeEntity> product_color_size = new ArrayList<>();
 }

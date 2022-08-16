@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public class OrderDetailDTO extends AbstractDTO<OrderDetailDTO> {
     private Integer quantity;
     private BigDecimal selling_price;
-    private OrderDTO order;
-    private ProductColorSizeDTO product_color_size;
+    private Long order_id;
+    private Long product_color_size_id;
 }

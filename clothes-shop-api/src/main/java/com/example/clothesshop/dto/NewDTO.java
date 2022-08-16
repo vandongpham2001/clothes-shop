@@ -8,5 +8,5 @@ public class NewDTO extends AbstractDTO<NewDTO>{
     private String content;
     private String thumbnail;
     private String slug;
-    private UserDTO user;
+    private Long user_id;
 }

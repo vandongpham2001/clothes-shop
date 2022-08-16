@@ -8,6 +8,6 @@ import java.math.BigDecimal;
 public class ReceiptDetailDTO extends AbstractDTO<ReceiptDetailDTO> {
     private Integer quantity;
     private BigDecimal price;
-    private ReceiptDTO receipt;
-    private ProductColorSizeDTO product_color_size;
+    private Long receipt_id;
+    private Long product_color_size_id;
 }

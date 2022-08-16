@@ -1,7 +1,7 @@
 package com.example.clothesshop.controller.admin;
 
-import com.example.clothesshop.dto.CategoryDTO;
-import com.example.clothesshop.service.ICategoryService;
+import com.example.clothesshop.dto.ProductDTO;
+import com.example.clothesshop.service.IProductService;
 import com.example.clothesshop.util.PagingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,12 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController(value = "categoryApiOfAdmin")
-@RequestMapping(path = "api/admin/category")
-public class CategoryController {
-
+@RestController(value = "apiProductOfAdmin")
+@RequestMapping(path = "api/admin/product")
+public class ProductController {
     @Autowired
-    ICategoryService categoryService;
+    IProductService productService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
@@ -32,41 +31,40 @@ public class CategoryController {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
-        Page<CategoryDTO> pageCategories;
-        List<CategoryDTO> categories;
-//        if (sort.equals("asc")) {
-//            sortable = Sort.by(Sort.Direction.ASC, "createdDate");
-//        }
-//        if (sort.equals("desc")) {
-//            sortable = Sort.by(Sort.Direction.DESC, "createdDate");
-//        }
+        Page<ProductDTO> pageProducts;
+        List<ProductDTO> products;
         sortable = PagingUtil.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageCategories = categoryService.findAllPageable(status, pageable);
-            categories = pageCategories.getContent();
-            response.put("currentPage", pageCategories.getNumber() + 1);
-            response.put("totalItems", pageCategories.getTotalElements());
-            response.put("totalPages", pageCategories.getTotalPages());
+            pageProducts = productService.findAllPageable(status, pageable);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
         } else {
-            categories = categoryService.findAll(status, sortable);
+            products = productService.findAll(status, sortable);
         }
-        response.put("categories", categories);
+        response.put("products", products);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public CategoryDTO create(@ModelAttribute CategoryDTO dto) throws IOException {
-        return categoryService.save(dto);
+    public ProductDTO create(@ModelAttribute ProductDTO dto) throws IOException {
+        return productService.save(dto);
     }
 
     @PutMapping
-    public CategoryDTO update(@ModelAttribute CategoryDTO dto) throws IOException {
-        return categoryService.save(dto);
+    public ProductDTO update(@ModelAttribute ProductDTO dto) throws IOException {
+        return productService.save(dto);
     }
 
     @DeleteMapping
     public void delete(@RequestBody long[] ids) {
-        categoryService.delete(ids);
+        productService.delete(ids);
+    }
+
+    @PostMapping("/detail")
+    public ProductDTO detail(@ModelAttribute ProductDTO dto) throws IOException {
+        return dto;
     }
 }

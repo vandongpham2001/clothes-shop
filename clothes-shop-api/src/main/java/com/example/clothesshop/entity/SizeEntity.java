@@ -1,6 +1,5 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -20,6 +19,6 @@ public class SizeEntity extends BaseEntity {
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<ProductColorSizeEntity> products = new ArrayList<>();
 }

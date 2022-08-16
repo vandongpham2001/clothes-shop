@@ -9,4 +9,5 @@ public interface IUserService {
     UserDTO addRoleToUser(String username, String roleName);
     UserDTO getUser(String username);
     List<UserDTO> getUsers();
+    UserDTO getCurrentUserLogin();
 }

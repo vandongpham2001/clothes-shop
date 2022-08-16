@@ -9,6 +9,7 @@ public class ProductConverter extends AbstractConverter {
 
     public ProductDTO toDTO(ProductEntity entity){
         ProductDTO dto = modelMapper.map(entity, ProductDTO.class);
+//        dto.setCategory_id(entity.getCategory().getId());
         return dto;
     }
 

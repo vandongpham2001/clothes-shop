@@ -20,8 +20,3 @@ collection_banner
 menu
 category
 category_detail
-
-
-upload preset id
-pagination
-delete img before update 

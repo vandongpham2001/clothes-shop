@@ -1,6 +1,6 @@
 package com.example.clothesshop.service;
 
-import com.example.clothesshop.dto.ProductDTO;
+import com.example.clothesshop.dto.SizeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -8,12 +8,12 @@ import org.springframework.data.domain.Sort;
 import java.io.IOException;
 import java.util.List;
 
-public interface IProductService {
-    Page<ProductDTO> findAllPageable(Integer status, Pageable pageable);
+public interface ISizeService {
+    Page<SizeDTO> findAllPageable(Pageable pageable);
 
-    List<ProductDTO> findAll(Integer status, Sort sort);
+    List<SizeDTO> findAll(Sort sort);
 
-    ProductDTO save(ProductDTO dto) throws IOException;
+    SizeDTO save(SizeDTO dto) throws IOException;
 
     void delete(long[] ids);
 }

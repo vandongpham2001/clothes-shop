@@ -1,6 +1,5 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.CascadeType;
@@ -22,6 +21,6 @@ public class SupplierEntity extends BaseEntity {
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<ReceiptEntity> receipts = new ArrayList<>();
 }

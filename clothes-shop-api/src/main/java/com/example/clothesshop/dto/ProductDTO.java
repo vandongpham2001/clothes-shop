@@ -1,6 +1,6 @@
 package com.example.clothesshop.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -16,14 +16,16 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
     private Integer status;
     private float avg_rating;
     private String image;
-
+    private Long category_id;
+    @JsonManagedReference
     private CategoryDTO category;
-    @JsonIgnore
-    private List<CommentDTO> comments = new ArrayList<>();
-    @JsonIgnore
+//    @JsonIgnore
+//    @JsonBackReference
     private List<ProductColorDTO> product_color = new ArrayList<>();
-
-    private List<CollectionDTO> collections = new ArrayList<>();
-
-    private List<PromotionDTO> promotions = new ArrayList<>();
+//    @JsonIgnore
+//    private List<CommentDTO> comments = new ArrayList<>();
+//    @JsonIgnore
+//    private List<CollectionDTO> collections = new ArrayList<>();
+//    @JsonIgnore
+//    private List<PromotionDTO> promotions = new ArrayList<>();
 }

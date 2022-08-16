@@ -7,6 +7,7 @@ import com.example.clothesshop.service.impl.RoleService;
 import com.example.clothesshop.service.impl.UserService;
 import org.modelmapper.Conditions;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 
+//exclude = {SecurityAutoConfiguration.class}
 @SpringBootApplication()
 public class ClothesShopApplication {
 
@@ -27,6 +29,7 @@ public class ClothesShopApplication {
 	@Bean
 	public ModelMapper modelMapper(){
 		ModelMapper modelMapper = new ModelMapper();
+//		modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.LOOSE);
 		modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
 		return modelMapper;
 	}

@@ -6,6 +6,6 @@ import lombok.Data;
 public class CartDTO extends AbstractDTO<CartDTO> {
     private Integer quantity;
     private Boolean checked;
-    private UserDTO user;
-    private ProductColorSizeDTO product_color_size;
+    private Long user_id;
+    private Long product_color_size_id;
 }

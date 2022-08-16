@@ -17,4 +17,10 @@ public interface ICategoryService {
     CategoryDTO save(CategoryDTO dto) throws IOException;
 
     void delete(long[] ids);
+
+    List<CategoryDTO> findAllParentCategory();
+
+    List<CategoryDTO> findByParentId(Long parent_id);
+
+    CategoryDTO findById(Long id);
 }

@@ -1,10 +1,15 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Users")
@@ -25,28 +30,28 @@ public class UserEntity extends BaseEntity{
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<CommentEntity> comments = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<CartEntity> carts = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<OrderEntity> orders = new ArrayList<>();
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
+//    @JsonIgnore
     private List<NewEntity> news = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

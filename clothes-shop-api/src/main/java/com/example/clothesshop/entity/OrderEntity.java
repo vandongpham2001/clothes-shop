@@ -1,6 +1,5 @@
 package com.example.clothesshop.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -24,6 +23,5 @@ public class OrderEntity extends BaseEntity{
             cascade = CascadeType.ALL
 //            orphanRemoval = true
     )
-    @JsonIgnore
     private List<OrderDetailEntity> order_detail = new ArrayList<>();
 }
