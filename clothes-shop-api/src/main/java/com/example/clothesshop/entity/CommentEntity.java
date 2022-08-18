@@ -12,6 +12,7 @@ public class CommentEntity extends BaseEntity{
     private String content;
     private Float rating;
     private Long parent_id;
+    private Integer status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

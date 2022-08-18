@@ -18,6 +18,7 @@ public class UserDTO extends AbstractDTO<UserDTO> {
     private String password;
     private String phone_number;
     private String address;
+    private Integer status;
     private List<CommentDTO> comments = new ArrayList<>();
     private List<CartDTO> carts = new ArrayList<>();
     private List<OrderDTO> orders = new ArrayList<>();

@@ -6,6 +6,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 public class ProductDTO extends AbstractDTO<ProductDTO> {
@@ -21,7 +22,7 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
     private CategoryDTO category;
 //    @JsonIgnore
 //    @JsonBackReference
-    private List<ProductColorDTO> product_color = new ArrayList<>();
+    private List<ProductColorDTO> product_color;
 //    @JsonIgnore
 //    private List<CommentDTO> comments = new ArrayList<>();
 //    @JsonIgnore

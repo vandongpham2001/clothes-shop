@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class ProductColorSizeDTO extends AbstractDTO<ProductColorSizeDTO> {
     private Integer quantity;
-    private Integer status;
     private Long product_color_id;
     private Long size_id;
 }

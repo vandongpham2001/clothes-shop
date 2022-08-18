@@ -63,8 +63,8 @@ public class ProductController {
         productService.delete(ids);
     }
 
-    @PostMapping("/detail")
-    public ProductDTO detail(@ModelAttribute ProductDTO dto) throws IOException {
+    @PostMapping(value = "/detail")
+    public ProductDTO detail(@ModelAttribute("product") ProductDTO dto) throws IOException {
         return dto;
     }
 }

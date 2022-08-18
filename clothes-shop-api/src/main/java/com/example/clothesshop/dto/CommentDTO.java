@@ -9,5 +9,6 @@ public class CommentDTO extends AbstractDTO<CommentDTO>{
     private Long parent_id;
     private Long user_id;
     private Long product_id;
+    private Integer status;
 
 }

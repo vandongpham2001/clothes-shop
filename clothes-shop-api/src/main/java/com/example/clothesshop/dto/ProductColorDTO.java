@@ -7,7 +7,6 @@ import java.util.List;
 
 @Data
 public class ProductColorDTO extends AbstractDTO<ProductColorDTO> {
-    private Integer status;
     private String thumbnail;
     private Long product_id;
     private Long color_id;

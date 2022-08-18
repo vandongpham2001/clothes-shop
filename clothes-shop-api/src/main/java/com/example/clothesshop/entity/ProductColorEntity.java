@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "ProductColor")
 @Data
 public class ProductColorEntity extends BaseEntity{
-    private Integer status;
+//    private Integer status;
     private String thumbnail;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")

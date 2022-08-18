@@ -13,6 +13,7 @@ public class NewEntity extends BaseEntity {
     private String content;
     private String thumbnail;
     private String slug;
+    private Integer status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

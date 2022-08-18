@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 //exclude = {SecurityAutoConfiguration.class}
 @SpringBootApplication()
+//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 public class ClothesShopApplication {
 
 	public static void main(String[] args) {

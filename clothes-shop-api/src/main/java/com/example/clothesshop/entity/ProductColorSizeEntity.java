@@ -11,7 +11,7 @@ import java.util.List;
 @Data
 public class ProductColorSizeEntity extends BaseEntity {
     private Integer quantity;
-    private Integer status;
+//    private Integer status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_color_id")
     private ProductColorEntity product_color;

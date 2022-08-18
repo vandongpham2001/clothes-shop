@@ -25,6 +25,7 @@ public class UserEntity extends BaseEntity{
     private String password;
     private String phone_number;
     private String address;
+    private Integer status;
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL
