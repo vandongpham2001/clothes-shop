@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class CommentConverter extends AbstractConverter {
 
     public CommentDTO toDTO(CommentEntity entity){
-        CommentDTO dto = modelMapper.map(entity, CommentDTO.class);
-        return dto;
+        return modelMapper.map(entity, CommentDTO.class);
     }
 
     public CommentEntity toEntity(CommentDTO dto){
-        CommentEntity entity = modelMapper.map(dto, CommentEntity.class);
-        return entity;
+        return modelMapper.map(dto, CommentEntity.class);
     }
 
     public CommentEntity toEntity(CommentDTO dto, CommentEntity entity){

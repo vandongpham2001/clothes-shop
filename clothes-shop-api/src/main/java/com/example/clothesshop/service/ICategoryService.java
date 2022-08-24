@@ -14,7 +14,7 @@ public interface ICategoryService {
 
     List<CategoryDTO> findAll(Integer status, Sort sort);
 
-    CategoryDTO save(CategoryDTO dto) throws IOException;
+    CategoryDTO save(CategoryDTO dto);
 
     void delete(long[] ids);
 

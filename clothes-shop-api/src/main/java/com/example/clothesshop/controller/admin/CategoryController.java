@@ -56,12 +56,12 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryDTO create(@ModelAttribute CategoryDTO dto) throws IOException {
+    public CategoryDTO create(@ModelAttribute CategoryDTO dto){
         return categoryService.save(dto);
     }
 
     @PutMapping
-    public CategoryDTO update(@ModelAttribute CategoryDTO dto) throws IOException {
+    public CategoryDTO update(@ModelAttribute CategoryDTO dto){
         return categoryService.save(dto);
     }
 

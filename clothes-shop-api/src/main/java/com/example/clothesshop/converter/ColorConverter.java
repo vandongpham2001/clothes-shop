@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class ColorConverter extends AbstractConverter {
 
     public ColorDTO toDTO(ColorEntity entity){
-        ColorDTO dto = modelMapper.map(entity, ColorDTO.class);
-        return dto;
+        return modelMapper.map(entity, ColorDTO.class);
     }
 
     public ColorEntity toEntity(ColorDTO dto){
-        ColorEntity entity = modelMapper.map(dto, ColorEntity.class);
-        return entity;
+        return modelMapper.map(dto, ColorEntity.class);
     }
 
     public ColorEntity toEntity(ColorDTO dto, ColorEntity entity){

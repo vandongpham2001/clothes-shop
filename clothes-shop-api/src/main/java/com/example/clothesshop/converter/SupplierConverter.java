@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class SupplierConverter extends AbstractConverter {
 
     public SupplierDTO toDTO(SupplierEntity entity){
-        SupplierDTO dto = modelMapper.map(entity, SupplierDTO.class);
-        return dto;
+        return modelMapper.map(entity, SupplierDTO.class);
     }
 
     public SupplierEntity toEntity(SupplierDTO dto){
-        SupplierEntity entity = modelMapper.map(dto, SupplierEntity.class);
-        return entity;
+        return modelMapper.map(dto, SupplierEntity.class);
     }
 
     public SupplierEntity toEntity(SupplierDTO dto, SupplierEntity entity){

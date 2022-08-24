@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class RoleConverter extends AbstractConverter {
 
     public RoleDTO toDTO(RoleEntity entity){
-        RoleDTO dto = modelMapper.map(entity, RoleDTO.class);
-        return dto;
+        return modelMapper.map(entity, RoleDTO.class);
     }
 
     public RoleEntity toEntity(RoleDTO dto){
-        RoleEntity entity = modelMapper.map(dto, RoleEntity.class);
-        return entity;
+        return modelMapper.map(dto, RoleEntity.class);
     }
 
     public RoleEntity toEntity(RoleDTO dto, RoleEntity entity){

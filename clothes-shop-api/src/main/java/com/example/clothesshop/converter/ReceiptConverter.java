@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class ReceiptConverter extends AbstractConverter {
 
     public ReceiptDTO toDTO(ReceiptEntity entity){
-        ReceiptDTO dto = modelMapper.map(entity, ReceiptDTO.class);
-        return dto;
+        return modelMapper.map(entity, ReceiptDTO.class);
     }
 
     public ReceiptEntity toEntity(ReceiptDTO dto){
-        ReceiptEntity entity = modelMapper.map(dto, ReceiptEntity.class);
-        return entity;
+        return modelMapper.map(dto, ReceiptEntity.class);
     }
 
     public ReceiptEntity toEntity(ReceiptDTO dto, ReceiptEntity entity){

@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class OrderConverter extends AbstractConverter {
 
     public OrderDTO toDTO(OrderEntity entity){
-        OrderDTO dto = modelMapper.map(entity, OrderDTO.class);
-        return dto;
+        return modelMapper.map(entity, OrderDTO.class);
     }
 
     public OrderEntity toEntity(OrderDTO dto){
-        OrderEntity entity = modelMapper.map(dto, OrderEntity.class);
-        return entity;
+        return modelMapper.map(dto, OrderEntity.class);
     }
 
     public OrderEntity toEntity(OrderDTO dto, OrderEntity entity){

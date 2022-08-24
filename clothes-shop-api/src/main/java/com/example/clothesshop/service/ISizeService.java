@@ -13,7 +13,7 @@ public interface ISizeService {
 
     List<SizeDTO> findAll(Sort sort);
 
-    SizeDTO save(SizeDTO dto) throws IOException;
+    SizeDTO save(SizeDTO dto);
 
     void delete(long[] ids);
 }

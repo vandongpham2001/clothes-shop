@@ -13,7 +13,11 @@ public interface IProductService {
 
     List<ProductDTO> findAll(Integer status, Sort sort);
 
-    ProductDTO save(ProductDTO dto) throws IOException;
+    ProductDTO create(ProductDTO dto);
+
+    ProductDTO update(ProductDTO dto);
 
     void delete(long[] ids);
+
+    ProductDTO detail(ProductDTO dto);
 }

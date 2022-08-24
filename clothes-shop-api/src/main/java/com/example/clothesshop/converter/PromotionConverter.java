@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class PromotionConverter extends AbstractConverter {
 
     public PromotionDTO toDTO(PromotionEntity entity){
-        PromotionDTO dto = modelMapper.map(entity, PromotionDTO.class);
-        return dto;
+        return modelMapper.map(entity, PromotionDTO.class);
     }
 
     public PromotionEntity toEntity(PromotionDTO dto){
-        PromotionEntity entity = modelMapper.map(dto, PromotionEntity.class);
-        return entity;
+        return modelMapper.map(dto, PromotionEntity.class);
     }
 
     public PromotionEntity toEntity(PromotionDTO dto, PromotionEntity entity){

@@ -13,7 +13,7 @@ public interface IPromotionService {
 
     List<PromotionDTO> findAll(Integer status, Sort sort);
 
-    PromotionDTO save(PromotionDTO dto) throws IOException;
+    PromotionDTO save(PromotionDTO dto);
 
     void delete(long[] ids);
 }

@@ -13,7 +13,7 @@ public interface IColorService {
 
     List<ColorDTO> findAll(Sort sort);
 
-    ColorDTO save(ColorDTO dto) throws IOException;
+    ColorDTO save(ColorDTO dto);
 
     void delete(long[] ids);
 }

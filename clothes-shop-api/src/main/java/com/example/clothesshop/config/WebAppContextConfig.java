@@ -3,8 +3,18 @@ package com.example.clothesshop.config;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.clothesshop.constant.CloudinaryConstant;
+import com.example.clothesshop.constant.SystemConstant;
+import com.example.clothesshop.dto.RoleDTO;
+import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.service.impl.RoleService;
+import com.example.clothesshop.service.impl.UserService;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.ArrayList;
 
 @Configuration
 public class WebAppContextConfig {
@@ -24,8 +34,13 @@ public class WebAppContextConfig {
     }
 
     @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public Cloudinary cloudinary() {
-        Cloudinary cloudinary =  new Cloudinary(ObjectUtils.asMap(
+        Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
                 "cloud_name", CloudinaryConstant.cloud_name,
                 "api_key", CloudinaryConstant.api_key,
                 "api_secret", CloudinaryConstant.api_secret,
@@ -45,5 +60,21 @@ public class WebAppContextConfig {
 //                "folder", CloudinaryConstant.upload_preset));
 //        return cloudinary;
 //    }
-
+//    @Bean
+//    CommandLineRunner run(UserService userService, RoleService roleService){
+//		return args -> {
+//			roleService.save(new RoleDTO("ROLE_USER", "", new ArrayList<>()));
+//			roleService.save(new RoleDTO("ROLE_ADMIN", "", new ArrayList<>()));
+//
+//			userService.save(new UserDTO("Dong", "dong","dong@gmail.com", "1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Anh", "anh","anh@gmail.com", "1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Tuan", "tuan","tuan@gmail.com", "1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//			userService.save(new UserDTO("Pham", "pham","pham@gmail.com","1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+//
+//			userService.addRoleToUser("dong", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("anh", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("tuan", SystemConstant.ADMIN_ROLE);
+//			userService.addRoleToUser("pham", SystemConstant.USER_ROLE);
+//		};
+//	}
 }

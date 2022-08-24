@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class CartConverter extends AbstractConverter {
 
     public CartDTO toDTO(CartEntity entity){
-        CartDTO dto = modelMapper.map(entity, CartDTO.class);
-        return dto;
+        return modelMapper.map(entity, CartDTO.class);
     }
 
     public CartEntity toEntity(CartDTO dto){
-        CartEntity entity = modelMapper.map(dto, CartEntity.class);
-        return entity;
+        return modelMapper.map(dto, CartEntity.class);
     }
 
     public CartEntity toEntity(CartDTO dto, CartEntity entity){

@@ -1,4 +1,4 @@
-package com.example.clothesshop.security;
+package com.example.clothesshop.config;
 
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.filter.CustomAuthenticationFilter;
@@ -40,11 +40,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 //        http.authorizeRequests().antMatchers("/api/admin/**").hasAnyAuthority(SystemConstant.ADMIN_ROLE);
 //        http.authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority(SystemConstant.USER_ROLE);
-//        http.authorizeRequests().antMatchers("/api/**", "/api/login/**", "/api/token/refresh/**").permitAll();
+//        http.authorizeRequests().antMatchers("/api/**", "/api/login/**").permitAll();
 
-        http.authorizeRequests().antMatchers("/api/**").permitAll();
+//        http.authorizeRequests().antMatchers("/api/**").permitAll();
 //        http.authorizeRequests().antMatchers("/swagger-ui.html**").permitAll();
 //        http.authorizeRequests().antMatchers("/swagger-ui/index.html**").permitAll();
+        http.authorizeRequests().antMatchers("/**").permitAll();
+
 
 //        http.authorizeRequests().anyRequest().permitAll();
 

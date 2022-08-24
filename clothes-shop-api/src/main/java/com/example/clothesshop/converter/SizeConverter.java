@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class SizeConverter extends AbstractConverter {
 
     public SizeDTO toDTO(SizeEntity entity){
-        SizeDTO dto = modelMapper.map(entity, SizeDTO.class);
-        return dto;
+        return modelMapper.map(entity, SizeDTO.class);
     }
 
     public SizeEntity toEntity(SizeDTO dto){
-        SizeEntity entity = modelMapper.map(dto, SizeEntity.class);
-        return entity;
+        return modelMapper.map(dto, SizeEntity.class);
     }
 
     public SizeEntity toEntity(SizeDTO dto, SizeEntity entity){

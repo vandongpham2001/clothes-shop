@@ -29,29 +29,29 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController(value = "userApiOfAdmin")
-@RequestMapping(path = "api/admin/user")
+@RequestMapping(path = "api")
 public class UserController {
     @Autowired
     IUserService userService;
 
-    @GetMapping()
+    @GetMapping("/admin/user")
     public ResponseEntity<List<UserDTO>> getUsers() {
         return ResponseEntity.ok().body(userService.getUsers());
     }
 
-    @PostMapping()
+    @PostMapping("/admin/user")
     public ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO user) {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user").toUriString());
         return ResponseEntity.created(uri).body(userService.save(user));
     }
 
-    @PostMapping("/add-role-to-user")
+    @PostMapping("/admin/user/add-role-to-user")
     public ResponseEntity<?> saveRoleToUser(@RequestBody RoleToUser form) {
         userService.addRoleToUser(form.getUsername(), form.getRoleName());
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/token/refresh")
+    @GetMapping("/user/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){

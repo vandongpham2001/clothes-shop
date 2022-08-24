@@ -43,7 +43,7 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public ColorDTO save(ColorDTO dto) throws IOException {
+    public ColorDTO save(ColorDTO dto){
         ColorEntity entity;
         if (dto.getId() != null) {
             ColorEntity old_entity = colorRepository.findById(dto.getId()).get();

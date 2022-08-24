@@ -60,24 +60,35 @@ public class CategoryService implements ICategoryService {
 
     @Override
 //    @Transactional
-    public CategoryDTO save(CategoryDTO dto) throws IOException {
+    public CategoryDTO save(CategoryDTO dto){
         CategoryEntity entity;
         if (dto.getName() != null) {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
-            String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
-            dto.setImage(img);
+            try {
+                String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                dto.setImage(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 //            for (MultipartFile file : dto.getFile()){
 //                String img = CloudinaryUtil.upload(cloudinary, file);
 //            }
         }
         if (dto.getId() != null) {
             CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
-            String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
-            System.out.println(file_name);
-            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
-            System.out.println(destroy);
+            if (old_entity.getImage() != null) {
+                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+//            System.out.println(file_name);
+//            String destroy = null;
+                try {
+                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//            System.out.println(destroy);
+            }
             entity = categoryConverter.toEntity(dto, old_entity);
         }
         else {

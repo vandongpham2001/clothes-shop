@@ -2,12 +2,16 @@ package com.example.clothesshop.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
+import com.example.clothesshop.converter.ProductColorConverter;
+import com.example.clothesshop.converter.ProductColorImageConverter;
+import com.example.clothesshop.converter.ProductColorSizeConverter;
 import com.example.clothesshop.converter.ProductConverter;
+import com.example.clothesshop.dto.ProductColorDTO;
+import com.example.clothesshop.dto.ProductColorImageDTO;
+import com.example.clothesshop.dto.ProductColorSizeDTO;
 import com.example.clothesshop.dto.ProductDTO;
-import com.example.clothesshop.entity.CategoryEntity;
-import com.example.clothesshop.entity.ProductEntity;
-import com.example.clothesshop.repository.CategoryRepository;
-import com.example.clothesshop.repository.ProductRepository;
+import com.example.clothesshop.entity.*;
+import com.example.clothesshop.repository.*;
 import com.example.clothesshop.service.IProductService;
 import com.example.clothesshop.util.CloudinaryUtil;
 import com.example.clothesshop.util.ObjectMapperUtil;
@@ -19,11 +23,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -33,7 +36,23 @@ public class ProductService implements IProductService {
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
+    private ColorRepository colorRepository;
+    @Autowired
+    private ProductColorRepository productColorRepository;
+    @Autowired
+    private SizeRepository sizeRepository;
+    @Autowired
+    private ProductColorSizeRepository productColorSizeRepository;
+    @Autowired
+    private ProductColorImageRepository productColorImageRepository;
+    @Autowired
     private ProductConverter productConverter;
+    @Autowired
+    private ProductColorConverter productColorConverter;
+    @Autowired
+    private ProductColorSizeConverter productColorSizeConverter;
+    @Autowired
+    private ProductColorImageConverter productColorImageConverter;
     @Autowired
     Cloudinary cloudinary;
 
@@ -41,7 +60,7 @@ public class ProductService implements IProductService {
     public Page<ProductDTO> findAllPageable(Integer status, Pageable pageable) {
         Page<ProductDTO> results;
         Page<ProductEntity> entities;
-        if (status!=null) {
+        if (status != null) {
             entities = productRepository.findByStatus(status, pageable);
         } else {
             entities = productRepository.findAll(pageable);
@@ -51,58 +70,122 @@ public class ProductService implements IProductService {
     }
 
     public List<ProductDTO> findAll(Integer status, Sort sort) {
-        List<ProductDTO> results = new ArrayList<>();
-        Iterable<ProductEntity> entities = new ArrayList<>();
-        if (status!=null) {
+        List<ProductDTO> results;
+        Iterable<ProductEntity> entities;
+        if (status != null) {
             entities = productRepository.findByStatus(status, sort);
         } else {
             entities = productRepository.findAll(sort);
         }
-//        Iterator<ProductEntity> iterator = entities.iterator();
         results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), ProductDTO.class);
         return results;
     }
 
     @Override
 //    @Transactional
-    public ProductDTO save(ProductDTO dto) throws IOException {
-        ProductEntity entity = new ProductEntity();
+    public ProductDTO create(ProductDTO dto) {
         if (dto.getName() != null) {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
-            String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
-            dto.setImage(img);
-//            for (MultipartFile file : dto.getFile()){
-//                String img = CloudinaryUtil.upload(cloudinary, file);
-//            }
+            try {
+                String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                dto.setImage(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        if (dto.getId() != null) {
-            ProductEntity old_entity = productRepository.findById(dto.getId()).get();
-            String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
-            System.out.println(file_name);
-            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
-            System.out.println(destroy);
-            entity = productConverter.toEntity(dto, old_entity);
-        }
-        else {
-            entity = productConverter.toEntity(dto);
-        }
+//        if (dto.getId() != null) {
+//            ProductEntity old_entity = productRepository.findById(dto.getId()).get();
+//            String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+//            System.out.println(file_name);
+//            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+//            System.out.println(destroy);
+//            entity = productConverter.toEntity(dto, old_entity);
+//        } else {
+//            entity = productConverter.toEntity(dto);
+//        }
+        List<ProductColorDTO> listProductColorDTO = dto.getProduct_color();
+        dto.setProduct_color(null);
+        ProductEntity entity = productConverter.toEntity(dto);
         CategoryEntity category = categoryRepository.findById(dto.getCategory_id()).get();
         entity.setCategory(category);
-        return productConverter.toDTO(productRepository.save(entity));
+        ProductDTO savedProduct = productConverter.toDTO(productRepository.save(entity));
+        if (listProductColorDTO != null) {
+            for (ProductColorDTO productColorDTO : listProductColorDTO) {
+                productColorDTO.setProduct_id(savedProduct.getId());
+                if (productColorDTO.getFile() != null) {
+                    try {
+                        String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                        productColorDTO.setThumbnail(img);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                List<ProductColorSizeDTO> listProductColorSizeDTO = productColorDTO.getProduct_color_size();
+                MultipartFile[] listProductColorImage = null;
+                listProductColorImage = productColorDTO.getProduct_color_image().get(0).getFile();
+                productColorDTO.setProduct_color_size(null);
+                productColorDTO.setProduct_color_image(null);
+                ProductColorEntity productColorEntity = productColorConverter.toEntity(productColorDTO);
+                productColorEntity.setProduct(productRepository.findById(productColorDTO.getProduct_id()).get());
+                productColorEntity.setColor(colorRepository.findById(productColorDTO.getColor_id()).get());
+                ProductColorDTO savedProductColor = productColorConverter.toDTO(productColorRepository.save(productColorEntity));
+//                MultipartFile[] listProductColorImage = savedProductColor.getProduct_color_image().get(0).getFile();
+//                MultipartFile[] listProductColorImage = productColorDTO.getProduct_color_image().iterator().next().getFile();
+                if (listProductColorSizeDTO != null) {
+                    for (ProductColorSizeDTO productColorSizeDTO : listProductColorSizeDTO) {
+                        productColorSizeDTO.setProduct_color_id(savedProductColor.getId());
+                        ProductColorSizeEntity productColorSizeEntity = productColorSizeConverter.toEntity(productColorSizeDTO);
+                        productColorSizeEntity.setProduct_color(productColorRepository.findById(productColorSizeDTO.getProduct_color_id()).get());
+                        productColorSizeEntity.setSize(sizeRepository.findById(productColorSizeDTO.getSize_id()).get());
+                        ProductColorSizeDTO savedProductColorSize = productColorSizeConverter.toDTO(productColorSizeRepository.save(productColorSizeEntity));
+                    }
+                }
+                if (listProductColorImage != null) {
+                    for (MultipartFile productColorImage : listProductColorImage) {
+                        ProductColorImageEntity productColorImageEntity = new ProductColorImageEntity();
+                        productColorImageEntity.setProduct_color(productColorRepository.findById(savedProductColor.getId()).get());
+                        try {
+                            String img = CloudinaryUtil.upload(cloudinary, productColorImage);
+                            productColorImageEntity.setPath(img);
+                            if (!productColorImageEntity.getPath().isEmpty()){
+                                ProductColorImageDTO savedProductColorImage = productColorImageConverter.toDTO(productColorImageRepository.save(productColorImageEntity));
+                            }
+                            } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+//        return productConverter.toDTO(productRepository.findById(savedProduct.getId()).get());
+        ProductEntity finalEntity = productRepository.findById(savedProduct.getId()).get();
+        finalEntity.setProduct_color(productColorRepository.findByProductId(finalEntity.getId()));
+        return productConverter.toDTO(finalEntity);
     }
+
+    @Override
+    public ProductDTO update(ProductDTO dto) {
+        return null;
+    }
+
 
     @Override
 //    @Transactional
     public void delete(long[] ids) {
         for (long id : ids) {
             ProductEntity exists = productRepository.findById(id).get();
-            if (exists!=null) {
+            if (exists != null) {
 //                productRepository.deleteById(id);
                 exists.setStatus(SystemConstant.INACTIVE_STATUS);
                 productRepository.save(exists);
             }
         }
+    }
+
+    @Override
+    public ProductDTO detail(ProductDTO dto) {
+        return dto;
     }
 }

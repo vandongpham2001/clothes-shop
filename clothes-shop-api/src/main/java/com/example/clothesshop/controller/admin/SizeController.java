@@ -49,12 +49,12 @@ public class SizeController {
     }
 
     @PostMapping
-    public SizeDTO create(@RequestBody SizeDTO dto) throws IOException {
+    public SizeDTO create(@RequestBody SizeDTO dto){
         return sizeService.save(dto);
     }
 
     @PutMapping
-    public SizeDTO update(@RequestBody SizeDTO dto) throws IOException {
+    public SizeDTO update(@RequestBody SizeDTO dto){
         return sizeService.save(dto);
     }
 

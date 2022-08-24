@@ -48,12 +48,12 @@ public class ColorController {
     }
 
     @PostMapping
-    public ColorDTO create(@RequestBody ColorDTO dto) throws IOException {
+    public ColorDTO create(@RequestBody ColorDTO dto){
         return colorService.save(dto);
     }
 
     @PutMapping
-    public ColorDTO update(@RequestBody ColorDTO dto) throws IOException {
+    public ColorDTO update(@RequestBody ColorDTO dto){
         return colorService.save(dto);
     }
 

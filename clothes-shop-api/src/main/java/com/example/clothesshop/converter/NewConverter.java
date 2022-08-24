@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class NewConverter extends AbstractConverter {
 
     public NewDTO toDTO(NewEntity entity){
-        NewDTO dto = modelMapper.map(entity, NewDTO.class);
-        return dto;
+        return modelMapper.map(entity, NewDTO.class);
     }
 
     public NewEntity toEntity(NewDTO dto){
-        NewEntity entity = modelMapper.map(dto, NewEntity.class);
-        return entity;
+        return modelMapper.map(dto, NewEntity.class);
     }
 
     public NewEntity toEntity(NewDTO dto, NewEntity entity){

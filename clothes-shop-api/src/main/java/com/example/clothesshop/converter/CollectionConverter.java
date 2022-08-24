@@ -8,13 +8,11 @@ import org.springframework.stereotype.Component;
 public class CollectionConverter extends AbstractConverter {
 
     public CollectionDTO toDTO(CollectionEntity entity){
-        CollectionDTO dto = modelMapper.map(entity, CollectionDTO.class);
-        return dto;
+        return modelMapper.map(entity, CollectionDTO.class);
     }
 
     public CollectionEntity toEntity(CollectionDTO dto){
-        CollectionEntity entity = modelMapper.map(dto, CollectionEntity.class);
-        return entity;
+        return modelMapper.map(dto, CollectionEntity.class);
     }
 
     public CollectionEntity toEntity(CollectionDTO dto, CollectionEntity entity){

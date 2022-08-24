@@ -45,7 +45,7 @@ public class SizeService implements ISizeService {
     }
 
     @Override
-    public SizeDTO save(SizeDTO dto) throws IOException {
+    public SizeDTO save(SizeDTO dto){
         SizeEntity entity;
         if (dto.getId() != null) {
             SizeEntity old_entity = sizeRepository.findById(dto.getId()).get();

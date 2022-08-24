@@ -49,13 +49,13 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO create(@ModelAttribute ProductDTO dto) throws IOException {
-        return productService.save(dto);
+    public ProductDTO create(@ModelAttribute ProductDTO dto){
+        return productService.create(dto);
     }
 
     @PutMapping
-    public ProductDTO update(@ModelAttribute ProductDTO dto) throws IOException {
-        return productService.save(dto);
+    public ProductDTO update(@ModelAttribute ProductDTO dto){
+        return productService.update(dto);
     }
 
     @DeleteMapping
@@ -64,7 +64,7 @@ public class ProductController {
     }
 
     @PostMapping(value = "/detail")
-    public ProductDTO detail(@ModelAttribute("product") ProductDTO dto) throws IOException {
-        return dto;
+    public ProductDTO detail(@ModelAttribute("product") ProductDTO dto){
+        return productService.detail(dto);
     }
 }
