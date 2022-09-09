@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface IPromotionService {
@@ -16,4 +15,10 @@ public interface IPromotionService {
     PromotionDTO save(PromotionDTO dto);
 
     void delete(long[] ids);
+
+    PromotionDTO findById(long id);
+
+    PromotionDTO addProductToPromotion(Long promotion_id, Long[] product_id);
+
+    PromotionDTO removeProductFromPromotion(Long promotion_id, Long[] product_id);
 }

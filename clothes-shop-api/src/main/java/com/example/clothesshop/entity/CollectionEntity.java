@@ -15,7 +15,7 @@ import java.util.List;
 //@Data
 @Getter
 @Setter
-public class CollectionEntity extends BaseEntity{
+public class CollectionEntity extends BaseEntity {
     private String name;
     private Integer status;
     private String mobile_banner;
@@ -23,8 +23,17 @@ public class CollectionEntity extends BaseEntity{
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "collections")
     private List<ProductEntity> products = new ArrayList<>();
+
     public void addProduct(ProductEntity product) {
         this.products.add(product);
         product.getCollections().add(this);
+    }
+
+    public void removeProduct(long product_id) {
+        ProductEntity product = this.products.stream().filter(t -> t.getId() == product_id).findFirst().orElse(null);
+        if (product != null) {
+            this.products.remove(product);
+            product.getCollections().remove(this);
+        }
     }
 }

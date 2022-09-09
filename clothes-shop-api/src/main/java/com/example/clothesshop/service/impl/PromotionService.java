@@ -2,14 +2,13 @@ package com.example.clothesshop.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
-import com.example.clothesshop.converter.CollectionConverter;
-import com.example.clothesshop.dto.CollectionDTO;
-import com.example.clothesshop.dto.ProductToCollection;
-import com.example.clothesshop.entity.CollectionEntity;
+import com.example.clothesshop.converter.PromotionConverter;
+import com.example.clothesshop.dto.PromotionDTO;
 import com.example.clothesshop.entity.ProductEntity;
-import com.example.clothesshop.repository.CollectionRepository;
+import com.example.clothesshop.entity.PromotionEntity;
 import com.example.clothesshop.repository.ProductRepository;
-import com.example.clothesshop.service.ICollectionService;
+import com.example.clothesshop.repository.PromotionRepository;
+import com.example.clothesshop.service.IPromotionService;
 import com.example.clothesshop.util.CloudinaryUtil;
 import com.example.clothesshop.util.ObjectMapperUtil;
 import org.apache.commons.collections4.IterableUtils;
@@ -25,44 +24,43 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CollectionService implements ICollectionService {
+public class PromotionService implements IPromotionService {
     @Autowired
-    private CollectionRepository collectionRepository;
+    private PromotionRepository promotionRepository;
     @Autowired
     private ProductRepository productRepository;
     @Autowired
-    private CollectionConverter collectionConverter;
+    private PromotionConverter promotionConverter;
     @Autowired
     private Cloudinary cloudinary;
-
     @Override
-    public Page<CollectionDTO> findAllPageable(Integer status, Pageable pageable) {
-        Page<CollectionDTO> results;
-        Page<CollectionEntity> entities;
+    public Page<PromotionDTO> findAllPageable(Integer status, Pageable pageable) {
+        Page<PromotionDTO> results;
+        Page<PromotionEntity> entities;
         if (status != null) {
-            entities = collectionRepository.findByStatus(status, pageable);
+            entities = promotionRepository.findByStatus(status, pageable);
         } else {
-            entities = collectionRepository.findAll(pageable);
+            entities = promotionRepository.findAll(pageable);
         }
-        results = collectionConverter.mapEntityPageIntoDtoPage(entities, CollectionDTO.class);
+        results = promotionConverter.mapEntityPageIntoDtoPage(entities, PromotionDTO.class);
         return results;
     }
 
     @Override
-    public List<CollectionDTO> findAll(Integer status, Sort sort) {
-        List<CollectionDTO> results;
-        Iterable<CollectionEntity> entities;
+    public List<PromotionDTO> findAll(Integer status, Sort sort) {
+        List<PromotionDTO> results;
+        Iterable<PromotionEntity> entities;
         if (status != null) {
-            entities = collectionRepository.findByStatus(status, sort);
+            entities = promotionRepository.findByStatus(status, sort);
         } else {
-            entities = collectionRepository.findAll(sort);
+            entities = promotionRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CollectionDTO.class);
+        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), PromotionDTO.class);
         return results;
     }
 
     @Override
-    public CollectionDTO save(CollectionDTO dto) {
+    public PromotionDTO save(PromotionDTO dto) {
         if (dto.getMobile_banner_file() != null) {
             try {
                 String img = CloudinaryUtil.upload(cloudinary, dto.getMobile_banner_file());
@@ -79,9 +77,9 @@ public class CollectionService implements ICollectionService {
                 e.printStackTrace();
             }
         }
-        CollectionEntity entity;
+        PromotionEntity entity;
         if (dto.getId() != null) {
-            CollectionEntity old_entity = collectionRepository.findById(dto.getId()).get();
+            PromotionEntity old_entity = promotionRepository.findById(dto.getId()).get();
             if (old_entity.getMobile_banner() != null  && dto.getMobile_banner_file() != null) {
                 String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getMobile_banner());
                 try {
@@ -98,50 +96,50 @@ public class CollectionService implements ICollectionService {
                     e.printStackTrace();
                 }
             }
-            entity = collectionConverter.toEntity(dto, old_entity);
+            entity = promotionConverter.toEntity(dto, old_entity);
         }
         else {
-            entity = collectionConverter.toEntity(dto);
+            entity = promotionConverter.toEntity(dto);
         }
-        return collectionConverter.toDTO(collectionRepository.save(entity));
+        return promotionConverter.toDTO(promotionRepository.save(entity));
     }
 
     @Override
     public void delete(long[] ids) {
         for (long id : ids) {
-            CollectionEntity exists = collectionRepository.findById(id).get();
+            PromotionEntity exists = promotionRepository.findById(id).get();
             if (exists != null) {
-//                collectionRepository.deleteById(id);
+//                promotionRepository.deleteById(id);
                 exists.setStatus(SystemConstant.INACTIVE_STATUS);
-                collectionRepository.save(exists);
+                promotionRepository.save(exists);
             }
         }
     }
 
     @Override
-    public CollectionDTO findById(long id) {
-        CollectionEntity entity = collectionRepository.findById(id).get();
-        return collectionConverter.toDTO(entity);
+    public PromotionDTO findById(long id) {
+        PromotionEntity entity = promotionRepository.findById(id).get();
+        return promotionConverter.toDTO(entity);
     }
 
     @Override
-    public CollectionDTO addProductToCollection(Long collection_id, Long[] product_id) {
-        CollectionEntity collection = collectionRepository.findById(collection_id).get();
+    public PromotionDTO addProductToPromotion(Long promotion_id, Long[] product_id) {
+        PromotionEntity promotion = promotionRepository.findById(promotion_id).get();
         for (Long item : product_id){
             ProductEntity product = productRepository.findById(item).get();
-            collection.addProduct(product);
+            promotion.addProduct(product);
         }
-        CollectionEntity savedCollection = collectionRepository.save(collection);
-        return collectionConverter.toDTO(savedCollection);
+        PromotionEntity savedPromotion = promotionRepository.save(promotion);
+        return promotionConverter.toDTO(savedPromotion);
     }
 
     @Override
-    public CollectionDTO removeProductFromCollection(Long collection_id, Long[] product_id) {
-        CollectionEntity collection = collectionRepository.findById(collection_id).get();
+    public PromotionDTO removeProductFromPromotion(Long promotion_id, Long[] product_id) {
+        PromotionEntity promotion = promotionRepository.findById(promotion_id).get();
         for (Long item : product_id){
-            collection.removeProduct(item);
+            promotion.removeProduct(item);
         }
-        CollectionEntity savedCollection = collectionRepository.save(collection);
-        return collectionConverter.toDTO(savedCollection);
+        PromotionEntity savedPromotion = promotionRepository.save(promotion);
+        return promotionConverter.toDTO(savedPromotion);
     }
 }

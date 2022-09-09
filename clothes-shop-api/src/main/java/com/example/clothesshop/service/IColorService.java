@@ -16,4 +16,6 @@ public interface IColorService {
     ColorDTO save(ColorDTO dto);
 
     void delete(long[] ids);
+
+    ColorDTO findById(long id);
 }

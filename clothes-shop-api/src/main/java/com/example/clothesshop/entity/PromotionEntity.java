@@ -32,4 +32,12 @@ public class PromotionEntity extends BaseEntity {
         this.products.add(product);
         product.getPromotions().add(this);
     }
+
+    public void removeProduct(long product_id) {
+        ProductEntity product = this.products.stream().filter(t -> t.getId() == product_id).findFirst().orElse(null);
+        if (product != null) {
+            this.products.remove(product);
+            product.getPromotions().remove(this);
+        }
+    }
 }

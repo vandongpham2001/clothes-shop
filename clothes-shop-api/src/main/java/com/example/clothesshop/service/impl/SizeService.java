@@ -22,9 +22,9 @@ import java.util.List;
 public class SizeService implements ISizeService {
 
     @Autowired
-    SizeRepository sizeRepository;
+    private SizeRepository sizeRepository;
     @Autowired
-    SizeConverter sizeConverter;
+    private SizeConverter sizeConverter;
 
     @Override
     public Page<SizeDTO> findAllPageable(Pageable pageable) {
@@ -64,5 +64,11 @@ public class SizeService implements ISizeService {
                 sizeRepository.deleteById(id);
             }
         }
+    }
+
+    @Override
+    public SizeDTO findById(long id) {
+        SizeEntity entity = sizeRepository.findById(id).get();
+        return sizeConverter.toDTO(entity);
     }
 }

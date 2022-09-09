@@ -30,7 +30,7 @@ public class CategoryService implements ICategoryService {
     @Autowired
     private CategoryConverter categoryConverter;
     @Autowired
-    Cloudinary cloudinary;
+    private Cloudinary cloudinary;
 
     @Override
     public Page<CategoryDTO> findAllPageable(Integer status, Pageable pageable) {
@@ -78,7 +78,7 @@ public class CategoryService implements ICategoryService {
         }
         if (dto.getId() != null) {
             CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
-            if (old_entity.getImage() != null) {
+            if (old_entity.getImage() != null && dto.getFile() != null) {
                 String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
 //            System.out.println(file_name);
 //            String destroy = null;

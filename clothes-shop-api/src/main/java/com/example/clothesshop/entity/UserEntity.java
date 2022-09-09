@@ -71,4 +71,12 @@ public class UserEntity extends BaseEntity{
         this.roles.add(role);
         role.getUsers().add(this);
     }
+
+    public void removeRole(long role_id) {
+        RoleEntity role = this.roles.stream().filter(t -> t.getId() == role_id).findFirst().orElse(null);
+        if (role != null) {
+            this.roles.remove(role);
+            role.getUsers().remove(this);
+        }
+    }
 }

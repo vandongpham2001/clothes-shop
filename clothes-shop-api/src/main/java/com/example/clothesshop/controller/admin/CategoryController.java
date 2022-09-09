@@ -22,7 +22,7 @@ import java.util.Map;
 public class CategoryController {
 
     @Autowired
-    ICategoryService categoryService;
+    private ICategoryService categoryService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
@@ -68,5 +68,10 @@ public class CategoryController {
     @DeleteMapping
     public void delete(@RequestBody long[] ids) {
         categoryService.delete(ids);
+    }
+
+    @GetMapping(value = "/{id}")
+    public CategoryDTO detail(@PathVariable("id") Long id){
+        return categoryService.findById(id);
     }
 }

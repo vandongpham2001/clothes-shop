@@ -1,7 +1,7 @@
 package com.example.clothesshop.controller.admin;
 
-import com.example.clothesshop.dto.ProductDTO;
-import com.example.clothesshop.service.IProductService;
+import com.example.clothesshop.dto.OrderDTO;
+import com.example.clothesshop.service.IOrderService;
 import com.example.clothesshop.util.PagingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +16,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController(value = "apiProductOfAdmin")
-@RequestMapping(path = "api/admin/product")
-public class ProductController {
+@RestController(value = "apiOrderOfAdmin")
+@RequestMapping(path = "api/admin/order")
+public class OrderController {
     @Autowired
-    private IProductService productService;
+    private IOrderService orderService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
@@ -30,45 +30,40 @@ public class ProductController {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
-        Page<ProductDTO> pageProducts;
-        List<ProductDTO> products;
+        Page<OrderDTO> pageOrders;
+        List<OrderDTO> orders;
         sortable = PagingUtil.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageProducts = productService.findAllPageable(status, pageable);
-            products = pageProducts.getContent();
-            response.put("currentPage", pageProducts.getNumber() + 1);
-            response.put("totalItems", pageProducts.getTotalElements());
-            response.put("totalPages", pageProducts.getTotalPages());
+            pageOrders = orderService.findAllPageable(status, pageable);
+            orders = pageOrders.getContent();
+            response.put("currentPage", pageOrders.getNumber() + 1);
+            response.put("totalItems", pageOrders.getTotalElements());
+            response.put("totalPages", pageOrders.getTotalPages());
         } else {
-            products = productService.findAll(status, sortable);
+            orders = orderService.findAll(status, sortable);
         }
-        response.put("products", products);
+        response.put("orders", orders);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ProductDTO create(@ModelAttribute ProductDTO dto){
-        return productService.save(dto);
+    public OrderDTO create(@ModelAttribute OrderDTO dto) {
+        return orderService.save(dto);
     }
 
     @PutMapping
-    public ProductDTO update(@ModelAttribute ProductDTO dto){
-        return productService.save(dto);
+    public OrderDTO update(@ModelAttribute OrderDTO dto) {
+        return orderService.save(dto);
     }
 
     @DeleteMapping
     public void delete(@RequestBody long[] ids) {
-        productService.delete(ids);
+        orderService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")
-    public ProductDTO detail(@PathVariable("id") Long id){
-        return productService.findById(id);
-    }
-
-    @PostMapping(value = "/detail")
-    public ProductDTO getDetailFromFormData(@ModelAttribute("product") ProductDTO dto){
-        return dto;
+    public OrderDTO detail(@PathVariable("id") Long id) {
+        return orderService.findById(id);
     }
 }

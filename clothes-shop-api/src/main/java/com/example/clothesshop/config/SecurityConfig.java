@@ -4,6 +4,7 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.filter.CustomAuthenticationFilter;
 import com.example.clothesshop.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,22 +42,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        http.authorizeRequests().antMatchers("/api/admin/**").hasAnyAuthority(SystemConstant.ADMIN_ROLE);
 //        http.authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority(SystemConstant.USER_ROLE);
 //        http.authorizeRequests().antMatchers("/api/**", "/api/login/**").permitAll();
-
-//        http.authorizeRequests().antMatchers("/api/**").permitAll();
-//        http.authorizeRequests().antMatchers("/swagger-ui.html**").permitAll();
-//        http.authorizeRequests().antMatchers("/swagger-ui/index.html**").permitAll();
-        http.authorizeRequests().antMatchers("/**").permitAll();
-
-
+//        http.authorizeRequests().anyRequest().authenticated();
+//        http.antMatcher("/swagger-ui.html").authorizeRequests().anyRequest().hasAnyAuthority(SystemConstant.ADMIN_ROLE).and().httpBasic();
+//        http.authorizeRequests().antMatchers("/v2/api-docs").authenticated().and().httpBasic();
 //        http.authorizeRequests().anyRequest().permitAll();
+//        http.authorizeRequests().antMatchers("/api/**", "/api/login/**").permitAll()
+//                .and().authorizeRequests().antMatchers("/api/admin/**", "/swagger-ui.html").hasAnyAuthority(SystemConstant.ADMIN_ROLE).authenticated()
+//                .and().authorizeRequests().antMatchers("/api/user/**").hasAnyAuthority(SystemConstant.USER_ROLE)
+//                .and().authorizeRequests().antMatchers("/swagger-ui.html")
+//                .hasAnyAuthority(SystemConstant.ADMIN_ROLE).and().httpBasic();
 
-/*
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(SystemConstant.USER_ROLE);
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").hasAnyAuthority(SystemConstant.USER_ROLE);
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/admin/**").hasAnyAuthority(SystemConstant.ADMIN_ROLE);
-*/
 
-        http.authorizeRequests().anyRequest().authenticated();
+//        http.authorizeRequests()
+//                .antMatchers("/api/admin/**").hasAnyAuthority(SystemConstant.ADMIN_ROLE)
+//                .antMatchers("/api/user/**").hasAnyAuthority(SystemConstant.USER_ROLE)
+//                .antMatchers("/swagger-ui.html").hasAnyAuthority(SystemConstant.ADMIN_ROLE)
+//                .anyRequest().permitAll()
+//                .and().httpBasic();
+        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -66,4 +69,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().withUser("user").password("password").authorities(SystemConstant.ADMIN_ROLE);
+//    }
 }

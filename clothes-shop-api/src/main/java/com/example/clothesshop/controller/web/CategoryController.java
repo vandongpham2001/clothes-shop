@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping(path = "api/category")
 public class CategoryController {
     @Autowired
-    ICategoryService categoryService;
+    private ICategoryService categoryService;
 
     @GetMapping("parent_category")
     public List<CategoryDTO> findAll(){

@@ -54,7 +54,7 @@ public class ProductService implements IProductService {
     @Autowired
     private ProductColorImageConverter productColorImageConverter;
     @Autowired
-    Cloudinary cloudinary;
+    private Cloudinary cloudinary;
 
     @Override
     public Page<ProductDTO> findAllPageable(Integer status, Pageable pageable) {
@@ -83,7 +83,7 @@ public class ProductService implements IProductService {
 
     @Override
 //    @Transactional
-    public ProductDTO create(ProductDTO dto) {
+    public ProductDTO save(ProductDTO dto) {
         if (dto.getName() != null) {
             dto.setSlug(SlugUtil.toSlug(dto.getName()));
         }
@@ -95,21 +95,26 @@ public class ProductService implements IProductService {
                 e.printStackTrace();
             }
         }
-//        if (dto.getId() != null) {
-//            ProductEntity old_entity = productRepository.findById(dto.getId()).get();
-//            String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
-//            System.out.println(file_name);
-//            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
-//            System.out.println(destroy);
-//            entity = productConverter.toEntity(dto, old_entity);
-//        } else {
-//            entity = productConverter.toEntity(dto);
-//        }
         List<ProductColorDTO> listProductColorDTO = dto.getProduct_color();
         dto.setProduct_color(null);
-        ProductEntity entity = productConverter.toEntity(dto);
-        CategoryEntity category = categoryRepository.findById(dto.getCategory_id()).get();
-        entity.setCategory(category);
+        ProductEntity entity = new ProductEntity();
+        if (dto.getId() != null) {
+            ProductEntity old_entity = productRepository.findById(dto.getId()).get();
+            if (old_entity.getImage() != null && dto.getFile() != null) {
+                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+                try {
+                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            entity = productConverter.toEntity(dto, old_entity);
+        } else {
+            entity = productConverter.toEntity(dto);
+        }
+        if (dto.getCategory_id() != null) {
+            entity.setCategory(categoryRepository.findById(dto.getCategory_id()).get());
+        }
         ProductDTO savedProduct = productConverter.toDTO(productRepository.save(entity));
         if (listProductColorDTO != null) {
             for (ProductColorDTO productColorDTO : listProductColorDTO) {
@@ -127,32 +132,63 @@ public class ProductService implements IProductService {
                 listProductColorImage = productColorDTO.getProduct_color_image().get(0).getFile();
                 productColorDTO.setProduct_color_size(null);
                 productColorDTO.setProduct_color_image(null);
-                ProductColorEntity productColorEntity = productColorConverter.toEntity(productColorDTO);
-                productColorEntity.setProduct(productRepository.findById(productColorDTO.getProduct_id()).get());
-                productColorEntity.setColor(colorRepository.findById(productColorDTO.getColor_id()).get());
+                ProductColorEntity productColorEntity = new ProductColorEntity();
+                if (productColorDTO.getId() != null){
+                    ProductColorEntity oldProductColorEntity = productColorRepository.findById(productColorDTO.getId()).get();
+                    if (oldProductColorEntity.getThumbnail() != null && productColorDTO.getFile() != null) {
+                        String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(oldProductColorEntity.getThumbnail());
+                        try {
+                            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    productColorEntity = productColorConverter.toEntity(productColorDTO, oldProductColorEntity);
+                }
+                else {
+                    productColorEntity = productColorConverter.toEntity(productColorDTO);
+                }
+                if (productColorDTO.getProduct_id() != null) {
+                    productColorEntity.setProduct(productRepository.findById(productColorDTO.getProduct_id()).get());
+                }
+                if (productColorDTO.getColor_id() != null) {
+                    productColorEntity.setColor(colorRepository.findById(productColorDTO.getColor_id()).get());
+                }
                 ProductColorDTO savedProductColor = productColorConverter.toDTO(productColorRepository.save(productColorEntity));
 //                MultipartFile[] listProductColorImage = savedProductColor.getProduct_color_image().get(0).getFile();
 //                MultipartFile[] listProductColorImage = productColorDTO.getProduct_color_image().iterator().next().getFile();
                 if (listProductColorSizeDTO != null) {
                     for (ProductColorSizeDTO productColorSizeDTO : listProductColorSizeDTO) {
                         productColorSizeDTO.setProduct_color_id(savedProductColor.getId());
-                        ProductColorSizeEntity productColorSizeEntity = productColorSizeConverter.toEntity(productColorSizeDTO);
-                        productColorSizeEntity.setProduct_color(productColorRepository.findById(productColorSizeDTO.getProduct_color_id()).get());
-                        productColorSizeEntity.setSize(sizeRepository.findById(productColorSizeDTO.getSize_id()).get());
+                        ProductColorSizeEntity productColorSizeEntity = new ProductColorSizeEntity();
+                        if (productColorSizeDTO.getId() != null){
+                            ProductColorSizeEntity oldProductColorSizeEntity = productColorSizeRepository.findById(productColorSizeDTO.getId()).get();
+                            productColorSizeEntity = productColorSizeConverter.toEntity(productColorSizeDTO, oldProductColorSizeEntity);
+                        } else {
+                            productColorSizeEntity = productColorSizeConverter.toEntity(productColorSizeDTO);
+                        }
+                        if (productColorSizeDTO.getProduct_color_id() != null) {
+                            productColorSizeEntity.setProduct_color(
+                                    productColorRepository.findById(productColorSizeDTO.getProduct_color_id()).get());
+                        }
+                        if (productColorSizeDTO.getSize_id() != null) {
+                            productColorSizeEntity.setSize(sizeRepository.findById(productColorSizeDTO.getSize_id()).get());
+                        }
                         ProductColorSizeDTO savedProductColorSize = productColorSizeConverter.toDTO(productColorSizeRepository.save(productColorSizeEntity));
                     }
                 }
                 if (listProductColorImage != null) {
+                    productColorImageRepository.deleteByProduct_color(savedProductColor.getId());
                     for (MultipartFile productColorImage : listProductColorImage) {
                         ProductColorImageEntity productColorImageEntity = new ProductColorImageEntity();
                         productColorImageEntity.setProduct_color(productColorRepository.findById(savedProductColor.getId()).get());
                         try {
                             String img = CloudinaryUtil.upload(cloudinary, productColorImage);
                             productColorImageEntity.setPath(img);
-                            if (!productColorImageEntity.getPath().isEmpty()){
+                            if (!productColorImageEntity.getPath().isEmpty()) {
                                 ProductColorImageDTO savedProductColorImage = productColorImageConverter.toDTO(productColorImageRepository.save(productColorImageEntity));
                             }
-                            } catch (IOException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -164,12 +200,6 @@ public class ProductService implements IProductService {
         finalEntity.setProduct_color(productColorRepository.findByProductId(finalEntity.getId()));
         return productConverter.toDTO(finalEntity);
     }
-
-    @Override
-    public ProductDTO update(ProductDTO dto) {
-        return null;
-    }
-
 
     @Override
 //    @Transactional
@@ -185,7 +215,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public ProductDTO detail(ProductDTO dto) {
-        return dto;
+    public ProductDTO findById(long id) {
+        ProductEntity entity = productRepository.findById(id).get();
+        return productConverter.toDTO(entity);
     }
 }

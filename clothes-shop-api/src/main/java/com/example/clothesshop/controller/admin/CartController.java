@@ -1,7 +1,7 @@
 package com.example.clothesshop.controller.admin;
 
-import com.example.clothesshop.dto.SizeDTO;
-import com.example.clothesshop.service.ISizeService;
+import com.example.clothesshop.dto.CartDTO;
+import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.util.PagingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,18 +12,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping(path = "api/admin/size")
-public class SizeController {
-
+@RestController(value = "apiCartOfAdmin")
+@RequestMapping(path = "api/admin/cart")
+public class CartController {
     @Autowired
-    private ISizeService sizeService;
-
+    private ICartService cartService;
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
@@ -31,41 +28,40 @@ public class SizeController {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
-        Page<SizeDTO> pageSizes;
-        List<SizeDTO> sizes;
+        Page<CartDTO> pageCarts;
+        List<CartDTO> carts;
         sortable = PagingUtil.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageSizes = sizeService.findAllPageable(pageable);
-            sizes = pageSizes.getContent();
-            response.put("currentPage", pageSizes.getNumber() + 1);
-            response.put("totalItems", pageSizes.getTotalElements());
-            response.put("totalPages", pageSizes.getTotalPages());
+            pageCarts = cartService.findAllPageable(pageable);
+            carts = pageCarts.getContent();
+            response.put("currentPage", pageCarts.getNumber() + 1);
+            response.put("totalItems", pageCarts.getTotalElements());
+            response.put("totalPages", pageCarts.getTotalPages());
         } else {
-            sizes = sizeService.findAll(sortable);
+            carts = cartService.findAll(sortable);
         }
-        response.put("sizes", sizes);
+        response.put("carts", carts);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public SizeDTO create(@RequestBody SizeDTO dto){
-        return sizeService.save(dto);
+    public CartDTO create(@ModelAttribute CartDTO dto){
+        return cartService.save(dto);
     }
 
     @PutMapping
-    public SizeDTO update(@RequestBody SizeDTO dto){
-        return sizeService.save(dto);
+    public CartDTO update(@ModelAttribute CartDTO dto){
+        return cartService.save(dto);
     }
 
     @DeleteMapping
     public void delete(@RequestBody long[] ids) {
-        sizeService.delete(ids);
+        cartService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")
-    public SizeDTO detail(@PathVariable("id") Long id){
-        return sizeService.findById(id);
+    public CartDTO detail(@PathVariable("id") Long id){
+        return cartService.findById(id);
     }
-
 }

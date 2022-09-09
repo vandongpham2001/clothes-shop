@@ -14,16 +14,16 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
 @Transactional
 public class ColorService implements IColorService {
     @Autowired
-    ColorRepository colorRepository;
+    private ColorRepository colorRepository;
     @Autowired
-    ColorConverter colorConverter;
+    private ColorConverter colorConverter;
+
     @Override
     public Page<ColorDTO> findAllPageable(Pageable pageable) {
         Page<ColorDTO> results;
@@ -43,7 +43,7 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public ColorDTO save(ColorDTO dto){
+    public ColorDTO save(ColorDTO dto) {
         ColorEntity entity;
         if (dto.getId() != null) {
             ColorEntity old_entity = colorRepository.findById(dto.getId()).get();
@@ -62,5 +62,11 @@ public class ColorService implements IColorService {
                 colorRepository.deleteById(id);
             }
         }
+    }
+
+    @Override
+    public ColorDTO findById(long id) {
+        ColorEntity entity = colorRepository.findById(id).get();
+        return colorConverter.toDTO(entity);
     }
 }

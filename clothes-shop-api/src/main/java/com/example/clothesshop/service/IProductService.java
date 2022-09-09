@@ -13,11 +13,9 @@ public interface IProductService {
 
     List<ProductDTO> findAll(Integer status, Sort sort);
 
-    ProductDTO create(ProductDTO dto);
-
-    ProductDTO update(ProductDTO dto);
+    ProductDTO save(ProductDTO dto);
 
     void delete(long[] ids);
 
-    ProductDTO detail(ProductDTO dto);
+    ProductDTO findById(long id);
 }

@@ -21,7 +21,7 @@ import java.util.Map;
 @RequestMapping(path = "api/admin/color")
 public class ColorController {
     @Autowired
-    IColorService colorService;
+    private IColorService colorService;
 
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
@@ -60,5 +60,10 @@ public class ColorController {
     @DeleteMapping
     public void delete(@RequestBody long[] ids) {
         colorService.delete(ids);
+    }
+
+    @GetMapping(value = "/{id}")
+    public ColorDTO detail(@PathVariable("id") Long id){
+        return colorService.findById(id);
     }
 }

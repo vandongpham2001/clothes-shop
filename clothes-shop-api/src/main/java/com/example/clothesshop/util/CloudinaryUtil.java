@@ -40,6 +40,8 @@ public class CloudinaryUtil {
         String[] format_img = {".jpg", ".png"};
         String preset = CloudinaryConstant.upload_preset;
         int start_pos = url.indexOf(preset);
+        if (start_pos<0)
+            return null;
         String img_name = url.substring(start_pos);
         for (String item : format_img){
             if (img_name.contains(item)){

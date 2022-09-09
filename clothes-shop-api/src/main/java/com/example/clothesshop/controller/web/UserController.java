@@ -5,11 +5,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.clothesshop.constant.SystemConstant;
+import com.example.clothesshop.dto.CartDTO;
 import com.example.clothesshop.dto.RoleDTO;
 import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.service.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -20,6 +26,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -31,7 +38,9 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping(path = "api/")
 public class UserController {
     @Autowired
-    IUserService userService;
+    private IUserService userService;
+    @Autowired
+    private ICartService cartService;
 
 //    @GetMapping("/user")
 //    public UserDTO getUser(){
@@ -40,16 +49,94 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> register(@RequestBody UserDTO user) {
+        user.setStatus(SystemConstant.ACTIVE_STATUS);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user").toUriString());
         ResponseEntity<UserDTO> result = ResponseEntity.created(uri).body(userService.save(user));
         userService.addRoleToUser(user.getUsername(), SystemConstant.USER_ROLE);
         return result;
     }
 
+    @GetMapping("/{user}/cart")
+    public ResponseEntity<Map<String, Object>> getAllByUsername(@PathVariable("user") String user,
+                                                                @RequestParam(value = "page", required = false) Integer page,
+                                                                @RequestParam(value = "limit", required = false) Integer limit,
+                                                                HttpServletRequest servletRequest,
+                                                                HttpServletResponse servletResponse) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Page<CartDTO> pageCarts;
+        List<CartDTO> carts;
+        UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
+        UserDTO userDTO = userService.findByUsername(user);
+        if (userJWT.getId() == userDTO.getId()) {
+            if (page != null && limit != null) {
+                pageable = PageRequest.of(page - 1, limit);
+                pageCarts = cartService.findAllByUsername(user, pageable);
+                carts = pageCarts.getContent();
+                response.put("currentPage", pageCarts.getNumber() + 1);
+                response.put("totalItems", pageCarts.getTotalElements());
+                response.put("totalPages", pageCarts.getTotalPages());
+            } else {
+                carts = cartService.findAllByUsername(user);
+            }
+            response.put("carts", carts);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    @PostMapping("/{user}/cart")
+    public CartDTO addProductToCart(@PathVariable("user") String user,
+                                    @RequestBody UserDTO dto,
+                                    HttpServletRequest servletRequest,
+                                    HttpServletResponse servletResponse) throws IOException {
+        UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
+        UserDTO userDTO = userService.findByUsername(user);
+        if (userJWT.getId() == userDTO.getId()) {
+        }
+        return null;
+    }
+
+    @PutMapping("/{user}/cart")
+    public CartDTO updateProductInCart(@PathVariable("user") String user,
+                                       @RequestBody UserDTO dto,
+                                       HttpServletRequest servletRequest,
+                                       HttpServletResponse servletResponse) throws IOException {
+        UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
+        UserDTO userDTO = userService.findByUsername(user);
+        if (userJWT.getId() == userDTO.getId()) {
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{user}/cart")
+    public CartDTO removeProductFromCart(@PathVariable("user") String user,
+                                         @RequestBody long[] ids,
+                                         HttpServletRequest servletRequest,
+                                         HttpServletResponse servletResponse) throws IOException {
+        UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
+        UserDTO userDTO = userService.findByUsername(user);
+        if (userJWT.getId() == userDTO.getId()) {
+        }
+        return null;
+    }
+
+    @DeleteMapping("/{user}/cart/deleteAll")
+    public List<CartDTO> deleteCartByUserId(@PathVariable("user") String user,
+                                            HttpServletRequest servletRequest,
+                                            HttpServletResponse servletResponse) throws IOException {
+        UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
+        UserDTO userDTO = userService.findByUsername(user);
+        if (userJWT.getId() == userDTO.getId()) {
+            return cartService.deleteCartByUsername(user);
+        }
+        return null;
+    }
+
     @GetMapping("/user/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String authorizationHeader = request.getHeader(AUTHORIZATION);
-        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String refresh_token = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
@@ -68,7 +155,7 @@ public class UserController {
                 tokens.put("refresh_token", refresh_token);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-            } catch (Exception exception){
+            } catch (Exception exception) {
                 response.setHeader("error", exception.getMessage());
                 response.setStatus(FORBIDDEN.value());
                 Map<String, String> error = new HashMap<>();
@@ -80,5 +167,10 @@ public class UserController {
             throw new RuntimeException("Refresh token is missing");
         }
 
+    }
+
+    @GetMapping("/user/getUserJWT")
+    public UserDTO getUserFromJWT(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return userService.getUserFromJWT(request, response);
     }
 }

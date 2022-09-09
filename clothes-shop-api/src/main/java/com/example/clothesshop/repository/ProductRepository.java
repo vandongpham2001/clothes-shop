@@ -6,8 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.Optional;
+
 public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long> {
 
     Page<ProductEntity> findByStatus(Integer status, Pageable pageable);
+
     Iterable<ProductEntity> findByStatus(Integer status, Sort sort);
+
+    Optional<ProductEntity> findById(Long id);
 }
