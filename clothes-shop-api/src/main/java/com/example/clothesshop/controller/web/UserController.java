@@ -13,6 +13,7 @@ import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.service.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -89,6 +90,7 @@ public class UserController {
     }
 
     @PostMapping("/user/{user}/cart")
+    @ApiOperation(value = "Add a new product to cart", notes = "Add a new product information into the system", response = CartDTO.class)
     public CartDTO addProductToCart(@PathVariable("user") String user,
                                     @RequestBody CartDTO dto,
                                     HttpServletRequest servletRequest,
