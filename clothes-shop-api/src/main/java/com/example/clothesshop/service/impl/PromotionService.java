@@ -105,7 +105,7 @@ public class PromotionService implements IPromotionService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             PromotionEntity exists = promotionRepository.findById(id).get();
             if (exists != null) {
@@ -114,6 +114,7 @@ public class PromotionService implements IPromotionService {
                 promotionRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override

@@ -57,13 +57,14 @@ public class SizeService implements ISizeService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             boolean exists = sizeRepository.existsById(id);
             if (exists) {
                 sizeRepository.deleteById(id);
             }
         }
+        return "deleted";
     }
 
     @Override

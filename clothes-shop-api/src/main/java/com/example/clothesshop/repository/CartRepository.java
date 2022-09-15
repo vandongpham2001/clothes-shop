@@ -10,8 +10,9 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface CartRepository extends PagingAndSortingRepository<CartEntity, Long> {
+
     @Modifying
-    @Query("DELETE CartEntity c WHERE c.user.id = ?1")
+    @Query("DELETE FROM CartEntity c WHERE c.user.id=?1")
     void deleteByUserId(long user_id);
 
     @Query("SELECT c FROM CartEntity c WHERE c.user.id = ?1 ORDER BY c.createdDate DESC")
@@ -21,7 +22,7 @@ public interface CartRepository extends PagingAndSortingRepository<CartEntity, L
     List<CartEntity> findAllByUserId(long user_id);
 
     @Modifying
-    @Query("DELETE CartEntity c WHERE c.user.username = ?1")
+    @Query("DELETE FROM CartEntity c WHERE c.user.username=?1")
     void deleteByUsername(String username);
 
     @Query("SELECT c FROM CartEntity c WHERE c.user.username = ?1 ORDER BY c.createdDate DESC")
@@ -31,7 +32,7 @@ public interface CartRepository extends PagingAndSortingRepository<CartEntity, L
     List<CartEntity> findAllByUsername(String username);
 
     @Modifying
-    @Query("DELETE CartEntity c WHERE c.user.email = ?1")
+    @Query("DELETE FROM CartEntity c WHERE c.user.email=?1")
     void deleteByEmail(String email);
 
     @Query("SELECT c FROM CartEntity c WHERE c.user.email = ?1 ORDER BY c.createdDate DESC")

@@ -58,8 +58,8 @@ public class PromotionController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        promotionService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return promotionService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

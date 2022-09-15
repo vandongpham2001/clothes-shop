@@ -99,7 +99,7 @@ public class CategoryService implements ICategoryService {
 
     @Override
 //    @Transactional
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             CategoryEntity exists = categoryRepository.findById(id).get();
             if (exists != null) {
@@ -108,6 +108,7 @@ public class CategoryService implements ICategoryService {
                 categoryRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override

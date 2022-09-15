@@ -58,8 +58,8 @@ public class OrderController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        orderService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return orderService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

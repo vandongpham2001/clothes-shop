@@ -56,8 +56,8 @@ public class CartController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        cartService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return cartService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

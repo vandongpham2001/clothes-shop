@@ -59,8 +59,8 @@ public class SizeController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        sizeService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return sizeService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

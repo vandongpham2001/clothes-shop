@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.clothesshop.constant.SwaggerConstant;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.CartDTO;
 import com.example.clothesshop.dto.RoleDTO;
@@ -11,6 +12,7 @@ import com.example.clothesshop.dto.UserDTO;
 import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.service.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController(value = "userApiOfWeb")
 @RequestMapping(path = "api/")
+//@Api(tags = {SwaggerConstant.API_TAG})
 public class UserController {
     @Autowired
     private IUserService userService;
@@ -56,7 +59,7 @@ public class UserController {
         return result;
     }
 
-    @GetMapping("/{user}/cart")
+    @GetMapping("/user/{user}/cart")
     public ResponseEntity<Map<String, Object>> getAllByUsername(@PathVariable("user") String user,
                                                                 @RequestParam(value = "page", required = false) Integer page,
                                                                 @RequestParam(value = "limit", required = false) Integer limit,
@@ -85,44 +88,47 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/{user}/cart")
+    @PostMapping("/user/{user}/cart")
     public CartDTO addProductToCart(@PathVariable("user") String user,
-                                    @RequestBody UserDTO dto,
+                                    @RequestBody CartDTO dto,
                                     HttpServletRequest servletRequest,
                                     HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
         UserDTO userDTO = userService.findByUsername(user);
         if (userJWT.getId() == userDTO.getId()) {
+            return cartService.save(dto);
         }
         return null;
     }
 
-    @PutMapping("/{user}/cart")
+    @PutMapping("/user/{user}/cart")
     public CartDTO updateProductInCart(@PathVariable("user") String user,
-                                       @RequestBody UserDTO dto,
+                                       @RequestBody CartDTO dto,
                                        HttpServletRequest servletRequest,
                                        HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
         UserDTO userDTO = userService.findByUsername(user);
         if (userJWT.getId() == userDTO.getId()) {
+            return cartService.save(dto);
         }
         return null;
     }
 
-    @DeleteMapping("/{user}/cart")
-    public CartDTO removeProductFromCart(@PathVariable("user") String user,
+    @DeleteMapping("/user/{user}/cart")
+    public String removeProductFromCart(@PathVariable("user") String user,
                                          @RequestBody long[] ids,
                                          HttpServletRequest servletRequest,
                                          HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
         UserDTO userDTO = userService.findByUsername(user);
         if (userJWT.getId() == userDTO.getId()) {
+            return cartService.delete(ids);
         }
         return null;
     }
 
-    @DeleteMapping("/{user}/cart/deleteAll")
-    public List<CartDTO> deleteCartByUserId(@PathVariable("user") String user,
+    @DeleteMapping("/user/{user}/cart/deleteAll")
+    public List<CartDTO> deleteCartByUsername(@PathVariable("user") String user,
                                             HttpServletRequest servletRequest,
                                             HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
@@ -151,8 +157,10 @@ public class UserController {
                         .withClaim("roles", user.getRoles().stream().map(RoleDTO::getName).collect(Collectors.toList()))
                         .sign(algorithm);
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", access_token);
-                tokens.put("refresh_token", refresh_token);
+//                tokens.put("access_token", access_token);
+//                tokens.put("refresh_token", refresh_token);
+                tokens.put("access_token", "Bearer " + access_token);
+                tokens.put("refresh_token", "Bearer " + refresh_token);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
             } catch (Exception exception) {

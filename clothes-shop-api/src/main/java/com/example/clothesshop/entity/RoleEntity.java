@@ -22,6 +22,7 @@ import java.util.Set;
 public class RoleEntity extends BaseEntity {
     private String name;
     private String role;
+    private Integer status;
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "roles")
 //    @JsonIgnore

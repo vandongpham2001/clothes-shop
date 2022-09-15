@@ -16,5 +16,5 @@ public interface IOrderService {
 
     OrderDTO save(OrderDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 }

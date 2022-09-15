@@ -58,8 +58,8 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        productService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return productService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

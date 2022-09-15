@@ -23,7 +23,7 @@ public interface IUserService {
 
     UserDTO save(UserDTO user);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     UserDTO addRoleToUser(String username, String roleName);
 

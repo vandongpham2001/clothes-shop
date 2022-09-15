@@ -15,7 +15,7 @@ public interface IProductService {
 
     ProductDTO save(ProductDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     ProductDTO findById(long id);
 }

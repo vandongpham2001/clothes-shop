@@ -7,6 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface ProductColorImageRepository extends PagingAndSortingRepository<ProductColorImageEntity, Long> {
     @Modifying
-    @Query("DELETE ProductColorImageEntity p WHERE p.product_color.id=?1")
+    @Query("DELETE FROM ProductColorImageEntity p WHERE p.product_color.id=?1")
     void deleteByProduct_color(Long product_color_id);
 }

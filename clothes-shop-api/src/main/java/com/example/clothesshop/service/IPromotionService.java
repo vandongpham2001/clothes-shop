@@ -14,7 +14,7 @@ public interface IPromotionService {
 
     PromotionDTO save(PromotionDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     PromotionDTO findById(long id);
 

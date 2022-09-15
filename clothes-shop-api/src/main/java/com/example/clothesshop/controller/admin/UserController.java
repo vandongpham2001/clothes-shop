@@ -79,8 +79,8 @@ public class UserController {
     }
 
     @DeleteMapping("/admin/user")
-    public void delete(@RequestBody long[] ids) {
-        userService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return userService.delete(ids);
     }
 
     @PostMapping("/admin/user/add-role-to-user")

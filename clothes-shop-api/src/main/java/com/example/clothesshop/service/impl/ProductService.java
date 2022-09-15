@@ -203,7 +203,7 @@ public class ProductService implements IProductService {
 
     @Override
 //    @Transactional
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             ProductEntity exists = productRepository.findById(id).get();
             if (exists != null) {
@@ -212,6 +212,7 @@ public class ProductService implements IProductService {
                 productRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override

@@ -15,7 +15,7 @@ public interface ISizeService {
 
     SizeDTO save(SizeDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     SizeDTO findById(long id);
 }

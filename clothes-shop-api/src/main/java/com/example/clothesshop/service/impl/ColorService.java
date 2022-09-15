@@ -55,13 +55,14 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             boolean exists = colorRepository.existsById(id);
             if (exists) {
                 colorRepository.deleteById(id);
             }
         }
+        return "deleted";
     }
 
     @Override

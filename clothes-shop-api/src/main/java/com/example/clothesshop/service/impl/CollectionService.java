@@ -107,7 +107,7 @@ public class CollectionService implements ICollectionService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             CollectionEntity exists = collectionRepository.findById(id).get();
             if (exists != null) {
@@ -116,6 +116,7 @@ public class CollectionService implements ICollectionService {
                 collectionRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override

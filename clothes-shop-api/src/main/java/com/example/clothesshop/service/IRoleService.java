@@ -14,7 +14,7 @@ public interface IRoleService {
 
     RoleDTO save(RoleDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     RoleDTO findById(long id);
 }

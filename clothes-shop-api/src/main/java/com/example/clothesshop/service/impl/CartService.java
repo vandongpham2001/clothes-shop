@@ -74,13 +74,14 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
-            CartEntity exists = cartRepository.findById(id).get();
-            if (exists != null) {
+            boolean exists = cartRepository.existsById(id);
+            if (exists) {
                 cartRepository.deleteById(id);
             }
         }
+        return "deleted";
     }
 
     @Override

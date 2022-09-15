@@ -55,8 +55,8 @@ public class RoleController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        roleService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return roleService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

@@ -14,6 +14,7 @@ import java.util.List;
 public class RoleDTO extends AbstractDTO<RoleDTO> {
     private String name;
     private String role;
+    private Integer status;
     @JsonIgnore
     private List<UserDTO> users = new ArrayList<>();
 }

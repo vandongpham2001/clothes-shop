@@ -16,7 +16,7 @@ public interface ICartService {
 
     CartDTO save(CartDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     List<CartDTO> deleteCartByUserId(long user_id);
 

@@ -1,5 +1,6 @@
 package com.example.clothesshop.entity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity extends BaseEntity{
+    @ApiModelProperty(notes = "Name of the account", example = "John Doe")
     private String name;
     private String username;
     private String email;

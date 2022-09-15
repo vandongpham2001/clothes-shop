@@ -16,7 +16,7 @@ public interface ICategoryService {
 
     CategoryDTO save(CategoryDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     List<CategoryDTO> findAllParentCategory();
 

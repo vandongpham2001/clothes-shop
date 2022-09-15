@@ -58,8 +58,8 @@ public class ColorController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        colorService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return colorService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

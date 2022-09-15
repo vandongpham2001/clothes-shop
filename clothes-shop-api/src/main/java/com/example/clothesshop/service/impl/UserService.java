@@ -125,7 +125,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             UserEntity exists = userRepository.findById(id).get();
             if (exists != null) {
@@ -133,6 +133,7 @@ public class UserService implements IUserService, UserDetailsService {
                 userRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override

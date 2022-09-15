@@ -66,8 +66,8 @@ public class CategoryController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        categoryService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return categoryService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

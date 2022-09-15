@@ -15,7 +15,7 @@ public interface ICollectionService {
 
     CollectionDTO save(CollectionDTO dto);
 
-    void delete(long[] ids);
+    String delete(long[] ids);
 
     CollectionDTO findById(long id);
 

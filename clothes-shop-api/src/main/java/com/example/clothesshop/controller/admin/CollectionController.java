@@ -58,8 +58,8 @@ public class CollectionController {
     }
 
     @DeleteMapping
-    public void delete(@RequestBody long[] ids) {
-        collectionService.delete(ids);
+    public String delete(@RequestBody long[] ids) {
+        return collectionService.delete(ids);
     }
 
     @GetMapping(value = "/{id}")

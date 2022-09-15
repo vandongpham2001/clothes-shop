@@ -25,6 +25,21 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private static final String[] PUBLIC_URLS = {
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/webjars/**"
+    };
+    private static final String[] ADMIN_URLS = {
+            "/api/admin/**"
+    };
+    private static final String[] USER_URLS = {
+            "/api/user/**"
+    };
+    private static final String[] SWAGGER_URLS = {
+            "/swagger-ui.html"
+    };
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -59,7 +74,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/swagger-ui.html").hasAnyAuthority(SystemConstant.ADMIN_ROLE)
 //                .anyRequest().permitAll()
 //                .and().httpBasic();
-        http.authorizeRequests().anyRequest().permitAll();
+
+
+        http.authorizeRequests()
+                .antMatchers(ADMIN_URLS).hasAnyAuthority(SystemConstant.ADMIN_ROLE)
+//                .antMatchers(USER_URLS).hasAnyAuthority(SystemConstant.USER_ROLE)
+                .antMatchers(PUBLIC_URLS).permitAll()
+                .anyRequest().permitAll()
+                .and();
+//        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

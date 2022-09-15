@@ -62,13 +62,15 @@ public class RoleService implements IRoleService {
     }
 
     @Override
-    public void delete(long[] ids) {
+    public String delete(long[] ids) {
         for (long id : ids) {
             RoleEntity exists = roleRepository.findById(id).get();
             if (exists != null) {
-                roleRepository.deleteById(id);
+                exists.setStatus(SystemConstant.INACTIVE_STATUS);
+                roleRepository.save(exists);
             }
         }
+        return "deleted";
     }
 
     @Override
