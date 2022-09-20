@@ -63,8 +63,8 @@ public class WebAppContextConfig {
 //    @Bean
 //    CommandLineRunner run(UserService userService, RoleService roleService){
 //		return args -> {
-//			roleService.save(new RoleDTO("ROLE_ADMIN", "", new ArrayList<>()));
-//			roleService.save(new RoleDTO("ROLE_USER", "", new ArrayList<>()));
+//			roleService.save(new RoleDTO("ROLE_ADMIN", "", SystemConstant.ACTIVE_STATUS, new ArrayList<>()));
+//			roleService.save(new RoleDTO("ROLE_USER", "", SystemConstant.ACTIVE_STATUS, new ArrayList<>()));
 //
 //			userService.save(new UserDTO("Admin", "admin","admin@gmail.com","1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
 //			userService.save(new UserDTO("Dong", "dong","dong@gmail.com", "1234", "0123456789", "Quang Nam", 1, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));

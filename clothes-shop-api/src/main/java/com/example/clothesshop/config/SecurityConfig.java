@@ -29,7 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/v2/api-docs",
             "/swagger-resources/**",
             "/swagger-ui/**",
-            "/webjars/**"
+            "/webjars/**",
+            "/api/**"
     };
     private static final String[] ADMIN_URLS = {
             "/api/admin/**"
@@ -39,6 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
     private static final String[] SWAGGER_URLS = {
             "/swagger-ui.html"
+    };
+    private static final String[] IS_LOGIN_URLS = {
+            "/user**"
     };
 
     @Override
@@ -78,9 +82,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(ADMIN_URLS).hasAnyAuthority(SystemConstant.ADMIN_ROLE)
+//                .antMatchers(IS_LOGIN_URLS).hasAnyAuthority(SystemConstant.ADMIN_ROLE, SystemConstant.USER_ROLE)
 //                .antMatchers(USER_URLS).hasAnyAuthority(SystemConstant.USER_ROLE)
+                .antMatchers(IS_LOGIN_URLS).permitAll()
                 .antMatchers(PUBLIC_URLS).permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()
+                .and()
+                .formLogin()
+                    .loginPage("/login")
+                    .usernameParameter("username")
+//                    .passwordParameter("password")
+                    .loginProcessingUrl("/login")
+                    .defaultSuccessUrl("/user", true)
+                    .permitAll()
+                .and()
+                .rememberMe()
+                .and()
+                .logout().permitAll()
                 .and();
 //        http.authorizeRequests().anyRequest().permitAll();
         http.addFilter(customAuthenticationFilter);

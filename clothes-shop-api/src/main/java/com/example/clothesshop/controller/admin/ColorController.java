@@ -26,7 +26,8 @@ public class ColorController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
-                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+                                                      @RequestParam(value = "status", required = false) Integer status) {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
@@ -35,13 +36,13 @@ public class ColorController {
         sortable = PagingUtil.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageColors = colorService.findAllPageable(pageable);
+            pageColors = colorService.findAllPageable(status, pageable);
             colors = pageColors.getContent();
             response.put("currentPage", pageColors.getNumber() + 1);
             response.put("totalItems", pageColors.getTotalElements());
             response.put("totalPages", pageColors.getTotalPages());
         } else {
-            colors = colorService.findAll(sortable);
+            colors = colorService.findAll(status, sortable);
         }
         response.put("colors", colors);
         return new ResponseEntity<>(response, HttpStatus.OK);

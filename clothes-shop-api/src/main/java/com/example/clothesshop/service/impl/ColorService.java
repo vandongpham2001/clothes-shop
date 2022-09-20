@@ -1,5 +1,6 @@
 package com.example.clothesshop.service.impl;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.ColorConverter;
 import com.example.clothesshop.dto.ColorDTO;
 import com.example.clothesshop.entity.ColorEntity;
@@ -25,19 +26,27 @@ public class ColorService implements IColorService {
     private ColorConverter colorConverter;
 
     @Override
-    public Page<ColorDTO> findAllPageable(Pageable pageable) {
+    public Page<ColorDTO> findAllPageable(Integer status, Pageable pageable) {
         Page<ColorDTO> results;
         Page<ColorEntity> entities;
-        entities = colorRepository.findAll(pageable);
+        if (status!=null) {
+            entities = colorRepository.findByStatus(status, pageable);
+        } else {
+            entities = colorRepository.findAll(pageable);
+        }
         results = colorConverter.mapEntityPageIntoDtoPage(entities, ColorDTO.class);
         return results;
     }
 
     @Override
-    public List<ColorDTO> findAll(Sort sort) {
+    public List<ColorDTO> findAll(Integer status, Sort sort) {
         List<ColorDTO> results;
         Iterable<ColorEntity> entities;
-        entities = colorRepository.findAll(sort);
+        if (status!=null) {
+            entities = colorRepository.findByStatus(status, sort);
+        } else {
+            entities = colorRepository.findAll(sort);
+        }
         results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), ColorDTO.class);
         return results;
     }
@@ -57,9 +66,10 @@ public class ColorService implements IColorService {
     @Override
     public String delete(long[] ids) {
         for (long id : ids) {
-            boolean exists = colorRepository.existsById(id);
-            if (exists) {
-                colorRepository.deleteById(id);
+            ColorEntity exists = colorRepository.findById(id).get();
+            if (exists != null) {
+                exists.setStatus(SystemConstant.INACTIVE_STATUS);
+                colorRepository.save(exists);
             }
         }
         return "deleted";

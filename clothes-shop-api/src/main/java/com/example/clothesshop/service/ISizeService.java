@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ISizeService {
-    Page<SizeDTO> findAllPageable(Pageable pageable);
+    Page<SizeDTO> findAllPageable(Integer status, Pageable pageable);
 
-    List<SizeDTO> findAll(Sort sort);
+    List<SizeDTO> findAll(Integer status, Sort sort);
 
     SizeDTO save(SizeDTO dto);
 

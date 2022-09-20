@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 public class ColorEntity extends BaseEntity {
     private String color;
+    private Integer status;
     @OneToMany(
             mappedBy = "color",
             cascade = CascadeType.ALL

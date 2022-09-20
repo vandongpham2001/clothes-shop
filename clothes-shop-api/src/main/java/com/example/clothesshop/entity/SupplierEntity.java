@@ -16,6 +16,7 @@ public class SupplierEntity extends BaseEntity {
     private String name;
     private String address;
     private String phone_number;
+    private Integer status;
     @OneToMany(
             mappedBy = "supplier",
             cascade = CascadeType.ALL

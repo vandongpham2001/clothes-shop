@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IColorService {
-    Page<ColorDTO> findAllPageable(Pageable pageable);
+    Page<ColorDTO> findAllPageable(Integer status, Pageable pageable);
 
-    List<ColorDTO> findAll(Sort sort);
+    List<ColorDTO> findAll(Integer status, Sort sort);
 
     ColorDTO save(ColorDTO dto);
 

@@ -27,7 +27,8 @@ public class SizeController {
     @GetMapping
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
-                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
+                                                      @RequestParam(value = "status", required = false) Integer status) {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
@@ -36,13 +37,13 @@ public class SizeController {
         sortable = PagingUtil.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageSizes = sizeService.findAllPageable(pageable);
+            pageSizes = sizeService.findAllPageable(status, pageable);
             sizes = pageSizes.getContent();
             response.put("currentPage", pageSizes.getNumber() + 1);
             response.put("totalItems", pageSizes.getTotalElements());
             response.put("totalPages", pageSizes.getTotalPages());
         } else {
-            sizes = sizeService.findAll(sortable);
+            sizes = sizeService.findAll(status, sortable);
         }
         response.put("sizes", sizes);
         return new ResponseEntity<>(response, HttpStatus.OK);

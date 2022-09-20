@@ -4,5 +4,6 @@ import lombok.Data;
 
 @Data
 public class SizeDTO extends AbstractDTO<SizeDTO> {
-    String size;
+    private String size;
+    private Integer status;
 }

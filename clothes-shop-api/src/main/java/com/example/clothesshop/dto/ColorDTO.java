@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class ColorDTO extends AbstractDTO<ColorDTO> {
     private String color;
+    private Integer status;
 }

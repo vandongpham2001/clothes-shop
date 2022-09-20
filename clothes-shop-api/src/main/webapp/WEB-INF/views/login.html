@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous" />
+    <link href="./template/login/style.css"
+          rel="stylesheet" type="text/css" media="all"/>
+</head>
+<body>
+<div class="container h-100">
+    <div class="row h-100">
+        <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+            <div class="d-table-cell align-middle">
+
+                <div class="text-center mt-4">
+                    <h1 class="h2">Welcome back, User</h1>
+                    <p class="lead">
+                        Sign in to your account to continue
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="m-sm-4">
+                            <div class="text-center">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Andrew Jones"
+                                     class="img-fluid rounded-circle" width="132" height="132">
+                            </div>
+                            <div th:if="${param.error}">
+                                <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+                            </div>
+                            <div th:if="${param.logout}">
+                                <p class="text-warning">You have been logged out</p>
+                            </div>
+                            <form th:action="@{/login}" method="post">
+                                <div class="form-group">
+                                    <label>Username</label>
+                                    <input class="form-control form-control-lg" type="text" id="username" name="username"
+                                           placeholder="Enter your username" required autofocus>
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input class="form-control form-control-lg" type="password" id="password" name="password"
+                                           placeholder="Enter your password" required>
+                                    <small>
+                                        <a href="#">Forgot password?</a>
+                                    </small>
+                                </div>
+                                <div>
+                                    <div class="custom-control custom-checkbox align-items-center">
+                                        <input type="checkbox" class="custom-control-input" value="remember-me"
+                                               name="remember-me" checked="">
+                                        <label class="custom-control-label text-small">Remember me next time</label>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-3">
+<!--                                    <a href="#" class="btn btn-lg btn-primary">Sign in</a>-->
+                                    <!-- <button type="submit" class="btn btn-lg btn-primary">Sign in</button> -->
+                                    <input type="submit" value="Sign in" class="btn btn-lg btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

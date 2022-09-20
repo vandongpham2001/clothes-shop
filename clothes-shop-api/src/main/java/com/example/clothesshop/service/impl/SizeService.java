@@ -1,5 +1,6 @@
 package com.example.clothesshop.service.impl;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.SizeConverter;
 import com.example.clothesshop.dto.SizeDTO;
 import com.example.clothesshop.entity.SizeEntity;
@@ -27,19 +28,27 @@ public class SizeService implements ISizeService {
     private SizeConverter sizeConverter;
 
     @Override
-    public Page<SizeDTO> findAllPageable(Pageable pageable) {
+    public Page<SizeDTO> findAllPageable(Integer status, Pageable pageable) {
         Page<SizeDTO> results;
         Page<SizeEntity> entities;
-        entities = sizeRepository.findAll(pageable);
+        if (status!=null) {
+            entities = sizeRepository.findByStatus(status, pageable);
+        } else {
+            entities = sizeRepository.findAll(pageable);
+        }
         results = sizeConverter.mapEntityPageIntoDtoPage(entities, SizeDTO.class);
         return results;
     }
 
     @Override
-    public List<SizeDTO> findAll(Sort sort) {
+    public List<SizeDTO> findAll(Integer status, Sort sort) {
         List<SizeDTO> results;
         Iterable<SizeEntity> entities;
-        entities = sizeRepository.findAll(sort);
+        if (status!=null) {
+            entities = sizeRepository.findByStatus(status, sort);
+        } else {
+            entities = sizeRepository.findAll(sort);
+        }
         results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), SizeDTO.class);
         return results;
     }
@@ -59,9 +68,10 @@ public class SizeService implements ISizeService {
     @Override
     public String delete(long[] ids) {
         for (long id : ids) {
-            boolean exists = sizeRepository.existsById(id);
-            if (exists) {
-                sizeRepository.deleteById(id);
+            SizeEntity exists = sizeRepository.findById(id).get();
+            if (exists != null) {
+                exists.setStatus(SystemConstant.INACTIVE_STATUS);
+                sizeRepository.save(exists);
             }
         }
         return "deleted";

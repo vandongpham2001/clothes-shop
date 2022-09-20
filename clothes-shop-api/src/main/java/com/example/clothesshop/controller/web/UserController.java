@@ -14,6 +14,8 @@ import com.example.clothesshop.service.IUserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -91,6 +93,12 @@ public class UserController {
 
     @PostMapping("/user/{user}/cart")
     @ApiOperation(value = "Add a new product to cart", notes = "Add a new product information into the system", response = CartDTO.class)
+    @ApiResponses({@ApiResponse(responseCode = "200", description = "Product was added to cart successfully"),
+            @ApiResponse(responseCode = "500", description = "Successfully retrieved list"),
+            @ApiResponse(responseCode = "480", description = "The request is malformed or invalid"),
+            @ApiResponse(responseCode = "404", description = "The resource URL was not found on the server"),
+            @ApiResponse(responseCode = "403", description = "You are not authorized . Please authenticate and try again"),
+            @ApiResponse(responseCode = "401", description = "You don't have permission to this resource")})
     public CartDTO addProductToCart(@PathVariable("user") String user,
                                     @RequestBody CartDTO dto,
                                     HttpServletRequest servletRequest,
@@ -98,6 +106,7 @@ public class UserController {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
         UserDTO userDTO = userService.findByUsername(user);
         if (userJWT.getId() == userDTO.getId()) {
+            dto.setUser_id(userJWT.getId());
             return cartService.save(dto);
         }
         return null;
@@ -111,6 +120,7 @@ public class UserController {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
         UserDTO userDTO = userService.findByUsername(user);
         if (userJWT.getId() == userDTO.getId()) {
+            dto.setUser_id(userJWT.getId());
             return cartService.save(dto);
         }
         return null;

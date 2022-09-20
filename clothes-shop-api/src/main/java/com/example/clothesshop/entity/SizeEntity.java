@@ -13,7 +13,8 @@ import java.util.List;
 @Table(name = "Sizes")
 @Data
 public class SizeEntity extends BaseEntity {
-    String size;
+    private String size;
+    private Integer status;
     @OneToMany(
             mappedBy = "size",
             cascade = CascadeType.ALL

@@ -10,6 +10,7 @@ public class SupplierDTO extends AbstractDTO<SupplierDTO> {
     private String name;
     private String address;
     private String phone_number;
+    private Integer status;
 //    @JsonIgnore
     private List<ReceiptDTO> receipts = new ArrayList<>();
 }
