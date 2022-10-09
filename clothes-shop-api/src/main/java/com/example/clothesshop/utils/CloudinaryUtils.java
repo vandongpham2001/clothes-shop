@@ -1,4 +1,4 @@
-package com.example.clothesshop.util;
+package com.example.clothesshop.utils;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.Map;
 
-public class CloudinaryUtil {
+public class CloudinaryUtils {
     public static String upload(Cloudinary cloudinary, MultipartFile file) throws IOException {
         byte[] bytes = file.getBytes();
         Map r = cloudinary.uploader().unsignedUpload(bytes, CloudinaryConstant.upload_preset,ObjectUtils.asMap("resource_type", "auto"));

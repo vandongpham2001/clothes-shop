@@ -3,7 +3,7 @@ package com.example.clothesshop.controller.admin;
 import com.example.clothesshop.dto.ProductToPromotion;
 import com.example.clothesshop.dto.PromotionDTO;
 import com.example.clothesshop.service.IPromotionService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +32,7 @@ public class PromotionController {
         Sort sortable;
         Page<PromotionDTO> pagePromotions;
         List<PromotionDTO> promotions;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pagePromotions = promotionService.findAllPageable(status, pageable);

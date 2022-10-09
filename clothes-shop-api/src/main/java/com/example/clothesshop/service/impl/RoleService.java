@@ -6,7 +6,7 @@ import com.example.clothesshop.dto.RoleDTO;
 import com.example.clothesshop.entity.RoleEntity;
 import com.example.clothesshop.repository.RoleRepository;
 import com.example.clothesshop.service.IRoleService;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.IterableUtils;
@@ -44,7 +44,7 @@ public class RoleService implements IRoleService {
         List<RoleDTO> results;
         Iterable<RoleEntity> entities;
         entities = roleRepository.findAll(sort);
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), RoleDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), RoleDTO.class);
         return results;
     }
 
@@ -56,6 +56,7 @@ public class RoleService implements IRoleService {
             entity = roleConverter.toEntity(dto, old_entity);
         } else {
             entity = roleConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         log.info("Saving new role {} to the database", dto.getName());
         return roleConverter.toDTO(roleRepository.save(entity));

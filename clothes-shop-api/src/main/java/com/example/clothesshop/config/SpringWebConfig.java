@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -54,5 +55,11 @@ public class SpringWebConfig implements WebMvcConfigurer {
 //        viewResolver.setOrder(1);
 //        viewResolver.setViewNames(new String[] {".html", ".xhtml"});
         return viewResolver;
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+//        WebMvcConfigurer.super.addViewControllers(registry);
+//        registry.addViewController("/user").setViewName("user");
     }
 }

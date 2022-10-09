@@ -1,16 +1,9 @@
 package com.example.clothesshop.controller.admin;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.clothesshop.dto.UserDTO;
-import com.example.clothesshop.dto.RoleDTO;
 import com.example.clothesshop.dto.RoleToUser;
-import com.example.clothesshop.dto.UserDTO;
 import com.example.clothesshop.service.IUserService;
-import com.example.clothesshop.util.PagingUtil;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,19 +14,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URI;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
-
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController(value = "userApiOfAdmin")
 @RequestMapping(path = "api")
@@ -56,7 +40,7 @@ public class UserController {
         Sort sortable;
         Page<UserDTO> pageUsers;
         List<UserDTO> users;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageUsers = userService.findAllPageable(status, pageable);

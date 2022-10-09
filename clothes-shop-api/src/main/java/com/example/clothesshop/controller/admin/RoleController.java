@@ -2,7 +2,7 @@ package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.dto.RoleDTO;
 import com.example.clothesshop.service.IRoleService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,7 +39,7 @@ public class RoleController {
         Sort sortable;
         Page<RoleDTO> pageRoles;
         List<RoleDTO> roles;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageRoles = roleService.findAllPageable(pageable);

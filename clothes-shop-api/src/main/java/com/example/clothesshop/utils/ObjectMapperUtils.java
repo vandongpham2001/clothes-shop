@@ -1,4 +1,4 @@
-package com.example.clothesshop.util;
+package com.example.clothesshop.utils;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ObjectMapperUtil {
+public class ObjectMapperUtils {
     private static final ModelMapper modelMapper;
 
     /**
@@ -23,7 +23,7 @@ public class ObjectMapperUtil {
     /**
      * Hide from public usage.
      */
-    private ObjectMapperUtil() {
+    private ObjectMapperUtils() {
     }
 
     /**

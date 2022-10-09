@@ -5,18 +5,14 @@ import com.example.clothesshop.converter.OrderConverter;
 import com.example.clothesshop.converter.OrderDetailConverter;
 import com.example.clothesshop.dto.OrderDTO;
 import com.example.clothesshop.dto.OrderDetailDTO;
-import com.example.clothesshop.dto.ProductColorDTO;
 import com.example.clothesshop.entity.OrderDetailEntity;
 import com.example.clothesshop.entity.OrderEntity;
-import com.example.clothesshop.entity.ProductColorEntity;
-import com.example.clothesshop.entity.ProductEntity;
 import com.example.clothesshop.repository.OrderDetailRepository;
 import com.example.clothesshop.repository.OrderRepository;
 import com.example.clothesshop.repository.ProductColorSizeRepository;
 import com.example.clothesshop.repository.UserRepository;
 import com.example.clothesshop.service.IOrderService;
-import com.example.clothesshop.util.CloudinaryUtil;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,7 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -66,7 +61,7 @@ public class OrderService implements IOrderService {
         } else {
             entities = orderRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), OrderDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), OrderDTO.class);
         return results;
     }
 

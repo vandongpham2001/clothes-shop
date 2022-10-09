@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
@@ -11,6 +13,17 @@
           rel="stylesheet" type="text/css" media="all"/>
 </head>
 <body>
+<!--<div class="row mb-3">-->
+<!--    <div class="col-sm-3">-->
+<!--        <h6 class="mb-0">Access Token</h6>-->
+<!--    </div>-->
+<!--    <div class="col-sm-9 text-secondary">-->
+<!--        <textarea class="form-control autosize" id="access_token" name="access_token" placeholder="Access token" th:inline="text" readonly style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 62px;">[[${token != null} ? ${token} : 'Null value']]</textarea>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<h1>Welcome [[${#httpServletRequest.remoteUser}]] to My Company!!!</h1>-->
+<!--<span sec:authentication="principal.username"></span>-->
+<!--<span th:text ="${#authentication.getPrincipal().getUser().getName()}"></span>-->
 <div class="container">
     <div class="main-body">
         <div class="row">
@@ -21,16 +34,18 @@
                             <img src="https://bootdey.com/img/Content/avatar/avatar6.png" alt="Admin"
                                  class="rounded-circle p-1 bg-primary" width="110">
                             <div class="mt-3">
-                                <h4>John Doe</h4>
+                                <h4 th:text="${user.name != null} ? ${user.name} : 'Null value' ">John Doe</h4>
                                 <p class="text-secondary mb-1">Full Stack Developer</p>
-                                <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                <p class="text-muted font-size-sm" th:text="${user.address != null} ? ${user.address} : 'Null value' ">Bay Area, San Francisco, CA</p>
                             </div>
                         </div>
                         <hr class="my-4">
                         <div class="mt-3">
-                            <div class="input-group">
-                                <input type="button" class="btn btn-primary px-4 form-control" value="Logout">
-                            </div>
+<!--                            <div class="input-group">-->
+                                <form th:action="@{/logout}" method="post">
+                                    <input type="submit" class="btn btn-primary px-4 form-control" value="Logout">
+                                </form>
+<!--                            </div>-->
                         </div>
                     </div>
                 </div>
@@ -43,7 +58,7 @@
                                 <h6 class="mb-0">Access Token</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <textarea class="form-control autosize" id="access_token" name="access_token" placeholder="Access token" style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 62px;"></textarea>
+                                <textarea class="form-control autosize" id="access_token" name="access_token" placeholder="Access token" th:inline="text" readonly style="overflow: hidden; overflow-wrap: break-word; resize: none; height: 180px;">[[${token != null} ? ${token} : 'Null value']]</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -51,7 +66,8 @@
                                 <h6 class="mb-0">Full Name</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" th:value="${user.name}">
+                                <input type="text" class="form-control" id="full_name" name="full_name" placeholder="Full Name" th:value="${user.name != null} ? ${user.name} : 'Null value' " readonly>
+<!--                                th:value="${user.name}"-->
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -59,7 +75,8 @@
                                 <h6 class="mb-0">Username</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" th:value="${user.username}">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Username" th:value="${user.username != null} ? ${user.username} : 'Null value' " readonly>
+<!--                                th:value="${user.username}"-->
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -67,7 +84,8 @@
                                 <h6 class="mb-0">Email</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" th:value="${user.email}">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="Email" th:value="${user.email != null} ? ${user.email} : 'Null value' " readonly>
+<!--                                th:value="${user.email}"-->
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -75,7 +93,8 @@
                                 <h6 class="mb-0">Phone</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" th:value="${user.[phone_number]}">
+                                <input type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Phone Number" th:value="${user.phone != null} ? ${user.phone} : 'Null value' " readonly>
+<!--                                th:value="${user.phone_number}"-->
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -83,7 +102,7 @@
                                 <h6 class="mb-0">Address</h6>
                             </div>
                             <div class="col-sm-9 text-secondary">
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Address" th:value="${user.address}">
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Address" th:value="${user.address != null} ? ${user.address} : 'Null value' " readonly>
                             </div>
                         </div>
                         <div class="row">

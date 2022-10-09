@@ -7,9 +7,9 @@ import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.entity.CategoryEntity;
 import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.service.ICategoryService;
-import com.example.clothesshop.util.CloudinaryUtil;
-import com.example.clothesshop.util.ObjectMapperUtil;
-import com.example.clothesshop.util.SlugUtil;
+import com.example.clothesshop.utils.CloudinaryUtils;
+import com.example.clothesshop.utils.ObjectMapperUtils;
+import com.example.clothesshop.utils.SlugUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -54,7 +54,7 @@ public class CategoryService implements ICategoryService {
             entities = categoryRepository.findAll(sort);
         }
 //        Iterator<CategoryEntity> iterator = entities.iterator();
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CategoryDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), CategoryDTO.class);
         return results;
     }
 
@@ -63,11 +63,11 @@ public class CategoryService implements ICategoryService {
     public CategoryDTO save(CategoryDTO dto){
         CategoryEntity entity;
         if (dto.getName() != null) {
-            dto.setSlug(SlugUtil.toSlug(dto.getName()));
+            dto.setSlug(SlugUtils.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
                 dto.setImage(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -79,11 +79,11 @@ public class CategoryService implements ICategoryService {
         if (dto.getId() != null) {
             CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
             if (old_entity.getImage() != null && dto.getFile() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getImage());
 //            System.out.println(file_name);
 //            String destroy = null;
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -93,6 +93,7 @@ public class CategoryService implements ICategoryService {
         }
         else {
             entity = categoryConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return categoryConverter.toDTO(categoryRepository.save(entity));
     }
@@ -114,13 +115,13 @@ public class CategoryService implements ICategoryService {
     @Override
     public List<CategoryDTO> findAllParentCategory() {
         List<CategoryEntity> entities = categoryRepository.findParentCategory();
-        return ObjectMapperUtil.mapAll(entities, CategoryDTO.class);
+        return ObjectMapperUtils.mapAll(entities, CategoryDTO.class);
     }
 
     @Override
     public List<CategoryDTO> findByParentId(Long parent_id) {
         List<CategoryEntity> entities = categoryRepository.findByParentId(parent_id);
-        return ObjectMapperUtil.mapAll(entities, CategoryDTO.class);
+        return ObjectMapperUtils.mapAll(entities, CategoryDTO.class);
     }
 
     @Override

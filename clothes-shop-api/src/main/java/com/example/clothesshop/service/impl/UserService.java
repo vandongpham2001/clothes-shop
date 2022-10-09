@@ -7,12 +7,13 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.UserConverter;
 import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.dto.UserDetailsImpl;
 import com.example.clothesshop.entity.RoleEntity;
 import com.example.clothesshop.entity.UserEntity;
 import com.example.clothesshop.repository.RoleRepository;
 import com.example.clothesshop.repository.UserRepository;
 import com.example.clothesshop.service.IUserService;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,8 +50,8 @@ public class UserService implements IUserService, UserDetailsService {
     private UserConverter userConverter;
     @Autowired
     private RoleRepository roleRepository;
-
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Page<UserDTO> findAllPageable(Integer status, Pageable pageable) {
@@ -74,7 +75,7 @@ public class UserService implements IUserService, UserDetailsService {
         } else {
             entities = userRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), UserDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), UserDTO.class);
         return results;
     }
 
@@ -119,6 +120,7 @@ public class UserService implements IUserService, UserDetailsService {
             entity = userConverter.toEntity(dto, old_entity);
         } else {
             entity = userConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return userConverter.toDTO(userRepository.save(entity));
 
@@ -155,7 +157,7 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public List<UserDTO> getUsers() {
         Iterable<UserEntity> entities = userRepository.findAll();
-        return ObjectMapperUtil.mapAll(IterableUtils.toList(entities), UserDTO.class);
+        return ObjectMapperUtils.mapAll(IterableUtils.toList(entities), UserDTO.class);
     }
 
     @Override
@@ -170,7 +172,7 @@ public class UserService implements IUserService, UserDetailsService {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             try {
                 String access_token = authorizationHeader.substring("Bearer ".length());
-                Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
+                Algorithm algorithm = Algorithm.HMAC512("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
                 DecodedJWT decodedJWT = verifier.verify(access_token);
                 String username = decodedJWT.getSubject();
@@ -191,17 +193,32 @@ public class UserService implements IUserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByUsername(username);
+
+//        UserDTO user = userConverter.toDTO(userRepository.findByUsername(username));
+//
+//        if (user == null) {
+//            throw new UsernameNotFoundException("Could not find user");
+//        }
+//
+//        return UserDetailsImpl.build(user);
+
+//        UserEntity user = userRepository.findByUsername(username);
+//        if (user == null) {
+//            log.error("User not found in the database");
+//            throw new UsernameNotFoundException("User not found in the database");
+//        } else {
+//            log.info("User found in the database: {}", username);
+//        }
+//        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//        user.getRoles().forEach(role -> {
+//            authorities.add(new SimpleGrantedAuthority(role.getName()));
+//        });
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+        UserDTO user = userConverter.toDTO(userRepository.findByUsername(username));
         if (user == null) {
-            log.error("User not found in the database");
-            throw new UsernameNotFoundException("User not found in the database");
-        } else {
-            log.info("User found in the database: {}", username);
+            throw new UsernameNotFoundException("Could not find user");
         }
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        user.getRoles().forEach(role -> {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
-        });
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+
+        return new UserDetailsImpl(user);
     }
 }

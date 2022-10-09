@@ -4,14 +4,13 @@ import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.CollectionConverter;
 import com.example.clothesshop.dto.CollectionDTO;
-import com.example.clothesshop.dto.ProductToCollection;
 import com.example.clothesshop.entity.CollectionEntity;
 import com.example.clothesshop.entity.ProductEntity;
 import com.example.clothesshop.repository.CollectionRepository;
 import com.example.clothesshop.repository.ProductRepository;
 import com.example.clothesshop.service.ICollectionService;
-import com.example.clothesshop.util.CloudinaryUtil;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.CloudinaryUtils;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,7 +56,7 @@ public class CollectionService implements ICollectionService {
         } else {
             entities = collectionRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CollectionDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), CollectionDTO.class);
         return results;
     }
 
@@ -65,7 +64,7 @@ public class CollectionService implements ICollectionService {
     public CollectionDTO save(CollectionDTO dto) {
         if (dto.getMobile_banner_file() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getMobile_banner_file());
+                String img = CloudinaryUtils.upload(cloudinary, dto.getMobile_banner_file());
                 dto.setMobile_banner(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,7 +72,7 @@ public class CollectionService implements ICollectionService {
         }
         if (dto.getPc_banner_file() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getPc_banner_file());
+                String img = CloudinaryUtils.upload(cloudinary, dto.getPc_banner_file());
                 dto.setPc_banner(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -83,17 +82,17 @@ public class CollectionService implements ICollectionService {
         if (dto.getId() != null) {
             CollectionEntity old_entity = collectionRepository.findById(dto.getId()).get();
             if (old_entity.getMobile_banner() != null  && dto.getMobile_banner_file() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getMobile_banner());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getMobile_banner());
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             if (old_entity.getPc_banner() != null  && dto.getPc_banner_file() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getPc_banner());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getPc_banner());
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -102,6 +101,7 @@ public class CollectionService implements ICollectionService {
         }
         else {
             entity = collectionConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return collectionConverter.toDTO(collectionRepository.save(entity));
     }

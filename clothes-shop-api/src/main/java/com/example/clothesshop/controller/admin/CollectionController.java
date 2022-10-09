@@ -3,7 +3,7 @@ package com.example.clothesshop.controller.admin;
 import com.example.clothesshop.dto.CollectionDTO;
 import com.example.clothesshop.dto.ProductToCollection;
 import com.example.clothesshop.service.ICollectionService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,13 +26,13 @@ public class CollectionController {
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
                                                       @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-                                                      @RequestParam(value = "status", required = false) Integer status) {
+                                                      @RequestParam(value = "status", required = false, defaultValue = "1") Integer status) {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
         Page<CollectionDTO> pageCollections;
         List<CollectionDTO> collections;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageCollections = collectionService.findAllPageable(status, pageable);

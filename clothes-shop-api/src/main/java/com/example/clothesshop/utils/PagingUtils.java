@@ -1,8 +1,8 @@
-package com.example.clothesshop.util;
+package com.example.clothesshop.utils;
 
 import org.springframework.data.domain.Sort;
 
-public class PagingUtil<T> {
+public class PagingUtils<T> {
 //    public Page ConvertListToPage(Pageable pageable, List<T> list){
 //        final int start = (int) pageable.getOffset();
 //        final int end = Math.min((start + pageable.getPageSize()), list.size());

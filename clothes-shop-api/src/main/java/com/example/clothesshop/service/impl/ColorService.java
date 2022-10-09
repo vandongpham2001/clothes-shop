@@ -6,7 +6,7 @@ import com.example.clothesshop.dto.ColorDTO;
 import com.example.clothesshop.entity.ColorEntity;
 import com.example.clothesshop.repository.ColorRepository;
 import com.example.clothesshop.service.IColorService;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +47,7 @@ public class ColorService implements IColorService {
         } else {
             entities = colorRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), ColorDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ColorDTO.class);
         return results;
     }
 
@@ -59,6 +59,7 @@ public class ColorService implements IColorService {
             entity = colorConverter.toEntity(dto, old_entity);
         } else {
             entity = colorConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return colorConverter.toDTO(colorRepository.save(entity));
     }

@@ -2,7 +2,7 @@ package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.service.ICategoryService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class CategoryController {
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
                                                       @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-                                                      @RequestParam(value = "status", required = false) Integer status) {
+                                                      @RequestParam(value = "status", required = false, defaultValue = "1") Integer status) {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;
@@ -40,7 +39,7 @@ public class CategoryController {
 //        if (sort.equals("desc")) {
 //            sortable = Sort.by(Sort.Direction.DESC, "createdDate");
 //        }
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageCategories = categoryService.findAllPageable(status, pageable);

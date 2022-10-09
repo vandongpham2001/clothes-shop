@@ -9,8 +9,8 @@ import com.example.clothesshop.entity.PromotionEntity;
 import com.example.clothesshop.repository.ProductRepository;
 import com.example.clothesshop.repository.PromotionRepository;
 import com.example.clothesshop.service.IPromotionService;
-import com.example.clothesshop.util.CloudinaryUtil;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.CloudinaryUtils;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,7 +55,7 @@ public class PromotionService implements IPromotionService {
         } else {
             entities = promotionRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), PromotionDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), PromotionDTO.class);
         return results;
     }
 
@@ -63,7 +63,7 @@ public class PromotionService implements IPromotionService {
     public PromotionDTO save(PromotionDTO dto) {
         if (dto.getMobile_banner_file() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getMobile_banner_file());
+                String img = CloudinaryUtils.upload(cloudinary, dto.getMobile_banner_file());
                 dto.setMobile_banner(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -71,7 +71,7 @@ public class PromotionService implements IPromotionService {
         }
         if (dto.getPc_banner_file() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getPc_banner_file());
+                String img = CloudinaryUtils.upload(cloudinary, dto.getPc_banner_file());
                 dto.setPc_banner(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -81,17 +81,17 @@ public class PromotionService implements IPromotionService {
         if (dto.getId() != null) {
             PromotionEntity old_entity = promotionRepository.findById(dto.getId()).get();
             if (old_entity.getMobile_banner() != null  && dto.getMobile_banner_file() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getMobile_banner());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getMobile_banner());
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
             if (old_entity.getPc_banner() != null  && dto.getPc_banner_file() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getPc_banner());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getPc_banner());
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -100,6 +100,7 @@ public class PromotionService implements IPromotionService {
         }
         else {
             entity = promotionConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return promotionConverter.toDTO(promotionRepository.save(entity));
     }

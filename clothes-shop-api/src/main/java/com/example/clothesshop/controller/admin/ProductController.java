@@ -2,7 +2,7 @@ package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.dto.ProductDTO;
 import com.example.clothesshop.service.IProductService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +32,7 @@ public class ProductController {
         Sort sortable;
         Page<ProductDTO> pageProducts;
         List<ProductDTO> products;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageProducts = productService.findAllPageable(status, pageable);

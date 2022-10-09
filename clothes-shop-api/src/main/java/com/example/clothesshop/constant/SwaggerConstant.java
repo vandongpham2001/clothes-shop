@@ -14,7 +14,7 @@ public class SwaggerConstant {
             "In the description property, in addition to describing your " +
             "overall API, you might want to provide some basic instructions to users on how to use Swagger UI. " +
             "If there's a test account they should use, you can provide the information they need in this space. " +
-            "</br></br><h3> **Note**: Some API requires an `API KEY`, please log into your account to access your key <a target='_blank' href=\"http://localhost:8080/login\">here</a> </h3>.";
+            "</br></br><h3> **Note**: Some API requires an `API KEY`, please log into your account to access your key <a target='_blank' href=\"http://clothes-shop-api.herokuapp.com/login\">here</a> </h3>.";
     public static final String TERM_OF_SERVICE = "Your term of service will go here";
     public static final String API_VERSION = "1.1";
     public static final String LICENSE = "Apache License 2.1.0";

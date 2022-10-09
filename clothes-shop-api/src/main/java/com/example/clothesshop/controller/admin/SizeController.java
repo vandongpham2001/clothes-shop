@@ -2,7 +2,7 @@ package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.dto.SizeDTO;
 import com.example.clothesshop.service.ISizeService;
-import com.example.clothesshop.util.PagingUtil;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class SizeController {
         Sort sortable;
         Page<SizeDTO> pageSizes;
         List<SizeDTO> sizes;
-        sortable = PagingUtil.sort(sort);
+        sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageSizes = sizeService.findAllPageable(status, pageable);

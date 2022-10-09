@@ -6,7 +6,7 @@ import com.example.clothesshop.dto.SizeDTO;
 import com.example.clothesshop.entity.SizeEntity;
 import com.example.clothesshop.repository.SizeRepository;
 import com.example.clothesshop.service.ISizeService;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -49,7 +48,7 @@ public class SizeService implements ISizeService {
         } else {
             entities = sizeRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), SizeDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), SizeDTO.class);
         return results;
     }
 
@@ -61,6 +60,7 @@ public class SizeService implements ISizeService {
             entity = sizeConverter.toEntity(dto, old_entity);
         } else {
             entity = sizeConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return sizeConverter.toDTO(sizeRepository.save(entity));
     }

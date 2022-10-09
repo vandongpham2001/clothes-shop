@@ -3,6 +3,7 @@ package com.example.clothesshop.config;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -10,6 +11,10 @@ import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
+import springfox.documentation.spring.web.scanners.ApiDescriptionReader;
+import springfox.documentation.spring.web.scanners.ApiListingScanner;
+import springfox.documentation.spring.web.scanners.ApiModelReader;
 import springfox.documentation.swagger.web.*;
 
 import java.util.Collections;
@@ -91,4 +96,11 @@ public class SwaggerConfig {
                 .validatorUrl(null)
                 .build();
     }
+
+//    @Primary
+//    @Bean
+//    public ApiListingScanner addExtraOperations(ApiDescriptionReader apiDescriptionReader, ApiModelReader apiModelReader, DocumentationPluginsManager pluginsManager)
+//    {
+//        return new FormLoginOperations(apiDescriptionReader, apiModelReader, pluginsManager);
+//    }
 }

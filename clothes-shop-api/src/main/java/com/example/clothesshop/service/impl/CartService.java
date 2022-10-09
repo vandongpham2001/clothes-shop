@@ -8,7 +8,7 @@ import com.example.clothesshop.repository.CartRepository;
 import com.example.clothesshop.repository.ProductColorSizeRepository;
 import com.example.clothesshop.repository.UserRepository;
 import com.example.clothesshop.service.ICartService;
-import com.example.clothesshop.util.ObjectMapperUtil;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -45,7 +45,7 @@ public class CartService implements ICartService {
         List<CartDTO> results;
         Iterable<CartEntity> entities;
         entities = cartRepository.findAll(sort);
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), CartDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), CartDTO.class);
         return results;
     }
 
@@ -90,7 +90,7 @@ public class CartService implements ICartService {
         if (user != null){
             cartRepository.deleteByUserId(user_id);
         }
-        return ObjectMapperUtil.mapAll(cartRepository.findAllByUserId(user_id), CartDTO.class);
+        return ObjectMapperUtils.mapAll(cartRepository.findAllByUserId(user_id), CartDTO.class);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class CartService implements ICartService {
     @Override
     public List<CartDTO> findAllByUserId(long user_id) {
         List<CartEntity> entities = cartRepository.findAllByUserId(user_id);
-        return ObjectMapperUtil.mapAll(entities, CartDTO.class);
+        return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class CartService implements ICartService {
         if (user != null){
             cartRepository.deleteByUsername(username);
         }
-        return ObjectMapperUtil.mapAll(cartRepository.findAllByUsername(username), CartDTO.class);
+        return ObjectMapperUtils.mapAll(cartRepository.findAllByUsername(username), CartDTO.class);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class CartService implements ICartService {
     @Override
     public List<CartDTO> findAllByUsername(String username) {
         List<CartEntity> entities = cartRepository.findAllByUsername(username);
-        return ObjectMapperUtil.mapAll(entities, CartDTO.class);
+        return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class CartService implements ICartService {
         if (user != null){
             cartRepository.deleteByEmail(email);
         }
-        return ObjectMapperUtil.mapAll(cartRepository.findAllByEmail(email), CartDTO.class);
+        return ObjectMapperUtils.mapAll(cartRepository.findAllByEmail(email), CartDTO.class);
     }
 
     @Override
@@ -144,6 +144,6 @@ public class CartService implements ICartService {
     @Override
     public List<CartDTO> findAllByEmail(String email) {
         List<CartEntity> entities = cartRepository.findAllByEmail(email);
-        return ObjectMapperUtil.mapAll(entities, CartDTO.class);
+        return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
 }

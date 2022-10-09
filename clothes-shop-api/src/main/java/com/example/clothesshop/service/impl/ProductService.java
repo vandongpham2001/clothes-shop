@@ -13,9 +13,9 @@ import com.example.clothesshop.dto.ProductDTO;
 import com.example.clothesshop.entity.*;
 import com.example.clothesshop.repository.*;
 import com.example.clothesshop.service.IProductService;
-import com.example.clothesshop.util.CloudinaryUtil;
-import com.example.clothesshop.util.ObjectMapperUtil;
-import com.example.clothesshop.util.SlugUtil;
+import com.example.clothesshop.utils.CloudinaryUtils;
+import com.example.clothesshop.utils.ObjectMapperUtils;
+import com.example.clothesshop.utils.SlugUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -77,7 +77,7 @@ public class ProductService implements IProductService {
         } else {
             entities = productRepository.findAll(sort);
         }
-        results = ObjectMapperUtil.mapAll(IterableUtils.toList(entities), ProductDTO.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
         return results;
     }
 
@@ -85,11 +85,11 @@ public class ProductService implements IProductService {
 //    @Transactional
     public ProductDTO save(ProductDTO dto) {
         if (dto.getName() != null) {
-            dto.setSlug(SlugUtil.toSlug(dto.getName()));
+            dto.setSlug(SlugUtils.toSlug(dto.getName()));
         }
         if (dto.getFile() != null) {
             try {
-                String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
                 dto.setImage(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -101,9 +101,9 @@ public class ProductService implements IProductService {
         if (dto.getId() != null) {
             ProductEntity old_entity = productRepository.findById(dto.getId()).get();
             if (old_entity.getImage() != null && dto.getFile() != null) {
-                String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(old_entity.getImage());
+                String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(old_entity.getImage());
                 try {
-                    String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                    String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -111,6 +111,7 @@ public class ProductService implements IProductService {
             entity = productConverter.toEntity(dto, old_entity);
         } else {
             entity = productConverter.toEntity(dto);
+            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         if (dto.getCategory_id() != null) {
             entity.setCategory(categoryRepository.findById(dto.getCategory_id()).get());
@@ -121,7 +122,7 @@ public class ProductService implements IProductService {
                 productColorDTO.setProduct_id(savedProduct.getId());
                 if (productColorDTO.getFile() != null) {
                     try {
-                        String img = CloudinaryUtil.upload(cloudinary, dto.getFile()[0]);
+                        String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
                         productColorDTO.setThumbnail(img);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -136,9 +137,9 @@ public class ProductService implements IProductService {
                 if (productColorDTO.getId() != null){
                     ProductColorEntity oldProductColorEntity = productColorRepository.findById(productColorDTO.getId()).get();
                     if (oldProductColorEntity.getThumbnail() != null && productColorDTO.getFile() != null) {
-                        String file_name = CloudinaryUtil.getNameImgFromUrlCloudinary(oldProductColorEntity.getThumbnail());
+                        String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(oldProductColorEntity.getThumbnail());
                         try {
-                            String destroy = CloudinaryUtil.destroy(cloudinary, file_name);
+                            String destroy = CloudinaryUtils.destroy(cloudinary, file_name);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -183,7 +184,7 @@ public class ProductService implements IProductService {
                         ProductColorImageEntity productColorImageEntity = new ProductColorImageEntity();
                         productColorImageEntity.setProduct_color(productColorRepository.findById(savedProductColor.getId()).get());
                         try {
-                            String img = CloudinaryUtil.upload(cloudinary, productColorImage);
+                            String img = CloudinaryUtils.upload(cloudinary, productColorImage);
                             productColorImageEntity.setPath(img);
                             if (!productColorImageEntity.getPath().isEmpty()) {
                                 ProductColorImageDTO savedProductColorImage = productColorImageConverter.toDTO(productColorImageRepository.save(productColorImageEntity));
