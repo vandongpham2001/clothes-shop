@@ -12,17 +12,17 @@ public interface ICartService {
 
     List<CartDTO> findAll(Sort sort);
 
-    CartDTO findById(long id);
+    CartDTO findById(Long id);
 
     CartDTO save(CartDTO dto);
 
-    String delete(long[] ids);
+    String delete(Long[] ids);
 
-    List<CartDTO> deleteCartByUserId(long user_id);
+    List<CartDTO> deleteCartByUserId(Long user_id);
 
-    Page<CartDTO> findAllByUserId(long user_id, Pageable pageable);
+    Page<CartDTO> findAllByUserId(Long user_id, Pageable pageable);
 
-    List<CartDTO> findAllByUserId(long user_id);
+    List<CartDTO> findAllByUserId(Long user_id);
 
     List<CartDTO> deleteCartByUsername(String username);
 

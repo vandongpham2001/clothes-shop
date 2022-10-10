@@ -58,7 +58,7 @@ public class OrderController {
     }
 
     @DeleteMapping
-    public String delete(@RequestBody long[] ids) {
+    public String delete(@RequestBody Long[] ids) {
         return orderService.delete(ids);
     }
 

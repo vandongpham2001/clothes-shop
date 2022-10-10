@@ -12,6 +12,10 @@ import java.util.List;
 public interface CartRepository extends PagingAndSortingRepository<CartEntity, Long> {
 
     @Modifying
+    @Query("delete from CartEntity c where c.id = ?1")
+    void delete(Long id);
+
+    @Modifying
     @Query("DELETE FROM CartEntity c WHERE c.user.id=?1")
     void deleteByUserId(long user_id);
 

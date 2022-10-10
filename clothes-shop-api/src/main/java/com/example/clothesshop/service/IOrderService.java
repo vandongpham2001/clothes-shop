@@ -12,9 +12,9 @@ public interface IOrderService {
 
     List<OrderDTO> findAll(Integer status, Sort sort);
 
-    OrderDTO findById(long id);
+    OrderDTO findById(Long id);
 
     OrderDTO save(OrderDTO dto);
 
-    String delete(long[] ids);
+    String delete(Long[] ids);
 }

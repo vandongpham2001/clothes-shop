@@ -8,6 +8,7 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.*;
 import com.example.clothesshop.dto.request.LoginRequest;
 import com.example.clothesshop.dto.response.JwtResponse;
+import com.example.clothesshop.repository.CartRepository;
 import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.service.IUserService;
 import com.example.clothesshop.utils.JwtUtils;
@@ -134,7 +135,7 @@ public class UserController {
 
     @DeleteMapping("/user/{user}/cart")
     public String removeProductFromCart(@PathVariable("user") String user,
-                                         @RequestBody long[] ids,
+                                         @RequestBody Long[] ids,
                                          HttpServletRequest servletRequest,
                                          HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);

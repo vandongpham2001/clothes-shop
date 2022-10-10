@@ -66,7 +66,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderDTO findById(long id) {
+    public OrderDTO findById(Long id) {
         OrderEntity entity = orderRepository.findById(id).get();
         return orderConverter.toDTO(entity);
     }
@@ -112,8 +112,8 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public String delete(long[] ids) {
-        for (long id : ids) {
+    public String delete(Long[] ids) {
+        for (Long id : ids) {
             OrderEntity exists = orderRepository.findById(id).get();
             if (exists != null) {
 //                orderRepository.deleteById(id);

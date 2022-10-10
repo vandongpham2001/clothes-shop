@@ -3,6 +3,7 @@ package com.example.clothesshop.service.impl;
 import com.example.clothesshop.converter.CartConverter;
 import com.example.clothesshop.dto.CartDTO;
 import com.example.clothesshop.entity.CartEntity;
+import com.example.clothesshop.entity.ProductColorSizeEntity;
 import com.example.clothesshop.entity.UserEntity;
 import com.example.clothesshop.repository.CartRepository;
 import com.example.clothesshop.repository.ProductColorSizeRepository;
@@ -50,19 +51,35 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public CartDTO findById(long id) {
+    public CartDTO findById(Long id) {
         CartEntity entity = cartRepository.findById(id).get();
         return cartConverter.toDTO(entity);
     }
 
     @Override
     public CartDTO save(CartDTO dto) {
-        CartEntity entity;
+        CartEntity entity = null;
+        List<CartEntity> entities = cartRepository.findAllByUserId(dto.getUser_id());
         if (dto.getId() != null) {
             CartEntity old_entity = cartRepository.findById(dto.getId()).get();
             entity = cartConverter.toEntity(dto, old_entity);
         } else {
-            entity = cartConverter.toEntity(dto);
+            if (entities.size() > 0) {
+                for (CartEntity item : entities) {
+                    if (item.getProduct_color_size() == productColorSizeRepository.findById(dto.getProduct_color_size_id()).get()) {
+                        Integer quantity = dto.getQuantity() + item.getQuantity();
+                        dto.setQuantity(quantity);
+                        dto.setId(item.getId());
+                        CartEntity old_entity = cartRepository.findById(dto.getId()).get();
+                        entity = cartConverter.toEntity(dto, old_entity);
+                        break;
+                    } else {
+                        entity = cartConverter.toEntity(dto);
+                    }
+                }
+            } else {
+                entity = cartConverter.toEntity(dto);
+            }
         }
         if (dto.getUser_id() != null) {
             entity.setUser(userRepository.findById(dto.getUser_id()).get());
@@ -74,18 +91,24 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public String delete(long[] ids) {
-        for (long id : ids) {
-            boolean exists = cartRepository.existsById(id);
-            if (exists) {
-                cartRepository.deleteById(id);
+    public String delete(Long[] ids) {
+        for (Long id : ids) {
+            CartEntity exists = cartRepository.findById(id).get();
+            if (exists != null) {
+//                cartRepository.deleteById(id);
+//                exists.setUser(null);
+//                exists.setProduct_color_size(null);
+//                cartRepository.delete(exists);
+//                CartEntity update = cartRepository.save(exists);
+//                cartRepository.deleteById(id);
+                cartRepository.delete(id);
             }
         }
         return "deleted";
     }
 
     @Override
-    public List<CartDTO> deleteCartByUserId(long user_id) {
+    public List<CartDTO> deleteCartByUserId(Long user_id) {
         UserEntity user = userRepository.findById(user_id).get();
         if (user != null){
             cartRepository.deleteByUserId(user_id);
@@ -94,13 +117,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Page<CartDTO> findAllByUserId(long user_id, Pageable pageable) {
+    public Page<CartDTO> findAllByUserId(Long user_id, Pageable pageable) {
         Page<CartEntity> entities = cartRepository.findAllByUserId(user_id, pageable);
         return cartConverter.mapEntityPageIntoDtoPage(entities, CartDTO.class);
     }
 
     @Override
-    public List<CartDTO> findAllByUserId(long user_id) {
+    public List<CartDTO> findAllByUserId(Long user_id) {
         List<CartEntity> entities = cartRepository.findAllByUserId(user_id);
         return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
@@ -109,7 +132,7 @@ public class CartService implements ICartService {
     public List<CartDTO> deleteCartByUsername(String username) {
         UserEntity user = userRepository.findByUsername(username);
         if (user != null){
-            cartRepository.deleteByUsername(username);
+            cartRepository.deleteByUserId(user.getId());
         }
         return ObjectMapperUtils.mapAll(cartRepository.findAllByUsername(username), CartDTO.class);
     }
