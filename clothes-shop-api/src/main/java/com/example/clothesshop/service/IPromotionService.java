@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.PromotionDTO;
+import com.example.clothesshop.dto.request.PromotionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,7 +13,7 @@ public interface IPromotionService {
 
     List<PromotionDTO> findAll(Integer status, Sort sort);
 
-    PromotionDTO save(PromotionDTO dto);
+    PromotionDTO save(PromotionRequest dto);
 
     String delete(long[] ids);
 

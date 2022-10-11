@@ -1,8 +1,11 @@
 package com.example.clothesshop.controller.admin;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.CollectionDTO;
-import com.example.clothesshop.dto.ProductToCollection;
+import com.example.clothesshop.dto.request.CollectionRequest;
+import com.example.clothesshop.dto.request.ProductToCollection;
 import com.example.clothesshop.service.ICollectionService;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,12 +51,17 @@ public class CollectionController {
     }
 
     @PostMapping
-    public CollectionDTO create(@ModelAttribute CollectionDTO dto){
+    public CollectionDTO create(@ModelAttribute CollectionRequest dto){
+//        CollectionDTO dto = new CollectionDTO();
+//        dto = ObjectMapperUtils.map(request, CollectionDTO.class);
+        dto.setStatus(SystemConstant.ACTIVE_STATUS);
         return collectionService.save(dto);
     }
 
     @PutMapping
-    public CollectionDTO update(@ModelAttribute CollectionDTO dto){
+    public CollectionDTO update(@ModelAttribute CollectionRequest dto){
+//        CollectionDTO dto = new CollectionDTO();
+//        dto = ObjectMapperUtils.map(request, CollectionDTO.class);
         return collectionService.save(dto);
     }
 

@@ -1,6 +1,7 @@
 package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.ProductColorDTO;
+import com.example.clothesshop.dto.request.ProductColorRequest;
 import com.example.clothesshop.entity.ProductColorEntity;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
@@ -13,7 +14,7 @@ public class ProductColorConverter extends AbstractConverter {
         return modelMapper.map(entity, ProductColorDTO.class);
     }
 
-    public ProductColorEntity toEntity(ProductColorDTO dto){
+    public ProductColorEntity toEntity(ProductColorRequest dto){
 //        modelMapper.addMappings(new PropertyMap<ProductColorDTO, ProductColorEntity>() {
 //            @Override
 //            protected void configure() {
@@ -31,7 +32,7 @@ public class ProductColorConverter extends AbstractConverter {
         return modelMapper.map(dto, ProductColorEntity.class);
     }
 
-    public ProductColorEntity toEntity(ProductColorDTO dto, ProductColorEntity entity){
+    public ProductColorEntity toEntity(ProductColorRequest dto, ProductColorEntity entity){
         modelMapper.map(dto, entity);
         return entity;
     }

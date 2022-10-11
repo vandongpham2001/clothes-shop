@@ -3,6 +3,7 @@ package com.example.clothesshop.service.impl;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.ColorConverter;
 import com.example.clothesshop.dto.ColorDTO;
+import com.example.clothesshop.dto.request.ColorRequest;
 import com.example.clothesshop.entity.ColorEntity;
 import com.example.clothesshop.repository.ColorRepository;
 import com.example.clothesshop.service.IColorService;
@@ -52,14 +53,13 @@ public class ColorService implements IColorService {
     }
 
     @Override
-    public ColorDTO save(ColorDTO dto) {
+    public ColorDTO save(ColorRequest dto) {
         ColorEntity entity;
         if (dto.getId() != null) {
             ColorEntity old_entity = colorRepository.findById(dto.getId()).get();
             entity = colorConverter.toEntity(dto, old_entity);
         } else {
             entity = colorConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return colorConverter.toDTO(colorRepository.save(entity));
     }

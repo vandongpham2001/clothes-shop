@@ -1,6 +1,8 @@
 package com.example.clothesshop.controller.admin;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.RoleDTO;
+import com.example.clothesshop.dto.request.RoleRequest;
 import com.example.clothesshop.service.IRoleService;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,11 @@ public class RoleController {
     private IRoleService roleService;
 
     @PostMapping()
-    public ResponseEntity<RoleDTO> save(@RequestBody RoleDTO role) {
+    public ResponseEntity<RoleDTO> save(@RequestBody RoleRequest role) {
+        if (role.getStatus()==null)
+        {
+            role.setStatus(SystemConstant.ACTIVE_STATUS);
+        }
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/role").toUriString());
         return ResponseEntity.created(uri).body(roleService.save(role));
     }

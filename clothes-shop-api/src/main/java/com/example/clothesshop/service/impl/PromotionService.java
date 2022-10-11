@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.PromotionConverter;
 import com.example.clothesshop.dto.PromotionDTO;
+import com.example.clothesshop.dto.request.PromotionRequest;
 import com.example.clothesshop.entity.ProductEntity;
 import com.example.clothesshop.entity.PromotionEntity;
 import com.example.clothesshop.repository.ProductRepository;
@@ -60,23 +61,7 @@ public class PromotionService implements IPromotionService {
     }
 
     @Override
-    public PromotionDTO save(PromotionDTO dto) {
-        if (dto.getMobile_banner_file() != null) {
-            try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getMobile_banner_file());
-                dto.setMobile_banner(img);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if (dto.getPc_banner_file() != null) {
-            try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getPc_banner_file());
-                dto.setPc_banner(img);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public PromotionDTO save(PromotionRequest dto) {
         PromotionEntity entity;
         if (dto.getId() != null) {
             PromotionEntity old_entity = promotionRepository.findById(dto.getId()).get();
@@ -100,7 +85,22 @@ public class PromotionService implements IPromotionService {
         }
         else {
             entity = promotionConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
+        }
+        if (dto.getMobile_banner_file() != null) {
+            try {
+                String img = CloudinaryUtils.upload(cloudinary, dto.getMobile_banner_file());
+                entity.setMobile_banner(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (dto.getPc_banner_file() != null) {
+            try {
+                String img = CloudinaryUtils.upload(cloudinary, dto.getPc_banner_file());
+                entity.setPc_banner(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return promotionConverter.toDTO(promotionRepository.save(entity));
     }

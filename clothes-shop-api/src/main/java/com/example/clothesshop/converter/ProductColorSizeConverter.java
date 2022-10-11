@@ -1,6 +1,7 @@
 package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.ProductColorSizeDTO;
+import com.example.clothesshop.dto.request.ProductColorSizeRequest;
 import com.example.clothesshop.entity.ProductColorSizeEntity;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,11 @@ public class ProductColorSizeConverter extends AbstractConverter {
         return modelMapper.map(entity, ProductColorSizeDTO.class);
     }
 
-    public ProductColorSizeEntity toEntity(ProductColorSizeDTO dto){
+    public ProductColorSizeEntity toEntity(ProductColorSizeRequest dto){
         return modelMapper.map(dto, ProductColorSizeEntity.class);
     }
 
-    public ProductColorSizeEntity toEntity(ProductColorSizeDTO dto, ProductColorSizeEntity entity){
+    public ProductColorSizeEntity toEntity(ProductColorSizeRequest dto, ProductColorSizeEntity entity){
         modelMapper.map(dto, entity);
         return entity;
     }

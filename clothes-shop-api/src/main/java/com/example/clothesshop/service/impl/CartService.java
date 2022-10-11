@@ -2,6 +2,7 @@ package com.example.clothesshop.service.impl;
 
 import com.example.clothesshop.converter.CartConverter;
 import com.example.clothesshop.dto.CartDTO;
+import com.example.clothesshop.dto.request.CartRequest;
 import com.example.clothesshop.entity.CartEntity;
 import com.example.clothesshop.entity.ProductColorSizeEntity;
 import com.example.clothesshop.entity.UserEntity;
@@ -57,7 +58,7 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public CartDTO save(CartDTO dto) {
+    public CartDTO save(CartRequest dto) {
         CartEntity entity = null;
         List<CartEntity> entities = cartRepository.findAllByUserId(dto.getUser_id());
         if (dto.getId() != null) {

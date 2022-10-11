@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.OrderDTO;
+import com.example.clothesshop.dto.request.OrderRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,7 +19,7 @@ public interface IOrderService {
 
     OrderDTO findById(Long id);
 
-    OrderDTO save(OrderDTO dto);
+    OrderDTO save(OrderRequest dto);
 
     String delete(Long[] ids);
 }

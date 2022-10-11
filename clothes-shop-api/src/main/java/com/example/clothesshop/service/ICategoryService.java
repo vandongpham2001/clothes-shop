@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.CategoryDTO;
+import com.example.clothesshop.dto.request.CategoryRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -14,7 +15,7 @@ public interface ICategoryService {
 
     List<CategoryDTO> findAll(Integer status, Sort sort);
 
-    CategoryDTO save(CategoryDTO dto);
+    CategoryDTO save(CategoryRequest dto);
 
     String delete(long[] ids);
 

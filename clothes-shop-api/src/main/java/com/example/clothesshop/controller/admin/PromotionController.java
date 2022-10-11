@@ -1,7 +1,9 @@
 package com.example.clothesshop.controller.admin;
 
-import com.example.clothesshop.dto.ProductToPromotion;
+import com.example.clothesshop.constant.SystemConstant;
+import com.example.clothesshop.dto.request.ProductToPromotion;
 import com.example.clothesshop.dto.PromotionDTO;
+import com.example.clothesshop.dto.request.PromotionRequest;
 import com.example.clothesshop.service.IPromotionService;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +50,13 @@ public class PromotionController {
     }
 
     @PostMapping
-    public PromotionDTO create(@ModelAttribute PromotionDTO dto){
+    public PromotionDTO create(@ModelAttribute PromotionRequest dto){
+        dto.setStatus(SystemConstant.ACTIVE_STATUS);
         return promotionService.save(dto);
     }
 
     @PutMapping
-    public PromotionDTO update(@ModelAttribute PromotionDTO dto){
+    public PromotionDTO update(@ModelAttribute PromotionRequest dto){
         return promotionService.save(dto);
     }
 

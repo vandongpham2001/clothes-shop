@@ -3,6 +3,7 @@ package com.example.clothesshop.service.impl;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.RoleConverter;
 import com.example.clothesshop.dto.RoleDTO;
+import com.example.clothesshop.dto.request.RoleRequest;
 import com.example.clothesshop.entity.RoleEntity;
 import com.example.clothesshop.repository.RoleRepository;
 import com.example.clothesshop.service.IRoleService;
@@ -49,14 +50,13 @@ public class RoleService implements IRoleService {
     }
 
     @Override
-    public RoleDTO save(RoleDTO dto) {
+    public RoleDTO save(RoleRequest dto) {
         RoleEntity entity = new RoleEntity();
         if (dto.getId() != null) {
             RoleEntity old_entity = roleRepository.findById(dto.getId()).get();
             entity = roleConverter.toEntity(dto, old_entity);
         } else {
             entity = roleConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         log.info("Saving new role {} to the database", dto.getName());
         return roleConverter.toDTO(roleRepository.save(entity));

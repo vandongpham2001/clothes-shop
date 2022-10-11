@@ -10,6 +10,9 @@ import com.example.clothesshop.dto.ProductColorDTO;
 import com.example.clothesshop.dto.ProductColorImageDTO;
 import com.example.clothesshop.dto.ProductColorSizeDTO;
 import com.example.clothesshop.dto.ProductDTO;
+import com.example.clothesshop.dto.request.ProductColorRequest;
+import com.example.clothesshop.dto.request.ProductColorSizeRequest;
+import com.example.clothesshop.dto.request.ProductRequest;
 import com.example.clothesshop.entity.*;
 import com.example.clothesshop.repository.*;
 import com.example.clothesshop.service.IProductService;
@@ -83,19 +86,8 @@ public class ProductService implements IProductService {
 
     @Override
 //    @Transactional
-    public ProductDTO save(ProductDTO dto) {
-        if (dto.getName() != null) {
-            dto.setSlug(SlugUtils.toSlug(dto.getName()));
-        }
-        if (dto.getFile() != null) {
-            try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
-                dto.setImage(img);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        List<ProductColorDTO> listProductColorDTO = dto.getProduct_color();
+    public ProductDTO save(ProductRequest dto) {
+        List<ProductColorRequest> listProductColorDTO = dto.getProduct_color();
         dto.setProduct_color(null);
         ProductEntity entity = new ProductEntity();
         if (dto.getId() != null) {
@@ -113,22 +105,25 @@ public class ProductService implements IProductService {
             entity = productConverter.toEntity(dto);
             entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
+        if (dto.getName() != null) {
+            entity.setSlug(SlugUtils.toSlug(dto.getName()));
+        }
+        if (dto.getFile() != null) {
+            try {
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                entity.setImage(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (dto.getCategory_id() != null) {
             entity.setCategory(categoryRepository.findById(dto.getCategory_id()).get());
         }
         ProductDTO savedProduct = productConverter.toDTO(productRepository.save(entity));
         if (listProductColorDTO != null) {
-            for (ProductColorDTO productColorDTO : listProductColorDTO) {
+            for (ProductColorRequest productColorDTO : listProductColorDTO) {
                 productColorDTO.setProduct_id(savedProduct.getId());
-                if (productColorDTO.getFile() != null) {
-                    try {
-                        String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
-                        productColorDTO.setThumbnail(img);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                List<ProductColorSizeDTO> listProductColorSizeDTO = productColorDTO.getProduct_color_size();
+                List<ProductColorSizeRequest> listProductColorSizeDTO = productColorDTO.getProduct_color_size();
                 MultipartFile[] listProductColorImage = null;
                 listProductColorImage = productColorDTO.getProduct_color_image().get(0).getFile();
                 productColorDTO.setProduct_color_size(null);
@@ -149,6 +144,14 @@ public class ProductService implements IProductService {
                 else {
                     productColorEntity = productColorConverter.toEntity(productColorDTO);
                 }
+                if (productColorDTO.getFile() != null) {
+                    try {
+                        String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                        productColorEntity.setThumbnail(img);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 if (productColorDTO.getProduct_id() != null) {
                     productColorEntity.setProduct(productRepository.findById(productColorDTO.getProduct_id()).get());
                 }
@@ -159,7 +162,7 @@ public class ProductService implements IProductService {
 //                MultipartFile[] listProductColorImage = savedProductColor.getProduct_color_image().get(0).getFile();
 //                MultipartFile[] listProductColorImage = productColorDTO.getProduct_color_image().iterator().next().getFile();
                 if (listProductColorSizeDTO != null) {
-                    for (ProductColorSizeDTO productColorSizeDTO : listProductColorSizeDTO) {
+                    for (ProductColorSizeRequest productColorSizeDTO : listProductColorSizeDTO) {
                         productColorSizeDTO.setProduct_color_id(savedProductColor.getId());
                         ProductColorSizeEntity productColorSizeEntity = new ProductColorSizeEntity();
                         if (productColorSizeDTO.getId() != null){

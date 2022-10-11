@@ -2,8 +2,9 @@ package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.OrderDTO;
-import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.service.IOrderService;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,9 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,13 +78,17 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderDTO create(@RequestBody OrderDTO dto) {
+    public OrderDTO create(@RequestBody OrderRequest dto) {
+//        OrderDTO dto = new OrderDTO();
+//        dto = ObjectMapperUtils.map(request, OrderDTO.class);
         dto.setStatus(SystemConstant.ORDER_WAIT_FOR_CONFIRM_STATUS);
         return orderService.save(dto);
     }
 
     @PutMapping
-    public OrderDTO update(@RequestBody OrderDTO dto) {
+    public OrderDTO update(@RequestBody OrderRequest dto) {
+//        OrderDTO dto = new OrderDTO();
+//        dto = ObjectMapperUtils.map(request, OrderDTO.class);
         return orderService.save(dto);
     }
 

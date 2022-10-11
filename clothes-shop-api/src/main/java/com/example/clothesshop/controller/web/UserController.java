@@ -5,10 +5,10 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.clothesshop.constant.SystemConstant;
-import com.example.clothesshop.dto.*;
-import com.example.clothesshop.dto.request.LoginRequest;
-import com.example.clothesshop.dto.response.JwtResponse;
-import com.example.clothesshop.repository.CartRepository;
+import com.example.clothesshop.dto.CartDTO;
+import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.dto.request.CartRequest;
+import com.example.clothesshop.dto.request.UserRequest;
 import com.example.clothesshop.service.ICartService;
 import com.example.clothesshop.service.IUserService;
 import com.example.clothesshop.utils.JwtUtils;
@@ -23,9 +23,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -36,7 +33,6 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
@@ -61,7 +57,7 @@ public class UserController {
 //    }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> register(@RequestBody UserRequest user) {
         user.setStatus(SystemConstant.ACTIVE_STATUS);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user").toUriString());
         ResponseEntity<UserDTO> result = ResponseEntity.created(uri).body(userService.save(user));
@@ -107,7 +103,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "You are not authorized . Please authenticate and try again"),
             @ApiResponse(responseCode = "401", description = "You don't have permission to this resource")})
     public CartDTO addProductToCart(@PathVariable("user") String user,
-                                    @RequestBody CartDTO dto,
+                                    @RequestBody CartRequest dto,
                                     HttpServletRequest servletRequest,
                                     HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);
@@ -121,7 +117,7 @@ public class UserController {
 
     @PutMapping("/user/{user}/cart")
     public CartDTO updateProductInCart(@PathVariable("user") String user,
-                                       @RequestBody CartDTO dto,
+                                       @RequestBody CartRequest dto,
                                        HttpServletRequest servletRequest,
                                        HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);

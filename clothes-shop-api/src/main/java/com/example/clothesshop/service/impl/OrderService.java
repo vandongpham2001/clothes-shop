@@ -5,6 +5,8 @@ import com.example.clothesshop.converter.OrderConverter;
 import com.example.clothesshop.converter.OrderDetailConverter;
 import com.example.clothesshop.dto.OrderDTO;
 import com.example.clothesshop.dto.OrderDetailDTO;
+import com.example.clothesshop.dto.request.OrderDetailRequest;
+import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.entity.OrderDetailEntity;
 import com.example.clothesshop.entity.OrderEntity;
 import com.example.clothesshop.repository.OrderDetailRepository;
@@ -98,9 +100,9 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public OrderDTO save(OrderDTO dto) {
+    public OrderDTO save(OrderRequest dto) {
         OrderEntity entity;
-        List<OrderDetailDTO> listOrderDetailDTO = dto.getOrder_detail();
+        List<OrderDetailRequest> listOrderDetailDTO = dto.getOrder_detail();
         dto.setOrder_detail(null);
         if (dto.getId() != null) {
             OrderEntity old_entity = orderRepository.findById(dto.getId()).get();
@@ -113,7 +115,7 @@ public class OrderService implements IOrderService {
         }
         OrderDTO savedOrder = orderConverter.toDTO(orderRepository.save(entity));
         if (listOrderDetailDTO != null){
-            for (OrderDetailDTO orderDetailDTO : listOrderDetailDTO){
+            for (OrderDetailRequest orderDetailDTO : listOrderDetailDTO){
                 orderDetailDTO.setOrder_id(savedOrder.getId());
                 OrderDetailEntity orderDetailEntity = new OrderDetailEntity();
                 if (orderDetailDTO.getId() != null){

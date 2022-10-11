@@ -3,6 +3,7 @@ package com.example.clothesshop.service.impl;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.SizeConverter;
 import com.example.clothesshop.dto.SizeDTO;
+import com.example.clothesshop.dto.request.SizeRequest;
 import com.example.clothesshop.entity.SizeEntity;
 import com.example.clothesshop.repository.SizeRepository;
 import com.example.clothesshop.service.ISizeService;
@@ -53,14 +54,13 @@ public class SizeService implements ISizeService {
     }
 
     @Override
-    public SizeDTO save(SizeDTO dto){
+    public SizeDTO save(SizeRequest dto){
         SizeEntity entity;
         if (dto.getId() != null) {
             SizeEntity old_entity = sizeRepository.findById(dto.getId()).get();
             entity = sizeConverter.toEntity(dto, old_entity);
         } else {
             entity = sizeConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return sizeConverter.toDTO(sizeRepository.save(entity));
     }

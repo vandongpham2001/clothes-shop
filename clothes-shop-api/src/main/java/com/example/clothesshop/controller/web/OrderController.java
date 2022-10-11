@@ -3,6 +3,7 @@ package com.example.clothesshop.controller.web;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.OrderDTO;
 import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.service.IOrderService;
 import com.example.clothesshop.service.IUserService;
 import com.example.clothesshop.utils.PagingUtils;
@@ -65,7 +66,7 @@ public class OrderController {
 
     @PostMapping("/{username}")
     public OrderDTO create(@PathVariable("username") String username,
-                           @RequestBody OrderDTO dto,
+                           @RequestBody OrderRequest dto,
                            HttpServletRequest servletRequest,
                            HttpServletResponse servletResponse) throws IOException {
         UserDTO userJWT = userService.getUserFromJWT(servletRequest, servletResponse);

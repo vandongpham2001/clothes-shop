@@ -1,7 +1,9 @@
 package com.example.clothesshop.controller.admin;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.UserDTO;
-import com.example.clothesshop.dto.RoleToUser;
+import com.example.clothesshop.dto.request.RoleToUser;
+import com.example.clothesshop.dto.request.UserRequest;
 import com.example.clothesshop.service.IUserService;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,11 @@ public class UserController {
 
 
     @PostMapping("/admin/user")
-    public ResponseEntity<UserDTO> save(@RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> save(@RequestBody UserRequest user) {
+        if (user.getStatus()==null)
+        {
+            user.setStatus(SystemConstant.ACTIVE_STATUS);
+        }
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("api/user").toUriString());
         return ResponseEntity.created(uri).body(userService.save(user));
     }

@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.CollectionDTO;
+import com.example.clothesshop.dto.request.CollectionRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +14,7 @@ public interface ICollectionService {
 
     List<CollectionDTO> findAll(Integer status, Sort sort);
 
-    CollectionDTO save(CollectionDTO dto);
+    CollectionDTO save(CollectionRequest dto);
 
     String delete(long[] ids);
 

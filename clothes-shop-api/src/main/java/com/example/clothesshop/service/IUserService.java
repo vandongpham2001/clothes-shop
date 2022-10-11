@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.UserDTO;
+import com.example.clothesshop.dto.request.UserRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,7 +22,7 @@ public interface IUserService {
 
     UserDTO findByEmail(String email);
 
-    UserDTO save(UserDTO user);
+    UserDTO save(UserRequest user);
 
     String delete(long[] ids);
 

@@ -1,4 +1,4 @@
-package com.example.clothesshop.dto;
+package com.example.clothesshop.dto.request;
 
 import lombok.Data;
 

@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.SizeDTO;
+import com.example.clothesshop.dto.request.SizeRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +14,7 @@ public interface ISizeService {
 
     List<SizeDTO> findAll(Integer status, Sort sort);
 
-    SizeDTO save(SizeDTO dto);
+    SizeDTO save(SizeRequest dto);
 
     String delete(long[] ids);
 

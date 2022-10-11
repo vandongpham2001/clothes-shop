@@ -1,6 +1,7 @@
 package com.example.clothesshop.service;
 
 import com.example.clothesshop.dto.ColorDTO;
+import com.example.clothesshop.dto.request.ColorRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +14,7 @@ public interface IColorService {
 
     List<ColorDTO> findAll(Integer status, Sort sort);
 
-    ColorDTO save(ColorDTO dto);
+    ColorDTO save(ColorRequest dto);
 
     String delete(long[] ids);
 

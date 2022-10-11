@@ -1,7 +1,10 @@
 package com.example.clothesshop.controller.admin;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.ProductDTO;
+import com.example.clothesshop.dto.request.ProductRequest;
 import com.example.clothesshop.service.IProductService;
+import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -48,12 +51,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO create(@ModelAttribute ProductDTO dto){
+    public ProductDTO create(@ModelAttribute ProductRequest dto){
+//        ProductDTO dto = new ProductDTO();
+//        dto = ObjectMapperUtils.map(request, ProductDTO.class);
+        dto.setStatus(SystemConstant.ACTIVE_STATUS);
         return productService.save(dto);
     }
 
     @PutMapping
-    public ProductDTO update(@ModelAttribute ProductDTO dto){
+    public ProductDTO update(@ModelAttribute ProductRequest dto){
+//        ProductDTO dto = new ProductDTO();
+//        dto = ObjectMapperUtils.map(request, ProductDTO.class);
         return productService.save(dto);
     }
 

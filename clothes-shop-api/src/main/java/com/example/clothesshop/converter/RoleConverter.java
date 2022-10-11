@@ -1,6 +1,7 @@
 package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.RoleDTO;
+import com.example.clothesshop.dto.request.RoleRequest;
 import com.example.clothesshop.entity.RoleEntity;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,11 @@ public class RoleConverter extends AbstractConverter {
         return modelMapper.map(entity, RoleDTO.class);
     }
 
-    public RoleEntity toEntity(RoleDTO dto){
+    public RoleEntity toEntity(RoleRequest dto){
         return modelMapper.map(dto, RoleEntity.class);
     }
 
-    public RoleEntity toEntity(RoleDTO dto, RoleEntity entity){
+    public RoleEntity toEntity(RoleRequest dto, RoleEntity entity){
         modelMapper.map(dto, entity);
         return entity;
     }

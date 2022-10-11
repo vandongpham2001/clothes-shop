@@ -1,6 +1,7 @@
 package com.example.clothesshop.converter;
 
 import com.example.clothesshop.dto.OrderDTO;
+import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.entity.OrderEntity;
 import org.springframework.stereotype.Component;
 
@@ -11,11 +12,11 @@ public class OrderConverter extends AbstractConverter {
         return modelMapper.map(entity, OrderDTO.class);
     }
 
-    public OrderEntity toEntity(OrderDTO dto){
+    public OrderEntity toEntity(OrderRequest dto){
         return modelMapper.map(dto, OrderEntity.class);
     }
 
-    public OrderEntity toEntity(OrderDTO dto, OrderEntity entity){
+    public OrderEntity toEntity(OrderRequest dto, OrderEntity entity){
         modelMapper.map(dto, entity);
         return entity;
     }

@@ -8,6 +8,7 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.UserConverter;
 import com.example.clothesshop.dto.UserDTO;
 import com.example.clothesshop.dto.UserDetailsImpl;
+import com.example.clothesshop.dto.request.UserRequest;
 import com.example.clothesshop.entity.RoleEntity;
 import com.example.clothesshop.entity.UserEntity;
 import com.example.clothesshop.repository.RoleRepository;
@@ -102,7 +103,7 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public UserDTO save(UserDTO dto) {
+    public UserDTO save(UserRequest dto) {
         UserEntity entity = new UserEntity();
         UserEntity userByUsername = userRepository.findByUsername(dto.getUsername());
         UserEntity userByEmail = userRepository.findByEmail(dto.getEmail());
@@ -120,7 +121,6 @@ public class UserService implements IUserService, UserDetailsService {
             entity = userConverter.toEntity(dto, old_entity);
         } else {
             entity = userConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
         }
         return userConverter.toDTO(userRepository.save(entity));
 

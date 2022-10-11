@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.CategoryConverter;
 import com.example.clothesshop.dto.CategoryDTO;
+import com.example.clothesshop.dto.request.CategoryRequest;
 import com.example.clothesshop.entity.CategoryEntity;
 import com.example.clothesshop.repository.CategoryRepository;
 import com.example.clothesshop.service.ICategoryService;
@@ -60,22 +61,8 @@ public class CategoryService implements ICategoryService {
 
     @Override
 //    @Transactional
-    public CategoryDTO save(CategoryDTO dto){
+    public CategoryDTO save(CategoryRequest dto){
         CategoryEntity entity;
-        if (dto.getName() != null) {
-            dto.setSlug(SlugUtils.toSlug(dto.getName()));
-        }
-        if (dto.getFile() != null) {
-            try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
-                dto.setImage(img);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-//            for (MultipartFile file : dto.getFile()){
-//                String img = CloudinaryUtil.upload(cloudinary, file);
-//            }
-        }
         if (dto.getId() != null) {
             CategoryEntity old_entity = categoryRepository.findById(dto.getId()).get();
             if (old_entity.getImage() != null && dto.getFile() != null) {
@@ -93,7 +80,20 @@ public class CategoryService implements ICategoryService {
         }
         else {
             entity = categoryConverter.toEntity(dto);
-            entity.setStatus(SystemConstant.ACTIVE_STATUS);
+        }
+        if (dto.getName() != null) {
+            entity.setSlug(SlugUtils.toSlug(dto.getName()));
+        }
+        if (dto.getFile() != null) {
+            try {
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                entity.setImage(img);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+//            for (MultipartFile file : dto.getFile()){
+//                String img = CloudinaryUtil.upload(cloudinary, file);
+//            }
         }
         return categoryConverter.toDTO(categoryRepository.save(entity));
     }

@@ -1,6 +1,8 @@
 package com.example.clothesshop.controller.admin;
 
+import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.SizeDTO;
+import com.example.clothesshop.dto.request.SizeRequest;
 import com.example.clothesshop.service.ISizeService;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +51,13 @@ public class SizeController {
     }
 
     @PostMapping
-    public SizeDTO create(@RequestBody SizeDTO dto){
+    public SizeDTO create(@RequestBody SizeRequest dto){
+        dto.setStatus(SystemConstant.ACTIVE_STATUS);
         return sizeService.save(dto);
     }
 
     @PutMapping
-    public SizeDTO update(@RequestBody SizeDTO dto){
+    public SizeDTO update(@RequestBody SizeRequest dto){
         return sizeService.save(dto);
     }
 
