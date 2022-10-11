@@ -17,7 +17,7 @@ public class AbstractDTO<T> {
 
     private Date modifiedDate;
 
-    private MultipartFile[] file;
+//    private MultipartFile[] file;
 
 //    private List<T> listResult = new ArrayList<>();
 //

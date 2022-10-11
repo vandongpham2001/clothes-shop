@@ -10,4 +10,5 @@ public class CategoryRequest extends AbstractRequest<CategoryRequest>{
     private String description;
     private Integer status;
     private Long parent_id;
+    private MultipartFile file;
 }

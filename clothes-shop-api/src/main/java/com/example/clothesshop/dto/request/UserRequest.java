@@ -3,6 +3,7 @@ package com.example.clothesshop.dto.request;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,4 +20,5 @@ public class UserRequest extends AbstractRequest<UserRequest> {
     private String phone_number;
     private String address;
     private Integer status;
+    private MultipartFile file;
 }

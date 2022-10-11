@@ -110,7 +110,7 @@ public class ProductService implements IProductService {
         }
         if (dto.getFile() != null) {
             try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile());
                 entity.setImage(img);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -146,7 +146,7 @@ public class ProductService implements IProductService {
                 }
                 if (productColorDTO.getFile() != null) {
                     try {
-                        String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                        String img = CloudinaryUtils.upload(cloudinary, productColorDTO.getFile());
                         productColorEntity.setThumbnail(img);
                     } catch (IOException e) {
                         e.printStackTrace();

@@ -8,5 +8,5 @@ import java.util.Date;
 @Data
 public class AbstractRequest<T> {
     private Long id;
-    private MultipartFile[] file;
+//    private MultipartFile[] file;
 }

@@ -86,7 +86,7 @@ public class CategoryService implements ICategoryService {
         }
         if (dto.getFile() != null) {
             try {
-                String img = CloudinaryUtils.upload(cloudinary, dto.getFile()[0]);
+                String img = CloudinaryUtils.upload(cloudinary, dto.getFile());
                 entity.setImage(img);
             } catch (IOException e) {
                 e.printStackTrace();
