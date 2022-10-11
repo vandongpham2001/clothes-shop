@@ -27,7 +27,7 @@ public class SizeController {
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
                                                       @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort,
-                                                      @RequestParam(value = "status", required = false) Integer status) {
+                                                      @RequestParam(value = "status", required = false, defaultValue = "1") Integer status) {
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;

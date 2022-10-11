@@ -66,6 +66,32 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public Page<OrderDTO> findAllPageableByUsername(String username, Integer status, Pageable pageable) {
+        Page<OrderDTO> results;
+        Page<OrderEntity> entities;
+        if (status != null) {
+            entities = orderRepository.findByStatusAndUsername(username, status, pageable);
+        } else {
+            entities = orderRepository.findByUsername(username, pageable);
+        }
+        results = orderConverter.mapEntityPageIntoDtoPage(entities, OrderDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<OrderDTO> findAllByUsername(String username, Integer status, Sort sort) {
+        List<OrderDTO> results;
+        Iterable<OrderEntity> entities;
+        if (status != null) {
+            entities = orderRepository.findByStatusAndUsername(username, status, sort);
+        } else {
+            entities = orderRepository.findByUsername(username, sort);
+        }
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), OrderDTO.class);
+        return results;
+    }
+
+    @Override
     public OrderDTO findById(Long id) {
         OrderEntity entity = orderRepository.findById(id).get();
         return orderConverter.toDTO(entity);
@@ -117,7 +143,7 @@ public class OrderService implements IOrderService {
             OrderEntity exists = orderRepository.findById(id).get();
             if (exists != null) {
 //                orderRepository.deleteById(id);
-                exists.setStatus(SystemConstant.INACTIVE_STATUS);
+                exists.setStatus(SystemConstant.ORDER_CANCEL_STATUS);
                 orderRepository.save(exists);
             }
         }

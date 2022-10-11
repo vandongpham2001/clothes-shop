@@ -12,6 +12,10 @@ public interface IOrderService {
 
     List<OrderDTO> findAll(Integer status, Sort sort);
 
+    Page<OrderDTO> findAllPageableByUsername(String username, Integer status, Pageable pageable);
+
+    List<OrderDTO> findAllByUsername(String username, Integer status, Sort sort);
+
     OrderDTO findById(Long id);
 
     OrderDTO save(OrderDTO dto);
