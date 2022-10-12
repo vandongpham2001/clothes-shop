@@ -12,6 +12,7 @@ import com.example.clothesshop.repository.PromotionRepository;
 import com.example.clothesshop.service.IPromotionService;
 import com.example.clothesshop.utils.CloudinaryUtils;
 import com.example.clothesshop.utils.ObjectMapperUtils;
+import com.example.clothesshop.utils.SlugUtils;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -85,6 +86,9 @@ public class PromotionService implements IPromotionService {
         }
         else {
             entity = promotionConverter.toEntity(dto);
+        }
+        if (dto.getName() != null) {
+            entity.setSlug(SlugUtils.toSlug(dto.getName()));
         }
         if (dto.getMobile_banner_file() != null) {
             try {
