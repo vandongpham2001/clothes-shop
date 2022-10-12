@@ -14,6 +14,18 @@ public interface IProductService {
 
     List<ProductDTO> findAll(Integer status, Sort sort);
 
+    Page<ProductDTO> findPageableByCategoryId(Long category_id, Integer status, Pageable pageable);
+
+    List<ProductDTO> findByCategoryId(Long category_id, Integer status, Sort sort);
+
+    Page<ProductDTO> findPageableByPromotionId(Long promotion_id, Integer status, Pageable pageable);
+
+    List<ProductDTO> findByPromotionId(Long promotion_id, Integer status, Sort sort);
+
+    Page<ProductDTO> findPageableByCollectionId(Long collection_id, Integer status, Pageable pageable);
+
+    List<ProductDTO> findByCollectionId(Long collection_id, Integer status, Sort sort);
+
     ProductDTO save(ProductRequest dto);
 
     String delete(long[] ids);

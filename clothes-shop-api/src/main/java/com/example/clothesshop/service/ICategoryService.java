@@ -19,7 +19,9 @@ public interface ICategoryService {
 
     String delete(long[] ids);
 
-    List<CategoryDTO> findAllParentCategory();
+    List<CategoryDTO> findParentCategory();
+
+    List<CategoryDTO> findChildCategory();
 
     List<CategoryDTO> findByParentId(Long parent_id);
 

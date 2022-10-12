@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{user}/cart")
-    public ResponseEntity<Map<String, Object>> getAllByUsername(@PathVariable("user") String user,
+    public ResponseEntity<Map<String, Object>> getByUsername(@PathVariable("user") String user,
                                                                 @RequestParam(value = "page", required = false) Integer page,
                                                                 @RequestParam(value = "limit", required = false) Integer limit,
                                                                 HttpServletRequest servletRequest,
@@ -80,13 +80,13 @@ public class UserController {
         if (userJWT.getId() == userDTO.getId()) {
             if (page != null && limit != null) {
                 pageable = PageRequest.of(page - 1, limit);
-                pageCarts = cartService.findAllByUsername(user, pageable);
+                pageCarts = cartService.findByUsername(user, pageable);
                 carts = pageCarts.getContent();
                 response.put("currentPage", pageCarts.getNumber() + 1);
                 response.put("totalItems", pageCarts.getTotalElements());
                 response.put("totalPages", pageCarts.getTotalPages());
             } else {
-                carts = cartService.findAllByUsername(user);
+                carts = cartService.findByUsername(user);
             }
             response.put("carts", carts);
             return new ResponseEntity<>(response, HttpStatus.OK);

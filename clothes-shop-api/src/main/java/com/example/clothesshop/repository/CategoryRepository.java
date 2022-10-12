@@ -15,6 +15,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<CategoryE
     Iterable<CategoryEntity> findByStatus(Integer status, Sort sort);
     @Query("SELECT c FROM CategoryEntity c where c.status=1 and c.id in (SELECT c.parent_id FROM CategoryEntity c)")
     List<CategoryEntity> findParentCategory();
+    @Query("SELECT c FROM CategoryEntity c where c.status=1 and c.id not in (SELECT c.parent_id FROM CategoryEntity c)")
+    List<CategoryEntity> findChildCategory();
     @Query("SELECT c FROM CategoryEntity c where c.parent_id=?1")
     List<CategoryEntity> findByParentId(Long parent_id);
     Optional<CategoryEntity> findById(Long id);

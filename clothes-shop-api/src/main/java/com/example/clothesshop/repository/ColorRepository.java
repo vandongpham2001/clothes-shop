@@ -9,4 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ColorRepository extends PagingAndSortingRepository<ColorEntity, Long> {
     Page<ColorEntity> findByStatus(Integer status, Pageable pageable);
     Iterable<ColorEntity> findByStatus(Integer status, Sort sort);
+    Page<ColorEntity> findColorEntitiesByStatusAndProductsId(Integer status, Long product_id, Pageable pageable);
+    Iterable<ColorEntity> findColorEntitiesByStatusAndProductsId(Integer status, Long product_id, Sort sort);
 }

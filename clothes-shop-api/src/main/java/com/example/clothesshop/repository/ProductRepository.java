@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends PagingAndSortingRepository<ProductEntity, Long> {
@@ -14,5 +15,21 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductEnt
 
     Iterable<ProductEntity> findByStatus(Integer status, Sort sort);
 
+    Page<ProductEntity> findByStatusAndCategoryId(Integer status, Long category_id, Pageable pageable);
+
+    Iterable<ProductEntity> findByStatusAndCategoryId(Integer status, Long category_id, Sort sort);
+
+    Page<ProductEntity> findProductEntitiesByStatusAndPromotionsId(Integer status, Long promotion_id, Pageable pageable);
+
+    Iterable<ProductEntity> findProductEntitiesByStatusAndPromotionsId(Integer status, Long collection_id, Sort sort);
+
+    Page<ProductEntity> findProductEntitiesByStatusAndCollectionsId(Integer status, Long promotion_id, Pageable pageable);
+
+    Iterable<ProductEntity> findProductEntitiesByStatusAndCollectionsId(Integer status, Long collection_id, Sort sort);
+
     Optional<ProductEntity> findById(Long id);
+
+
+
+
 }

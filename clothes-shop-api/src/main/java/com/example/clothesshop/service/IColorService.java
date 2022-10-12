@@ -14,6 +14,10 @@ public interface IColorService {
 
     List<ColorDTO> findAll(Integer status, Sort sort);
 
+    Page<ColorDTO> findPageableByProductId(Long product_id, Integer status, Pageable pageable);
+
+    List<ColorDTO> findByProductId(Long product_id, Integer status, Sort sort);
+
     ColorDTO save(ColorRequest dto);
 
     String delete(long[] ids);

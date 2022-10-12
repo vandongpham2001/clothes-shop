@@ -118,13 +118,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Page<CartDTO> findAllByUserId(Long user_id, Pageable pageable) {
+    public Page<CartDTO> findByUserId(Long user_id, Pageable pageable) {
         Page<CartEntity> entities = cartRepository.findAllByUserId(user_id, pageable);
         return cartConverter.mapEntityPageIntoDtoPage(entities, CartDTO.class);
     }
 
     @Override
-    public List<CartDTO> findAllByUserId(Long user_id) {
+    public List<CartDTO> findByUserId(Long user_id) {
         List<CartEntity> entities = cartRepository.findAllByUserId(user_id);
         return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
@@ -139,13 +139,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Page<CartDTO> findAllByUsername(String username, Pageable pageable) {
+    public Page<CartDTO> findByUsername(String username, Pageable pageable) {
         Page<CartEntity> entities = cartRepository.findAllByUsername(username, pageable);
         return cartConverter.mapEntityPageIntoDtoPage(entities, CartDTO.class);
     }
 
     @Override
-    public List<CartDTO> findAllByUsername(String username) {
+    public List<CartDTO> findByUsername(String username) {
         List<CartEntity> entities = cartRepository.findAllByUsername(username);
         return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }
@@ -160,13 +160,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public Page<CartDTO> findAllByEmail(String email, Pageable pageable) {
+    public Page<CartDTO> findByEmail(String email, Pageable pageable) {
         Page<CartEntity> entities = cartRepository.findAllByEmail(email, pageable);
         return cartConverter.mapEntityPageIntoDtoPage(entities, CartDTO.class);
     }
 
     @Override
-    public List<CartDTO> findAllByEmail(String email) {
+    public List<CartDTO> findByEmail(String email) {
         List<CartEntity> entities = cartRepository.findAllByEmail(email);
         return ObjectMapperUtils.mapAll(entities, CartDTO.class);
     }

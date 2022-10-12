@@ -95,6 +95,9 @@ public class CategoryService implements ICategoryService {
 //                String img = CloudinaryUtil.upload(cloudinary, file);
 //            }
         }
+        if (dto.getParent_id() == null){
+            entity.setParent_id(0L);
+        }
         return categoryConverter.toDTO(categoryRepository.save(entity));
     }
 
@@ -113,8 +116,14 @@ public class CategoryService implements ICategoryService {
     }
 
     @Override
-    public List<CategoryDTO> findAllParentCategory() {
+    public List<CategoryDTO> findParentCategory() {
         List<CategoryEntity> entities = categoryRepository.findParentCategory();
+        return ObjectMapperUtils.mapAll(entities, CategoryDTO.class);
+    }
+
+    @Override
+    public List<CategoryDTO> findChildCategory() {
+        List<CategoryEntity> entities = categoryRepository.findChildCategory();
         return ObjectMapperUtils.mapAll(entities, CategoryDTO.class);
     }
 

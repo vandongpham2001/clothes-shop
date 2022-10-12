@@ -14,15 +14,22 @@ public class CategoryController {
     private ICategoryService categoryService;
 
     @GetMapping("parent_category")
-    public List<CategoryDTO> findAll(){
-        return categoryService.findAllParentCategory();
+    public List<CategoryDTO> getAllParentCategory() {
+        return categoryService.findParentCategory();
     }
+
+    @GetMapping("child_category")
+    public List<CategoryDTO> getAllChildCategory() {
+        return categoryService.findChildCategory();
+    }
+
     @GetMapping("{parent_id}")
-    public List<CategoryDTO> findCategoryByParentId(@PathVariable("parent_id") long id){
+    public List<CategoryDTO> getCategoryByParentId(@PathVariable("parent_id") long id) {
         return categoryService.findByParentId(id);
     }
+
     @GetMapping("/detail/{id}")
-    public CategoryDTO findCategoryById(@PathVariable("id") long id){
+    public CategoryDTO getCategoryById(@PathVariable("id") long id) {
         return categoryService.findById(id);
     }
 }

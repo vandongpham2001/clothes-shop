@@ -51,7 +51,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "/user/{username}")
-    public ResponseEntity<Map<String, Object>> getAllByUsername(@PathVariable("username") String username,
+    public ResponseEntity<Map<String, Object>> getByUsername(@PathVariable("username") String username,
                                                                 @RequestParam(value = "page", required = false) Integer page,
                                                                 @RequestParam(value = "limit", required = false) Integer limit,
                                                                 @RequestParam(value = "sort", required = false, defaultValue = "desc") String sort,
@@ -64,13 +64,13 @@ public class OrderController {
         sortable = PagingUtils.sort(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageOrders = orderService.findAllPageableByUsername(username, status, pageable);
+            pageOrders = orderService.findPageableByUsername(username, status, pageable);
             orders = pageOrders.getContent();
             response.put("currentPage", pageOrders.getNumber() + 1);
             response.put("totalItems", pageOrders.getTotalElements());
             response.put("totalPages", pageOrders.getTotalPages());
         } else {
-            orders = orderService.findAllByUsername(username, status, sortable);
+            orders = orderService.findByUsername(username, status, sortable);
         }
         response.put("orders", orders);
 //        response.put("orders", "order");

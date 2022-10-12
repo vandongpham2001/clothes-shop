@@ -85,6 +85,60 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<ProductDTO> findPageableByCategoryId(Long category_id, Integer status, Pageable pageable) {
+        Page<ProductDTO> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findByStatusAndCategoryId(status, category_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductDTO> findByCategoryId(Long category_id, Integer status, Sort sort) {
+        List<ProductDTO> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findByStatusAndCategoryId(status, category_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
+        return results;
+    }
+
+    @Override
+    public Page<ProductDTO> findPageableByPromotionId(Long promotion_id, Integer status, Pageable pageable) {
+        Page<ProductDTO> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndPromotionsId(status, promotion_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductDTO> findByPromotionId(Long promotion_id, Integer status, Sort sort) {
+        List<ProductDTO> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndPromotionsId(status, promotion_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
+        return results;
+    }
+
+    @Override
+    public Page<ProductDTO> findPageableByCollectionId(Long collection_id, Integer status, Pageable pageable) {
+        Page<ProductDTO> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndCollectionsId(status, collection_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductDTO> findByCollectionId(Long collection_id, Integer status, Sort sort) {
+        List<ProductDTO> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndCollectionsId(status, collection_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
+        return results;
+    }
+
+    @Override
 //    @Transactional
     public ProductDTO save(ProductRequest dto) {
         List<ProductColorRequest> listProductColorDTO = dto.getProduct_color();
@@ -129,7 +183,7 @@ public class ProductService implements IProductService {
                 productColorDTO.setProduct_color_size(null);
                 productColorDTO.setProduct_color_image(null);
                 ProductColorEntity productColorEntity = new ProductColorEntity();
-                if (productColorDTO.getId() != null){
+                if (productColorDTO.getId() != null) {
                     ProductColorEntity oldProductColorEntity = productColorRepository.findById(productColorDTO.getId()).get();
                     if (oldProductColorEntity.getThumbnail() != null && productColorDTO.getFile() != null) {
                         String file_name = CloudinaryUtils.getNameImgFromUrlCloudinary(oldProductColorEntity.getThumbnail());
@@ -140,8 +194,7 @@ public class ProductService implements IProductService {
                         }
                     }
                     productColorEntity = productColorConverter.toEntity(productColorDTO, oldProductColorEntity);
-                }
-                else {
+                } else {
                     productColorEntity = productColorConverter.toEntity(productColorDTO);
                 }
                 if (productColorDTO.getFile() != null) {
@@ -165,7 +218,7 @@ public class ProductService implements IProductService {
                     for (ProductColorSizeRequest productColorSizeDTO : listProductColorSizeDTO) {
                         productColorSizeDTO.setProduct_color_id(savedProductColor.getId());
                         ProductColorSizeEntity productColorSizeEntity = new ProductColorSizeEntity();
-                        if (productColorSizeDTO.getId() != null){
+                        if (productColorSizeDTO.getId() != null) {
                             ProductColorSizeEntity oldProductColorSizeEntity = productColorSizeRepository.findById(productColorSizeDTO.getId()).get();
                             productColorSizeEntity = productColorSizeConverter.toEntity(productColorSizeDTO, oldProductColorSizeEntity);
                         } else {

@@ -21,19 +21,19 @@ public interface ICartService {
 
     List<CartDTO> deleteCartByUserId(Long user_id);
 
-    Page<CartDTO> findAllByUserId(Long user_id, Pageable pageable);
+    Page<CartDTO> findByUserId(Long user_id, Pageable pageable);
 
-    List<CartDTO> findAllByUserId(Long user_id);
+    List<CartDTO> findByUserId(Long user_id);
 
     List<CartDTO> deleteCartByUsername(String username);
 
-    Page<CartDTO> findAllByUsername(String username, Pageable pageable);
+    Page<CartDTO> findByUsername(String username, Pageable pageable);
 
-    List<CartDTO> findAllByUsername(String username);
+    List<CartDTO> findByUsername(String username);
 
     List<CartDTO> deleteCartByEmail(String email);
 
-    Page<CartDTO> findAllByEmail(String email, Pageable pageable);
+    Page<CartDTO> findByEmail(String email, Pageable pageable);
 
-    List<CartDTO> findAllByEmail(String email);
+    List<CartDTO> findByEmail(String email);
 }

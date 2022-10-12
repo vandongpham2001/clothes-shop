@@ -68,7 +68,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Page<OrderDTO> findAllPageableByUsername(String username, Integer status, Pageable pageable) {
+    public Page<OrderDTO> findPageableByUsername(String username, Integer status, Pageable pageable) {
         Page<OrderDTO> results;
         Page<OrderEntity> entities;
         if (status != null) {
@@ -81,7 +81,7 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public List<OrderDTO> findAllByUsername(String username, Integer status, Sort sort) {
+    public List<OrderDTO> findByUsername(String username, Integer status, Sort sort) {
         List<OrderDTO> results;
         Iterable<OrderEntity> entities;
         if (status != null) {

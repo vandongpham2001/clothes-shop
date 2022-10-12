@@ -53,6 +53,24 @@ public class ColorService implements IColorService {
     }
 
     @Override
+    public Page<ColorDTO> findPageableByProductId(Long product_id, Integer status, Pageable pageable) {
+        Page<ColorDTO> results;
+        Page<ColorEntity> entities;
+        entities = colorRepository.findColorEntitiesByStatusAndProductsId(status, product_id, pageable);
+        results = colorConverter.mapEntityPageIntoDtoPage(entities, ColorDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<ColorDTO> findByProductId(Long product_id, Integer status, Sort sort) {
+        List<ColorDTO> results;
+        Iterable<ColorEntity> entities;
+        entities = colorRepository.findColorEntitiesByStatusAndProductsId(status, product_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ColorDTO.class);
+        return results;
+    }
+
+    @Override
     public ColorDTO save(ColorRequest dto) {
         ColorEntity entity;
         if (dto.getId() != null) {
