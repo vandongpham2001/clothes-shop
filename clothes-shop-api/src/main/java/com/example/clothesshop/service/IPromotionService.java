@@ -19,6 +19,8 @@ public interface IPromotionService {
 
     PromotionDTO findById(long id);
 
+    List<PromotionDTO> findCurrentPromotion();
+
     PromotionDTO addProductToPromotion(Long promotion_id, Long[] product_id);
 
     PromotionDTO removeProductFromPromotion(Long promotion_id, Long[] product_id);

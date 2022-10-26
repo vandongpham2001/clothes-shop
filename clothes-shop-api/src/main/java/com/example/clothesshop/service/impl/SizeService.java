@@ -2,8 +2,10 @@ package com.example.clothesshop.service.impl;
 
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.SizeConverter;
+import com.example.clothesshop.dto.ColorDTO;
 import com.example.clothesshop.dto.SizeDTO;
 import com.example.clothesshop.dto.request.SizeRequest;
+import com.example.clothesshop.entity.ColorEntity;
 import com.example.clothesshop.entity.SizeEntity;
 import com.example.clothesshop.repository.SizeRepository;
 import com.example.clothesshop.service.ISizeService;
@@ -49,6 +51,24 @@ public class SizeService implements ISizeService {
         } else {
             entities = sizeRepository.findAll(sort);
         }
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), SizeDTO.class);
+        return results;
+    }
+
+    @Override
+    public Page<SizeDTO> findPageableByProductId(Long product_id, Integer status, Pageable pageable) {
+        Page<SizeDTO> results;
+        Page<SizeEntity> entities;
+        entities = sizeRepository.findSizeEntitiesByStatusAndProductsId(status, product_id, pageable);
+        results = sizeConverter.mapEntityPageIntoDtoPage(entities, SizeDTO.class);
+        return results;
+    }
+
+    @Override
+    public List<SizeDTO> findByProductId(Long product_id, Integer status, Sort sort) {
+        List<SizeDTO> results;
+        Iterable<SizeEntity> entities;
+        entities = sizeRepository.findSizeEntitiesByStatusAndProductsId(status, product_id, sort);
         results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), SizeDTO.class);
         return results;
     }

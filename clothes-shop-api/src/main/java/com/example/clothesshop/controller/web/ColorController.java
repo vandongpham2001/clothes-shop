@@ -68,13 +68,13 @@ public class ColorController {
         product.setProduct_color(null);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageColors = colorService.findAllPageable(SystemConstant.ACTIVE_STATUS, pageable);
+            pageColors = colorService.findPageableByProductId(product_id, SystemConstant.ACTIVE_STATUS, pageable);
             colors = pageColors.getContent();
             response.put("currentPage", pageColors.getNumber() + 1);
             response.put("totalItems", pageColors.getTotalElements());
             response.put("totalPages", pageColors.getTotalPages());
         } else {
-            colors = colorService.findAll(SystemConstant.ACTIVE_STATUS, sortable);
+            colors = colorService.findByProductId(product_id, SystemConstant.ACTIVE_STATUS, sortable);
         }
         response.put("product", product);
         response.put("colors", colors);

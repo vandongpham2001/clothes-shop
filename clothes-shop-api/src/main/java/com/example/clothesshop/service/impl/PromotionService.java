@@ -4,9 +4,11 @@ import com.cloudinary.Cloudinary;
 import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.converter.PromotionConverter;
 import com.example.clothesshop.dto.PromotionDTO;
+import com.example.clothesshop.dto.SizeDTO;
 import com.example.clothesshop.dto.request.PromotionRequest;
 import com.example.clothesshop.entity.ProductEntity;
 import com.example.clothesshop.entity.PromotionEntity;
+import com.example.clothesshop.entity.SizeEntity;
 import com.example.clothesshop.repository.ProductRepository;
 import com.example.clothesshop.repository.PromotionRepository;
 import com.example.clothesshop.service.IPromotionService;
@@ -126,6 +128,15 @@ public class PromotionService implements IPromotionService {
     public PromotionDTO findById(long id) {
         PromotionEntity entity = promotionRepository.findById(id).get();
         return promotionConverter.toDTO(entity);
+    }
+
+    @Override
+    public List<PromotionDTO> findCurrentPromotion() {
+        List<PromotionDTO> results;
+        Iterable<PromotionEntity> entities;
+        entities = promotionRepository.findCurrent();
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), PromotionDTO.class);
+        return results;
     }
 
     @Override

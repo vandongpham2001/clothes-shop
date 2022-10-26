@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -136,6 +137,11 @@ public class ProductService implements IProductService {
         entities = productRepository.findProductEntitiesByStatusAndCollectionsId(status, collection_id, sort);
         results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
         return results;
+    }
+
+    @Override
+    public BigDecimal findMaxPriceProduct() {
+        return productRepository.findMaxPriceProduct();
     }
 
     @Override

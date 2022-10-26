@@ -25,8 +25,6 @@ public class ProductDTO extends AbstractDTO<ProductDTO> {
 //    @ElementCollection(fetch = FetchType.EAGER)
     private List<ProductColorDTO> product_color = new ArrayList<>();
 //    @JsonIgnore
-//    private List<CommentDTO> comments = new ArrayList<>();
-//    @JsonIgnore
 //    private List<CollectionDTO> collections = new ArrayList<>();
 //    @JsonIgnore
 //    private List<PromotionDTO> promotions = new ArrayList<>();

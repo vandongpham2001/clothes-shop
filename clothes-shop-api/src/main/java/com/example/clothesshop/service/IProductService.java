@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface IProductService {
@@ -25,6 +26,8 @@ public interface IProductService {
     Page<ProductDTO> findPageableByCollectionId(Long collection_id, Integer status, Pageable pageable);
 
     List<ProductDTO> findByCollectionId(Long collection_id, Integer status, Sort sort);
+
+    BigDecimal findMaxPriceProduct();
 
     ProductDTO save(ProductRequest dto);
 

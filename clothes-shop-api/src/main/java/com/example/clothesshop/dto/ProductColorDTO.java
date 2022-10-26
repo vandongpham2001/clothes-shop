@@ -14,8 +14,6 @@ public class ProductColorDTO extends AbstractDTO<ProductColorDTO> {
     private Long color_id;
 //    @JsonManagedReference
 //    private ColorDTO color;
-//    @JsonManagedReference
-//    private ProductDTO product;
 //    @JsonBackReference
     private List<ProductColorImageDTO> product_color_image = new ArrayList<>();
 //    @JsonBackReference
