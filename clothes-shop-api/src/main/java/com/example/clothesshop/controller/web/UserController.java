@@ -39,6 +39,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController(value = "userApiOfWeb")
+@CrossOrigin
 @RequestMapping(path = "api/")
 //@Api(tags = {SwaggerConstant.API_TAG})
 public class UserController {

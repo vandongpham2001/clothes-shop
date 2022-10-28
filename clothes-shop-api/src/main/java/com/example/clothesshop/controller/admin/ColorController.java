@@ -21,6 +21,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(path = "api/admin/color")
+@CrossOrigin
 public class ColorController {
     @Autowired
     private IColorService colorService;

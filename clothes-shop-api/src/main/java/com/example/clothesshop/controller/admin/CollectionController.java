@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "apiCollectionOfAdmin")
+@CrossOrigin
 @RequestMapping(path = "api/admin/collection")
 public class CollectionController {
     @Autowired

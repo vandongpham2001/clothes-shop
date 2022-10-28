@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "roleApiOfAdmin")
+@CrossOrigin
 @RequestMapping(path = "api/admin/role")
 public class RoleController {
     @Autowired

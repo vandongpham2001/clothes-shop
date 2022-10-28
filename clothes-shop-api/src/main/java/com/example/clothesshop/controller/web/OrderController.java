@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "apiOrderOfWeb")
+@CrossOrigin
 @RequestMapping(path = "api/order")
 public class OrderController {
     @Autowired

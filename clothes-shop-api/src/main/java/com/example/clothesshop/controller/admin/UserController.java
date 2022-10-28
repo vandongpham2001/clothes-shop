@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "userApiOfAdmin")
+@CrossOrigin
 @RequestMapping(path = "api")
 public class UserController {
     @Autowired

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "apiPromotionOfAdmin")
+@CrossOrigin
 @RequestMapping(path = "api/admin/promotion")
 public class PromotionController {
     @Autowired

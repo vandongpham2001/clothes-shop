@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "apiColorOfWeb")
+@CrossOrigin
 @RequestMapping(path = "api/color")
 public class ColorController {
     //    ColorByProduct

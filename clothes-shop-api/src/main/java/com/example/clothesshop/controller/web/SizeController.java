@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "apiSizeOfWeb")
+@CrossOrigin
 @RequestMapping(path = "api/size")
 public class SizeController {
     @Autowired

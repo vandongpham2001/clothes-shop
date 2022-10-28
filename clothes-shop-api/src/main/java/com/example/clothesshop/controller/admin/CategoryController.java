@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController(value = "categoryApiOfAdmin")
+@CrossOrigin
 @RequestMapping(path = "api/admin/category")
 public class CategoryController {
 
