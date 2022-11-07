@@ -7,7 +7,6 @@ import com.example.clothesshop.dto.request.CollectionRequest;
 import com.example.clothesshop.dto.request.ProductToCollection;
 import com.example.clothesshop.service.ICollectionService;
 import com.example.clothesshop.service.IProductService;
-import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +40,7 @@ public class CollectionController {
         Sort sortable;
         Page<CollectionDTO> pageCollections;
         List<CollectionDTO> collections;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageCollections = collectionService.findAllPageable(status, pageable);
@@ -67,7 +66,7 @@ public class CollectionController {
         Sort sortable;
         Page<ProductDTO> pageCollections;
         List<ProductDTO> products;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         CollectionDTO collection = collectionService.findById(collection_id);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);

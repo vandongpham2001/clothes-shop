@@ -4,7 +4,6 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.ProductDTO;
 import com.example.clothesshop.dto.request.ProductRequest;
 import com.example.clothesshop.service.IProductService;
-import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +35,7 @@ public class ProductController {
         Sort sortable;
         Page<ProductDTO> pageProducts;
         List<ProductDTO> products;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageProducts = productService.findAllPageable(status, pageable);

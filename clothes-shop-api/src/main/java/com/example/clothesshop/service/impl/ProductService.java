@@ -10,16 +10,22 @@ import com.example.clothesshop.dto.ProductColorDTO;
 import com.example.clothesshop.dto.ProductColorImageDTO;
 import com.example.clothesshop.dto.ProductColorSizeDTO;
 import com.example.clothesshop.dto.ProductDTO;
+import com.example.clothesshop.dto.request.FilterRequest;
 import com.example.clothesshop.dto.request.ProductColorRequest;
 import com.example.clothesshop.dto.request.ProductColorSizeRequest;
 import com.example.clothesshop.dto.request.ProductRequest;
+import com.example.clothesshop.dto.response.DetailProductResponse;
+import com.example.clothesshop.dto.response.ProductResponse;
+import com.example.clothesshop.dto.response.PromotionResponse;
 import com.example.clothesshop.entity.*;
 import com.example.clothesshop.repository.*;
 import com.example.clothesshop.service.IProductService;
 import com.example.clothesshop.utils.CloudinaryUtils;
+import com.example.clothesshop.utils.DateUtils;
 import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.SlugUtils;
 import org.apache.commons.collections4.IterableUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +36,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,6 +68,7 @@ public class ProductService implements IProductService {
     private ProductColorImageConverter productColorImageConverter;
     @Autowired
     private Cloudinary cloudinary;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     @Override
     public Page<ProductDTO> findAllPageable(Integer status, Pageable pageable) {
@@ -137,6 +147,182 @@ public class ProductService implements IProductService {
         entities = productRepository.findProductEntitiesByStatusAndCollectionsId(status, collection_id, sort);
         results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductDTO.class);
         return results;
+    }
+
+    @Override
+    public Page<ProductResponse> findAllPageableInWeb(Pageable pageable) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntities(pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+//        for (ProductResponse item : results){
+//            List<PromotionResponse> promotions = item.getPromotions();
+//            for (int i=0; i<promotions.size(); i++){
+//                Integer status = promotions.get(i).getStatus();
+//                Date now = DateUtils.convertToDateViaInstant(LocalDateTime.now());
+//                Date start = promotions.get(i).getStart_date();
+//                Date end = promotions.get(i).getEnd_date();
+//                System.out.println("Test: "+DateUtils.dateBetween(now, start, end));
+//                if (status==SystemConstant.INACTIVE_STATUS || !DateUtils.dateBetween(now, start, end)){
+//                    promotions.set(i, null);
+//                }
+//            }
+//        }
+        return results;
+//        return null;
+    }
+
+    @Override
+    public List<ProductResponse> findAllInWeb(Sort sort) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntities(sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+//        for (ProductResponse item : results){
+//            List<PromotionResponse> promotions = item.getPromotions();
+//            for (int i=0; i<promotions.size(); i++){
+//                Integer status = promotions.get(i).getStatus();
+//                Date now = DateUtils.convertToDateViaInstant(LocalDateTime.now());
+//                Date start = promotions.get(i).getStart_date();
+//                Date end = promotions.get(i).getEnd_date();
+//                System.out.println("Test: "+DateUtils.dateBetween(now, start, end));
+//                if (status==SystemConstant.INACTIVE_STATUS || !DateUtils.dateBetween(now, start, end)){
+//                    promotions.set(i, null);
+//                }
+//            }
+//        }
+        return results;
+//        return null;
+    }
+
+    @Override
+    public Page<ProductResponse> findByCategoryPageableInWeb(Pageable pageable, Long category_id) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByCategory(category_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductResponse> findByCategoryInWeb(Sort sort, Long category_id) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByCategory(category_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public Page<ProductResponse> findByPromotionPageableInWeb(Pageable pageable, Long promotion_id) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndPromotionsId(SystemConstant.ACTIVE_STATUS, promotion_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductResponse> findByPromotionInWeb(Sort sort, Long promotion_id) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndPromotionsId(SystemConstant.ACTIVE_STATUS, promotion_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public Page<ProductResponse> findByCollectionPageableInWeb(Pageable pageable, Long collection_id) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndCollectionsId(SystemConstant.ACTIVE_STATUS, collection_id, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductResponse> findByCollectionInWeb(Sort sort, Long collection_id) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByStatusAndCollectionsId(SystemConstant.ACTIVE_STATUS, collection_id, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public Page<ProductResponse> findByFilterPageableInWeb(Pageable pageable, FilterRequest filter) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        if (filter.getMin_price()==null){
+            filter.setMin_price(BigDecimal.valueOf(0));
+        }
+        if (filter.getMax_price()==null){
+            filter.setMax_price(findMaxPriceProduct());
+        }
+        if (filter.getMin_price()==null && filter.getMax_price()==null){
+            filter.setMin_price(BigDecimal.valueOf(0));
+            filter.setMax_price(findMaxPriceProduct());
+        }
+        entities = productRepository.findProductEntitiesByFilter(filter.getColor_id(), filter.getSize_id(), filter.getMin_price(), filter.getMax_price(), pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+//        return null;
+    }
+
+    @Override
+    public List<ProductResponse> findByFilterInWeb(Sort sort, FilterRequest filter) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        if (filter.getMin_price()==null){
+            filter.setMin_price(BigDecimal.valueOf(0));
+        }
+        if (filter.getMax_price()==null){
+            filter.setMax_price(findMaxPriceProduct());
+        }
+        if (filter.getMin_price()==null && filter.getMax_price()==null){
+            filter.setMin_price(BigDecimal.valueOf(0));
+            filter.setMax_price(findMaxPriceProduct());
+        }
+        entities = productRepository.findProductEntitiesByFilter(filter.getColor_id(), filter.getSize_id(), filter.getMin_price(), filter.getMax_price(), sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+        return results;
+//        return null;
+    }
+
+    @Override
+    public Page<ProductResponse> findByKeywordPageableInWeb(Pageable pageable, String keyword) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByKeyword(keyword, pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public List<ProductResponse> findByKeywordInWeb(Sort sort, String keyword) {
+        List<ProductResponse> results;
+        Iterable<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesByKeyword(keyword, sort);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public DetailProductResponse findDetailById(Long id) {
+        ProductEntity entity = productRepository.findDetailProductById(id);
+        DetailProductResponse result = ObjectMapperUtils.map(entity, DetailProductResponse.class);
+//        List<PromotionResponse> promotions = result.getPromotions();
+//        for (int i=0; i<promotions.size(); i++){
+//            Integer status = promotions.get(i).getStatus();
+//            Date now = DateUtils.convertToDateViaInstant(LocalDateTime.now());
+//            Date start = promotions.get(i).getStart_date();
+//            Date end = promotions.get(i).getEnd_date();
+//            System.out.println("Test: "+DateUtils.dateBetween(now, start, end));
+//            if (status==SystemConstant.INACTIVE_STATUS || !DateUtils.dateBetween(now, start, end)){
+//                promotions.set(i, null);
+//            }
+//        }
+        return result;
     }
 
     @Override

@@ -48,7 +48,7 @@ public class OrderController {
             Sort sortable;
             Page<OrderDTO> pageOrders;
             List<OrderDTO> orders;
-            sortable = PagingUtils.sort(sort);
+            sortable = PagingUtils.sortByCreatedDate(sort);
             if (page != null && limit != null) {
                 pageable = PageRequest.of(page - 1, limit, sortable);
                 pageOrders = orderService.findPageableByUsername(username, status, pageable);

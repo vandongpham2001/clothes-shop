@@ -1,13 +1,24 @@
 package com.example.clothesshop.controller.web;
 
+import com.example.clothesshop.dto.request.FilterRequest;
+import com.example.clothesshop.dto.response.DetailProductResponse;
+import com.example.clothesshop.dto.response.ProductResponse;
 import com.example.clothesshop.service.IProductService;
+import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController(value = "productApiOfWeb")
 @CrossOrigin
@@ -17,27 +28,228 @@ public class ProductController {
     IProductService productService;
 
     @GetMapping("/max-price")
-    public BigDecimal getMaxPriceProduct(){
+    public BigDecimal getMaxPriceProduct() {
         return productService.findMaxPriceProduct();
     }
 
-//    AllProduct
+    // All Product
+    @GetMapping
+    public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
+                                                      @RequestParam(value = "limit", required = false) Integer limit,
+                                                      @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findAllPageableInWeb(pageable);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findAllInWeb(sortable);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    ProductByCategory
+    // Product Detail
+    @GetMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> getProductById(@PathVariable("id") Long id) {
+        Map<String, Object> response = new HashMap<>();
+        DetailProductResponse product = productService.findDetailById(id);
+        response.put("product", product);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    ProductByCollection
+    // Product By Category
+    @GetMapping("/category/{id}")
+    public ResponseEntity<Map<String, Object>> getByCategory(@PathVariable("id") Long id,
+                                                             @RequestParam(value = "page", required = false) Integer page,
+                                                             @RequestParam(value = "limit", required = false) Integer limit,
+                                                             @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findByCategoryPageableInWeb(pageable, id);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findByCategoryInWeb(sortable, id);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    ProductByPromotion
+    // Product By Promotion
+    @GetMapping("/promotion/{id}")
+    public ResponseEntity<Map<String, Object>> getByPromotion(@PathVariable("id") Long id,
+                                                              @RequestParam(value = "page", required = false) Integer page,
+                                                              @RequestParam(value = "limit", required = false) Integer limit,
+                                                              @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findByPromotionPageableInWeb(pageable, id);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findByPromotionInWeb(sortable, id);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    Product Filter
+    // Product By Collection
+    @GetMapping("/collection/{id}")
+    public ResponseEntity<Map<String, Object>> getByCollection(@PathVariable("id") Long id,
+                                                               @RequestParam(value = "page", required = false) Integer page,
+                                                               @RequestParam(value = "limit", required = false) Integer limit,
+                                                               @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findByCollectionPageableInWeb(pageable, id);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findByCollectionInWeb(sortable, id);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    Product Detail
+    // Product Weekly Best
+    @GetMapping("/weekly_best")
+    public ResponseEntity<Map<String, Object>> getProductWeeklyBest(@RequestParam(value = "page", required = false) Integer page,
+                                                                    @RequestParam(value = "limit", required = false) Integer limit,
+                                                                    @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findAllPageableInWeb(pageable);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findAllInWeb(sortable);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    New Product
+    // Product New
+    @GetMapping("/new")
+    public ResponseEntity<Map<String, Object>> getProductNew(@RequestParam(value = "page", required = false) Integer page,
+                                                             @RequestParam(value = "limit", required = false) Integer limit,
+                                                             @RequestParam(value = "sort", required = false, defaultValue = "desc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortById(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findAllPageableInWeb(pageable);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findAllInWeb(sortable);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    Product Weekly Best
+    //    Product Filter
+    @PostMapping("/filter")
+    public ResponseEntity<Map<String, Object>> getByFilter(@RequestBody FilterRequest filter,
+                                                           @RequestParam(value = "page", required = false) Integer page,
+                                                           @RequestParam(value = "limit", required = false) Integer limit,
+                                                           @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable = null;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products; 
+        if (Objects.equals(sort, "asc") || Objects.equals(sort, "desc")){
+            sortable = PagingUtils.sortById(sort);
+        }
+        if (Objects.equals(sort, "price_asc") || Objects.equals(sort, "price_desc")){
+            sortable = PagingUtils.sortByPrice(sort);
+        }
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findByFilterPageableInWeb(pageable, filter);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findByFilterInWeb(sortable, filter);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-//    Product Search
+    //    Product Search by name
+    @GetMapping("/search")
+    public ResponseEntity<Map<String, Object>> getByKeyword(@RequestParam(value = "keyword") String keyword,
+                                                            @RequestParam(value = "page", required = false) Integer page,
+                                                            @RequestParam(value = "limit", required = false) Integer limit,
+                                                            @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+        Map<String, Object> response = new HashMap<>();
+        Pageable pageable;
+        Sort sortable;
+        Page<ProductResponse> pageProducts;
+        List<ProductResponse> products;
+        sortable = PagingUtils.sortByCreatedDate(sort);
+        if (page != null && limit != null) {
+            pageable = PageRequest.of(page - 1, limit, sortable);
+            pageProducts = productService.findByKeywordPageableInWeb(pageable, keyword);
+            products = pageProducts.getContent();
+            response.put("currentPage", pageProducts.getNumber() + 1);
+            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalPages", pageProducts.getTotalPages());
+        } else {
+            products = productService.findByKeywordInWeb(sortable, keyword);
+        }
+        response.put("products", products);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 //    Menu
 }

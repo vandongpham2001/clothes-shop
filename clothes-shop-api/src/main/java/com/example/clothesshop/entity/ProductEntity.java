@@ -2,10 +2,14 @@ package com.example.clothesshop.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Products")
@@ -50,5 +54,6 @@ public class ProductEntity extends BaseEntity{
     @JoinTable(name = "product_promotion",
             joinColumns = { @JoinColumn(name = "product_id") },
             inverseJoinColumns = { @JoinColumn(name = "promotion_id") })
-    private List<PromotionEntity> promotions = new ArrayList<>();
+    @Where(clause = "status=1 and current_date between start_date and end_date")
+    private Set<PromotionEntity> promotions = new HashSet<>();
 }

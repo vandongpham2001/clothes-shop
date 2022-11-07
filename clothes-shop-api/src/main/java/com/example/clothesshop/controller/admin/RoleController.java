@@ -46,7 +46,7 @@ public class RoleController {
         Sort sortable;
         Page<RoleDTO> pageRoles;
         List<RoleDTO> roles;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageRoles = roleService.findAllPageable(pageable);

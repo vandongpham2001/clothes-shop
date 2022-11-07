@@ -1,7 +1,6 @@
 package com.example.clothesshop.controller.admin;
 
 import com.example.clothesshop.constant.SystemConstant;
-import com.example.clothesshop.dto.CollectionDTO;
 import com.example.clothesshop.dto.ProductDTO;
 import com.example.clothesshop.dto.request.ProductToPromotion;
 import com.example.clothesshop.dto.PromotionDTO;
@@ -40,7 +39,7 @@ public class PromotionController {
         Sort sortable;
         Page<PromotionDTO> pagePromotions;
         List<PromotionDTO> promotions;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pagePromotions = promotionService.findAllPageable(status, pageable);
@@ -66,7 +65,7 @@ public class PromotionController {
         Sort sortable;
         Page<ProductDTO> pagePromotions;
         List<ProductDTO> products;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         PromotionDTO promotion = promotionService.findById(promotion_id);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);

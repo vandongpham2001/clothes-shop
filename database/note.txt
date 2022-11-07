@@ -23,3 +23,12 @@ category_detail
 
 doing
 client select
+
+api/menu
+api/productSales
+api/productCollection
+api/product/search
+api/product/weekly_best
+api/product/new_product
+api/product/detail done
+api/product/filter

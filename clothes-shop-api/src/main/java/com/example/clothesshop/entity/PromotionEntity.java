@@ -7,9 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "Promotions")
@@ -27,7 +25,7 @@ public class PromotionEntity extends BaseEntity {
     private String pc_banner;
     @ManyToMany(fetch = FetchType.LAZY,
             mappedBy = "promotions")
-    private List<ProductEntity> products = new ArrayList<>();
+    private Set<ProductEntity> products = new HashSet<>();
     public void addProduct(ProductEntity product) {
         this.products.add(product);
         product.getPromotions().add(this);

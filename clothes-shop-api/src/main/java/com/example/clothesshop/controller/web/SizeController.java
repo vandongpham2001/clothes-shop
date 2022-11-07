@@ -37,7 +37,7 @@ public class SizeController {
         Sort sortable;
         Page<SizeDTO> pageSizes;
         List<SizeDTO> sizes;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageSizes = sizeService.findAllPageable(SystemConstant.ACTIVE_STATUS, pageable);
@@ -63,7 +63,7 @@ public class SizeController {
         Sort sortable;
         Page<SizeDTO> pageSizes;
         List<SizeDTO> sizes;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         ProductDTO product = productService.findById(product_id);
         product.setProduct_color(null);
         if (page != null && limit != null) {

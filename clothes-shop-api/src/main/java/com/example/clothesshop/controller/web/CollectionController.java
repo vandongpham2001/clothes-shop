@@ -23,7 +23,7 @@ public class CollectionController {
     @GetMapping()
     public ResponseEntity<Map<String, Object>> getAllCollection(){
         Map<String, Object> response = new HashMap<>();
-        Sort sortable = PagingUtils.sort("asc");
+        Sort sortable = PagingUtils.sortByCreatedDate("asc");
         List<CollectionDTO> listCollection = collectionService.findAll(SystemConstant.ACTIVE_STATUS, sortable);
         response.put("collections", listCollection);
         return new ResponseEntity<>(response, HttpStatus.OK);

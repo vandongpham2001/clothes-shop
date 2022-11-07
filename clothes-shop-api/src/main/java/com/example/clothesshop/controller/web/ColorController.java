@@ -39,7 +39,7 @@ public class ColorController {
         Sort sortable;
         Page<ColorDTO> pageColors;
         List<ColorDTO> colors;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageColors = colorService.findAllPageable(SystemConstant.ACTIVE_STATUS, pageable);
@@ -64,7 +64,7 @@ public class ColorController {
         Sort sortable;
         Page<ColorDTO> pageColors;
         List<ColorDTO> colors;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         ProductDTO product = productService.findById(product_id);
         product.setProduct_color(null);
         if (page != null && limit != null) {

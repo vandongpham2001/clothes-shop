@@ -4,7 +4,6 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.CategoryDTO;
 import com.example.clothesshop.dto.request.CategoryRequest;
 import com.example.clothesshop.service.ICategoryService;
-import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +42,7 @@ public class CategoryController {
 //        if (sort.equals("desc")) {
 //            sortable = Sort.by(Sort.Direction.DESC, "createdDate");
 //        }
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageCategories = categoryService.findAllPageable(status, pageable);

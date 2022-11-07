@@ -43,7 +43,7 @@ public class UserController {
         Sort sortable;
         Page<UserDTO> pageUsers;
         List<UserDTO> users;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageUsers = userService.findAllPageable(status, pageable);

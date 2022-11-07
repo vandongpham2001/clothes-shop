@@ -10,10 +10,24 @@ public class PagingUtils<T> {
 //        return pages;
 //    }
 
-    public static Sort sort(String sort){
+    public static Sort sortByCreatedDate(String sort){
         if (sort.equals("asc")) {
             return Sort.by(Sort.Direction.ASC, "createdDate");
         }
         return Sort.by(Sort.Direction.DESC, "createdDate");
+    }
+
+    public static Sort sortById(String sort){
+        if (sort.equals("asc")) {
+            return Sort.by(Sort.Direction.ASC, "id");
+        }
+        return Sort.by(Sort.Direction.DESC, "id");
+    }
+
+    public static Sort sortByPrice(String sort){
+        if (sort.equals("price_asc")) {
+            return Sort.by(Sort.Direction.ASC, "price");
+        }
+        return Sort.by(Sort.Direction.DESC, "price");
     }
 }

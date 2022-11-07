@@ -4,7 +4,6 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.ColorDTO;
 import com.example.clothesshop.dto.request.ColorRequest;
 import com.example.clothesshop.service.IColorService;
-import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +35,7 @@ public class ColorController {
         Sort sortable;
         Page<ColorDTO> pageColors;
         List<ColorDTO> colors;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageColors = colorService.findAllPageable(status, pageable);

@@ -4,7 +4,6 @@ import com.example.clothesshop.constant.SystemConstant;
 import com.example.clothesshop.dto.OrderDTO;
 import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.service.IOrderService;
-import com.example.clothesshop.utils.ObjectMapperUtils;
 import com.example.clothesshop.utils.PagingUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +35,7 @@ public class OrderController {
         Sort sortable;
         Page<OrderDTO> pageOrders;
         List<OrderDTO> orders;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageOrders = orderService.findAllPageable(status, pageable);
@@ -62,7 +61,7 @@ public class OrderController {
         Sort sortable;
         Page<OrderDTO> pageOrders;
         List<OrderDTO> orders;
-        sortable = PagingUtils.sort(sort);
+        sortable = PagingUtils.sortByCreatedDate(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
             pageOrders = orderService.findPageableByUsername(username, status, pageable);
