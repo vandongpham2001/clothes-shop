@@ -130,8 +130,8 @@
 -- select p.* from products p
 -- left join product_color pro on p.id = pro.product_id
 -- left join product_color_size pcs on pro.id = pcs.product_color_id;
-select p.* from products p 
-left join product_color pro on p.id=pro.product_id
-left join product_color_size pcs on pro.id=pcs.product_color_id
-where p.status=1 and pcs.size_id=4 and pro.color_id=12
-Group by p.id;
+-- select p.* from products p 
+-- left join product_color pro on p.id=pro.product_id
+-- left join product_color_size pcs on pro.id=pcs.product_color_id
+-- where p.status=1 and pcs.size_id=4 and pro.color_id=12
+-- Group by p.id;

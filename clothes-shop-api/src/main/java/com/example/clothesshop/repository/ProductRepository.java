@@ -34,22 +34,22 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductEnt
     List<ProductEntity> findByCurrentPromotionsStatus(Integer status);
 
 //    , nativeQuery = true
-    @Query(value = "select p from ProductEntity p")
+    @Query(value = "select p from ProductEntity p where p.status=1")
     Page<ProductEntity> findProductEntities(Pageable pageable);
 
-    @Query(value = "select p from ProductEntity p")
+    @Query(value = "select p from ProductEntity p where p.status=1")
     Iterable<ProductEntity> findProductEntities(Sort sort);
 
-    @Query(value = "select p from ProductEntity p where p.category.id=?1")
+    @Query(value = "select p from ProductEntity p  where p.status=1 and p.category.id=?1")
     Page<ProductEntity> findProductEntitiesByCategory(Long category_id, Pageable pageable);
 
-    @Query(value = "select p from ProductEntity p where p.category.id=?1")
+    @Query(value = "select p from ProductEntity p where p.status=1 and p.category.id=?1")
     Iterable<ProductEntity> findProductEntitiesByCategory(Long category_id, Sort sort);
 
-    @Query(value = "select p from ProductEntity p where p.name like %:keyword%")
+    @Query(value = "select p from ProductEntity p where p.status=1 and p.name like %:keyword%")
     Page<ProductEntity> findProductEntitiesByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query(value = "select p from ProductEntity p where p.name like %:keyword%")
+    @Query(value = "select p from ProductEntity p where p.status=1 and p.name like %:keyword%")
     Iterable<ProductEntity> findProductEntitiesByKeyword(@Param("keyword") String keyword, Sort sort);
 
     @Query(value = "select p from ProductEntity p left join p.product_color pro left join pro.product_color_size pcs " +
@@ -66,7 +66,7 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductEnt
             "group by p")
     Iterable<ProductEntity> findProductEntitiesByFilter(@Param("color") Long color_id, @Param("size") Long size_id, @Param("min_price") BigDecimal min_price, @Param("max_price") BigDecimal max_price, Sort sort);
 
-    @Query(value = "from ProductEntity p left join p.promotions pro where p.id=?1")
+    @Query(value = "from ProductEntity p left join p.promotions pro where p.status=1 and p.id=?1")
     ProductEntity findDetailProductById(Long id);
 
     @Query("select max(price) from ProductEntity")
