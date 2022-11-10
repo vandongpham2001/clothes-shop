@@ -61,6 +61,13 @@ public class CartService implements ICartService {
     public CartDTO save(CartRequest dto) {
         CartEntity entity = null;
         List<CartEntity> entities = cartRepository.findAllByUserId(dto.getUser_id());
+        Integer max_quantity = productColorSizeRepository.findById(dto.getProduct_color_size_id()).get().getQuantity();
+        if (max_quantity == 0){
+            return null;
+        }
+        if (dto.getQuantity()>max_quantity){
+            dto.setQuantity(max_quantity);
+        }
         if (dto.getId() != null) {
             CartEntity old_entity = cartRepository.findById(dto.getId()).get();
             entity = cartConverter.toEntity(dto, old_entity);

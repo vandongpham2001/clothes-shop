@@ -54,6 +54,12 @@ public interface IProductService {
 
     List<ProductResponse> findByKeywordInWeb(Sort sort, String keyword);
 
+    Page<ProductResponse> findWeeklyBestPageableInWeb(Pageable pageable);
+
+//    List<ProductResponse> findWeeklyBestInWeb(Sort sort);
+
+    Integer countProductWeeklyBest();
+
     DetailProductResponse findDetailById(Long id);
 
     BigDecimal findMaxPriceProduct();

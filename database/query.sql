@@ -135,3 +135,59 @@
 -- left join product_color_size pcs on pro.id=pcs.product_color_id
 -- where p.status=1 and pcs.size_id=4 and pro.color_id=12
 -- Group by p.id;
+
+-- SELECT p.id, p.name, p.price, p.description, p.image, p.category_id
+-- -- , product_color.thumbnail, colors.color, sizes.size, product_color_size.quantity
+-- -- , product_promotion.promotion_id
+-- , if (promotions.discount is null, 0, promotions.discount) as discount 
+-- FROM `clothes-shop`.products p
+-- left join `clothes-shop`.product_color pc on p.id = pc.product_id
+-- 	-- left join product_color_image on product_color.id = product_color_image.product_color_id
+-- 	join `clothes-shop`.product_color_size pcs on pc.id = pcs.product_color_id
+-- 		and pcs.id in 
+-- (
+-- 	SELECT od.product_color_size_id
+--     -- , od.id, od.product_color_size_id, SUM(quantity) qty
+-- 	FROM order_detail od
+-- 	JOIN orders o ON o.id = od.order_id
+--             -- AND o.time_order >= DATE_SUB(NOW(), INTERVAL 7 DAY) 
+-- 	group by od.id
+-- )
+-- left join product_promotion on p.id = product_promotion.product_id
+-- 	left join promotions on product_promotion.promotion_id = promotions.id
+-- 		and curdate() between promotions.start_date and promotions.end_date
+--         and promotions.status=1
+-- group by p.id;
+
+SELECT p.id, p.name, p.price, p.description, p.image, p.category_id
+-- , product_color.thumbnail, colors.color, sizes.size, product_color_size.quantity
+-- , product_promotion.promotion_id
+-- , if (promotions.discount is null, 0, promotions.discount) as discount 
+FROM `clothes-shop`.products p
+left join `clothes-shop`.product_color pc on p.id = pc.product_id
+	-- left join product_color_image on product_color.id = product_color_image.product_color_id
+	join `clothes-shop`.product_color_size pcs on pc.id = pcs.product_color_id
+		-- and pcs.id in 
+        where pcs.id in 
+(
+	SELECT od.product_color_size_id
+    -- , od.id, od.product_color_size_id, SUM(quantity) qty
+	FROM order_detail od
+	JOIN orders o ON o.id = od.order_id
+            AND o.time_order >= DATE_SUB(NOW(), INTERVAL 7 DAY) 
+	group by od.id
+)
+group by p.id;
+
+SELECT distinct p.id
+FROM `clothes-shop`.products p
+left join `clothes-shop`.product_color pc on p.id = pc.product_id
+	join `clothes-shop`.product_color_size pcs on pc.id = pcs.product_color_id
+        where pcs.id in 
+(
+	SELECT od.product_color_size_id
+	FROM order_detail od
+	JOIN orders o ON o.id = od.order_id
+            AND o.time_order >= DATE_SUB(NOW(), INTERVAL 337 DAY) 
+	group by od.id
+);

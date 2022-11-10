@@ -150,20 +150,27 @@ public class ProductController {
                                                                     @RequestParam(value = "limit", required = false) Integer limit,
                                                                     @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
         Map<String, Object> response = new HashMap<>();
-        Pageable pageable;
+        Pageable pageable = null;
         Sort sortable;
         Page<ProductResponse> pageProducts;
         List<ProductResponse> products;
-        sortable = PagingUtils.sortByCreatedDate(sort);
+        sortable = PagingUtils.sort_by_created_date(sort);
         if (page != null && limit != null) {
             pageable = PageRequest.of(page - 1, limit, sortable);
-            pageProducts = productService.findAllPageableInWeb(pageable);
+            pageProducts = productService.findWeeklyBestPageableInWeb(pageable);
             products = pageProducts.getContent();
+            Integer total_item = productService.countProductWeeklyBest();
+            Integer total_page = (int) Math.ceil((double) total_item / limit);
             response.put("currentPage", pageProducts.getNumber() + 1);
-            response.put("totalItems", pageProducts.getTotalElements());
-            response.put("totalPages", pageProducts.getTotalPages());
+//            response.put("totalItems", pageProducts.getTotalElements());
+            response.put("totalItems", total_item);
+            response.put("totalPages", total_page);
         } else {
-            products = productService.findAllInWeb(sortable);
+            limit = productService.countProductWeeklyBest();
+//            limit = 100;
+            pageable = PageRequest.of(0, limit, sortable);
+            pageProducts = productService.findWeeklyBestPageableInWeb(pageable);
+            products = pageProducts.getContent();
         }
         response.put("products", products);
         return new ResponseEntity<>(response, HttpStatus.OK);

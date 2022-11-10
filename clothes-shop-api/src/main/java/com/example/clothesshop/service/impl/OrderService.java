@@ -103,6 +103,7 @@ public class OrderService implements IOrderService {
     public OrderDTO save(OrderRequest dto) {
         OrderEntity entity;
         List<OrderDetailRequest> listOrderDetailDTO = dto.getOrder_detail();
+
         dto.setOrder_detail(null);
         if (dto.getId() != null) {
             OrderEntity old_entity = orderRepository.findById(dto.getId()).get();
@@ -118,6 +119,13 @@ public class OrderService implements IOrderService {
             for (OrderDetailRequest orderDetailDTO : listOrderDetailDTO){
                 orderDetailDTO.setOrder_id(savedOrder.getId());
                 OrderDetailEntity orderDetailEntity = new OrderDetailEntity();
+                Integer max_quantity = productColorSizeRepository.findById(orderDetailDTO.getProduct_color_size_id()).get().getQuantity();
+                if (max_quantity == 0){
+                    continue;
+                }
+                if (orderDetailDTO.getQuantity()>max_quantity){
+                    orderDetailDTO.setQuantity(max_quantity);
+                }
                 if (orderDetailDTO.getId() != null){
                     OrderDetailEntity oldOrderDetailEntity = orderDetailRepository.findById(orderDetailDTO.getId()).get();
                     orderDetailEntity = orderDetailConverter.toEntity(orderDetailDTO, oldOrderDetailEntity);

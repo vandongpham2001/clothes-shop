@@ -17,6 +17,13 @@ public class PagingUtils<T> {
         return Sort.by(Sort.Direction.DESC, "createdDate");
     }
 
+    public static Sort sort_by_created_date(String sort){
+        if (sort.equals("asc")) {
+            return Sort.by(Sort.Direction.ASC, "created_date");
+        }
+        return Sort.by(Sort.Direction.DESC, "created_date");
+    }
+
     public static Sort sortById(String sort){
         if (sort.equals("asc")) {
             return Sort.by(Sort.Direction.ASC, "id");

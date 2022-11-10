@@ -33,14 +33,14 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductEnt
     @Query(value = "select p from ProductEntity p left join p.promotions pro where pro.status=?1 and current_date between pro.start_date and pro.end_date")
     List<ProductEntity> findByCurrentPromotionsStatus(Integer status);
 
-//    , nativeQuery = true
+    //    , nativeQuery = true
     @Query(value = "select p from ProductEntity p where p.status=1")
     Page<ProductEntity> findProductEntities(Pageable pageable);
 
     @Query(value = "select p from ProductEntity p where p.status=1")
     Iterable<ProductEntity> findProductEntities(Sort sort);
 
-    @Query(value = "select p from ProductEntity p  where p.status=1 and p.category.id=?1")
+    @Query(value = "select p from ProductEntity p where p.status=1 and p.category.id=?1")
     Page<ProductEntity> findProductEntitiesByCategory(Long category_id, Pageable pageable);
 
     @Query(value = "select p from ProductEntity p where p.status=1 and p.category.id=?1")
@@ -65,6 +65,61 @@ public interface ProductRepository extends PagingAndSortingRepository<ProductEnt
             "(:size is null or pcs.size.id=:size) " +
             "group by p")
     Iterable<ProductEntity> findProductEntitiesByFilter(@Param("color") Long color_id, @Param("size") Long size_id, @Param("min_price") BigDecimal min_price, @Param("max_price") BigDecimal max_price, Sort sort);
+
+    @Query(value = "select p.* from products p " +
+            "left join product_color pro on p.id=pro.product_id " +
+            "left join product_color_size pcs on pro.id=pcs.product_color_id " +
+            "where p.status=1 and pcs.id in " +
+            "(select od.product_color_size_id from order_detail od " +
+            "join orders o on od.order_id=o.id and o.time_order >= DATE_SUB(NOW(), INTERVAL 7 DAY) " +
+            "group by od.id) " +
+            "group by p.id",
+            countQuery = "select distinct p.id from products p " +
+                    "left join product_color pro on p.id=pro.product_id " +
+                    "left join product_color_size pcs on pro.id=pcs.product_color_id " +
+                    "where p.status=1 and pcs.id in " +
+                    "(select od.product_color_size_id from order_detail od " +
+                    "join orders o on od.order_id=o.id and o.time_order >= DATE_SUB(NOW(), INTERVAL 7 DAY) " +
+                    "group by od.id)",
+            nativeQuery = true)
+    Page<ProductEntity> findProductEntitiesWeeklyBest(Pageable pageable);
+
+    @Query(value = "select count(distinct p.id) from products p " +
+            "left join product_color pro on p.id=pro.product_id " +
+            "left join product_color_size pcs on pro.id=pcs.product_color_id " +
+            "where p.status=1 and pcs.id in " +
+            "(select od.product_color_size_id from order_detail od " +
+            "join orders o on od.order_id=o.id and o.time_order >= DATE_SUB(NOW(), INTERVAL 7 DAY) " +
+            "group by od.id)",
+            nativeQuery = true)
+    Integer countProductEntitiesWeeklyBest();
+
+//    @Query(value = "select p.* from products p " +
+//            "left join product_color pro on p.id=pro.product_id " +
+//            "left join product_color_size pcs on pro.id=pcs.product_color_id " +
+//            "where p.status=1 and pcs.id in " +
+//            "(select od.product_color_size_id from order_detail od " +
+//            "join orders o on od.order_id=o.id and o.time_order >= DATE_SUB(NOW(), INTERVAL 355 DAY) " +
+//            "group by od.id) " +
+//            "group by p.id",
+//            countQuery = "select p.* from products p " +
+//                    "left join product_color pro on p.id=pro.product_id " +
+//                    "left join product_color_size pcs on pro.id=pcs.product_color_id " +
+//                    "where p.status=1 and pcs.id in " +
+//                    "(select od.product_color_size_id from order_detail od " +
+//                    "join orders o on od.order_id=o.id and o.time_order >= DATE_SUB(NOW(), INTERVAL 355 DAY) " +
+//                    "group by od.id) " +
+//                    "group by p.id",
+//            nativeQuery = true)
+//    Iterable<ProductEntity> findProductEntitiesWeeklyBest(Sort sort);
+
+//    @Query(value = "select p from ProductEntity p left join p.product_color pro left join pro.product_color_size pcs " +
+//            "where p.status=1 and pcs.id in (select od.product_color_size.id from OrderDetailEntity od join OrderEntity o where o.id>0 group by od.product_color_size.id) group by p")
+//    Page<ProductEntity> findProductEntitiesWeeklyBest(Pageable pageable);
+//
+//    @Query(value = "select p from ProductEntity p left join p.product_color pro left join pro.product_color_size pcs " +
+//            "where p.status=1 and pcs.id in (select od.product_color_size.id from OrderDetailEntity od join OrderEntity o where o.id>0 group by od.product_color_size.id) group by p")
+//    Iterable<ProductEntity> findProductEntitiesWeeklyBest(Sort sort);
 
     @Query(value = "from ProductEntity p left join p.promotions pro where p.status=1 and p.id=?1")
     ProductEntity findDetailProductById(Long id);

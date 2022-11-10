@@ -308,6 +308,30 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    public Page<ProductResponse> findWeeklyBestPageableInWeb(Pageable pageable) {
+        Page<ProductResponse> results;
+        Page<ProductEntity> entities;
+        entities = productRepository.findProductEntitiesWeeklyBest(pageable);
+        results = productConverter.mapEntityPageIntoDtoPage(entities, ProductResponse.class);
+        return results;
+    }
+
+    @Override
+    public Integer countProductWeeklyBest() {
+        return productRepository.countProductEntitiesWeeklyBest();
+    }
+
+//    @Override
+//    public List<ProductResponse> findWeeklyBestInWeb(Sort sort) {
+//        List<ProductResponse> results;
+//        Iterable<ProductEntity> entities;
+//        entities = productRepository.findProductEntitiesWeeklyBest(sort);
+//        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProductResponse.class);
+//        return results;
+////        return null;
+//    }
+
+    @Override
     public DetailProductResponse findDetailById(Long id) {
         ProductEntity entity = productRepository.findDetailProductById(id);
         DetailProductResponse result = ObjectMapperUtils.map(entity, DetailProductResponse.class);
