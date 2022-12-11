@@ -160,6 +160,7 @@ public class ProductController {
             pageProducts = productService.findWeeklyBestPageableInWeb(pageable);
             products = pageProducts.getContent();
             Integer total_item = productService.countProductWeeklyBest();
+//            Integer total_item = pageProducts;
             Integer total_page = (int) Math.ceil((double) total_item / limit);
             response.put("currentPage", pageProducts.getNumber() + 1);
 //            response.put("totalItems", pageProducts.getTotalElements());

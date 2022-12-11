@@ -18,5 +18,6 @@ public class DetailProductResponse {
     private BigDecimal salePrice;
     private CategoryResponse category;
     private List<ProductColorResponse> product_color;
+//    @Where(clause = "status=1 and current_date between start_date and end_date")
     private Set<PromotionResponse> promotions = new HashSet<>();
 }

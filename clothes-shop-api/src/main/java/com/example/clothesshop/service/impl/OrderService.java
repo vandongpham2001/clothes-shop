@@ -9,6 +9,7 @@ import com.example.clothesshop.dto.request.OrderDetailRequest;
 import com.example.clothesshop.dto.request.OrderRequest;
 import com.example.clothesshop.entity.OrderDetailEntity;
 import com.example.clothesshop.entity.OrderEntity;
+import com.example.clothesshop.entity.ProductColorSizeEntity;
 import com.example.clothesshop.repository.OrderDetailRepository;
 import com.example.clothesshop.repository.OrderRepository;
 import com.example.clothesshop.repository.ProductColorSizeRepository;
@@ -103,7 +104,6 @@ public class OrderService implements IOrderService {
     public OrderDTO save(OrderRequest dto) {
         OrderEntity entity;
         List<OrderDetailRequest> listOrderDetailDTO = dto.getOrder_detail();
-
         dto.setOrder_detail(null);
         if (dto.getId() != null) {
             OrderEntity old_entity = orderRepository.findById(dto.getId()).get();
@@ -120,11 +120,14 @@ public class OrderService implements IOrderService {
                 orderDetailDTO.setOrder_id(savedOrder.getId());
                 OrderDetailEntity orderDetailEntity = new OrderDetailEntity();
                 Integer max_quantity = productColorSizeRepository.findById(orderDetailDTO.getProduct_color_size_id()).get().getQuantity();
+                System.out.println("max quantity of product: "+max_quantity);
                 if (max_quantity == 0){
+                    System.out.println("check max quantity = 0, continue");
                     continue;
                 }
                 if (orderDetailDTO.getQuantity()>max_quantity){
                     orderDetailDTO.setQuantity(max_quantity);
+                    System.out.println("compare order quantity with current quantity"+max_quantity);
                 }
                 if (orderDetailDTO.getId() != null){
                     OrderDetailEntity oldOrderDetailEntity = orderDetailRepository.findById(orderDetailDTO.getId()).get();
@@ -140,6 +143,18 @@ public class OrderService implements IOrderService {
                     orderDetailEntity.setProduct_color_size(productColorSizeRepository.findById(orderDetailDTO.getProduct_color_size_id()).get());
                 }
                 OrderDetailDTO savedOrderDetail = orderDetailConverter.toDTO(orderDetailRepository.save(orderDetailEntity));
+                if (orderDetailEntity.getProduct_color_size().getId()!=null) {
+                    System.out.println("check id of product color size");
+                    ProductColorSizeEntity productColorSizeEntity = productColorSizeRepository.findById(orderDetailEntity.getProduct_color_size().getId()).get();
+                    if (savedOrderDetail.getQuantity()!=null){
+                        Integer current_quantity = productColorSizeEntity.getQuantity();
+                        System.out.println("current quantity: "+current_quantity);
+                        Integer sold_quantity = savedOrderDetail.getQuantity();
+                        productColorSizeEntity.setQuantity(current_quantity-sold_quantity);
+                        System.out.println("sold quantity: "+sold_quantity);
+                        ProductColorSizeEntity updatedProductColorSize = productColorSizeRepository.save(productColorSizeEntity);
+                    }
+                }
             }
         }
         OrderEntity finalEntity = orderRepository.findById(savedOrder.getId()).get();
