@@ -30,6 +30,7 @@ public class WebAppContextConfig {
     public PutAwareCommonsMultipartResolver multipartResolver() {
         PutAwareCommonsMultipartResolver resolver = new PutAwareCommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
+        
         return resolver;
     }
 
