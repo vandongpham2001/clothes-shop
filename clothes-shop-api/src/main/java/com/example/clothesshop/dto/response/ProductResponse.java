@@ -18,8 +18,8 @@ public class ProductResponse {
     private Double discount;
     private BigDecimal salePrice;
     private Integer color;
-    private CategoryResponse category;
+//    private CategoryResponse category;
     private Set<PromotionResponse> promotions = new HashSet<>();
-    private List<SizeOfProductColorResponse> product_color;
+//    private List<SizeOfProductColorResponse> product_color;
     private Date createdDate;
 }
