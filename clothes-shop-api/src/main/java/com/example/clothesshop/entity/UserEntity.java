@@ -64,7 +64,9 @@ public class UserEntity extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles = new HashSet<>();
-
+    @ManyToOne
+    @JoinColumn(name = "ward_code")
+    private DistrictEntity ward;
 //    @ManyToMany(fetch = FetchType.EAGER,
 //            mappedBy = "users")
 //    private Set<RoleEntity> roles = new HashSet<>();
