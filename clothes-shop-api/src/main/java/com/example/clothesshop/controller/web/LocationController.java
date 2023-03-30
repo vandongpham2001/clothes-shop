@@ -1,6 +1,7 @@
 package com.example.clothesshop.controller.web;
 
 import com.example.clothesshop.dto.response.DistrictResponse;
+import com.example.clothesshop.dto.response.ListProvinceResponse;
 import com.example.clothesshop.dto.response.ProvinceResponse;
 import com.example.clothesshop.dto.response.WardResponse;
 import com.example.clothesshop.service.IDistrictService;
@@ -22,7 +23,7 @@ public class LocationController {
     @Autowired
     IWardService wardService;
     @GetMapping("province")
-    public List<ProvinceResponse> getAllProvince(){
+    public List<ListProvinceResponse> getAllProvince(){
         return provinceService.findAll();
     }
     @GetMapping("province/{id}")
