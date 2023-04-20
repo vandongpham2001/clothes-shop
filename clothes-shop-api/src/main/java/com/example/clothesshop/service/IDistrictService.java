@@ -1,5 +1,6 @@
 package com.example.clothesshop.service;
 
+import com.example.clothesshop.dto.response.DistrictDetailResponse;
 import com.example.clothesshop.dto.response.DistrictResponse;
 
 import java.util.List;
@@ -7,4 +8,5 @@ import java.util.List;
 public interface IDistrictService {
     DistrictResponse findById(String id);
     List<DistrictResponse> findByProvinceId(String province_id);
+    DistrictDetailResponse findDetailById(String id);
 }

@@ -3,7 +3,7 @@ package com.example.clothesshop.dto.response;
 import lombok.Data;
 
 @Data
-public class ListProvinceResponse {
+public class DistrictDetailResponse {
     private String code;
     private String name;
     private String name_en;

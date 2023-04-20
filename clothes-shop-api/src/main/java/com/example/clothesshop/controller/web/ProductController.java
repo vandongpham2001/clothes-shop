@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,8 @@ import java.util.Objects;
 public class ProductController {
     @Autowired
     IProductService productService;
+    @Autowired
+    private HttpServletRequest request;
 
     @GetMapping("/max-price")
     public BigDecimal getMaxPriceProduct() {
@@ -37,6 +40,8 @@ public class ProductController {
     public ResponseEntity<Map<String, Object>> getAll(@RequestParam(value = "page", required = false) Integer page,
                                                       @RequestParam(value = "limit", required = false) Integer limit,
                                                       @RequestParam(value = "sort", required = false, defaultValue = "asc") String sort) {
+//        String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "") + request.getContextPath();
+//        System.out.println("BaseURL: "+ baseUrl);
         Map<String, Object> response = new HashMap<>();
         Pageable pageable;
         Sort sortable;

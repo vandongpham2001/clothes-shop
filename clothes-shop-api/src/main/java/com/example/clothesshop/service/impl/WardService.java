@@ -1,6 +1,7 @@
 package com.example.clothesshop.service.impl;
 
 import com.example.clothesshop.converter.WardConverter;
+import com.example.clothesshop.dto.response.WardDetailResponse;
 import com.example.clothesshop.dto.response.WardResponse;
 import com.example.clothesshop.entity.WardEntity;
 import com.example.clothesshop.repository.WardRepository;
@@ -35,5 +36,11 @@ public class WardService implements IWardService {
         entities = wardRepository.findByDistrictCode(district_id);
         results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), WardResponse.class);
         return results;
+    }
+
+    @Override
+    public WardDetailResponse findDetailById(String id) {
+        Optional<WardEntity> entity = wardRepository.findById(id);
+        return wardConverter.toDetailDTO(entity.get());
     }
 }

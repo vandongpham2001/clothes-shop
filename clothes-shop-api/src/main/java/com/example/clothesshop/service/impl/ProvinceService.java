@@ -1,7 +1,7 @@
 package com.example.clothesshop.service.impl;
 
 import com.example.clothesshop.converter.ProvinceConverter;
-import com.example.clothesshop.dto.response.ListProvinceResponse;
+import com.example.clothesshop.dto.response.ProvinceDetailResponse;
 import com.example.clothesshop.dto.response.ProvinceResponse;
 import com.example.clothesshop.entity.ProvinceEntity;
 import com.example.clothesshop.repository.ProvinceRepository;
@@ -24,11 +24,11 @@ public class ProvinceService implements IProvinceService {
     ProvinceConverter provinceConverter;
 
     @Override
-    public List<ListProvinceResponse> findAll() {
-        List<ListProvinceResponse> results;
+    public List<ProvinceDetailResponse> findAll() {
+        List<ProvinceDetailResponse> results;
         Iterable<ProvinceEntity> entities;
         entities = provinceRepository.findAll();
-        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ListProvinceResponse.class);
+        results = ObjectMapperUtils.mapAll(IterableUtils.toList(entities), ProvinceDetailResponse.class);
         return results;
     }
 
@@ -36,5 +36,11 @@ public class ProvinceService implements IProvinceService {
     public ProvinceResponse findById(String id) {
         Optional<ProvinceEntity> entity = provinceRepository.findById(id);
         return provinceConverter.toDTO(entity.get());
+    }
+
+    @Override
+    public ProvinceDetailResponse findDetailById(String id) {
+        Optional<ProvinceEntity> entity = provinceRepository.findById(id);
+        return provinceConverter.toDetailDTO(entity.get());
     }
 }
